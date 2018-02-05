@@ -12,7 +12,9 @@ class Monitor extends Model
         'name',
         'queue',
         'started_at',
+        'started_at_exact',
         'finished_at',
+        'finished_at_exact',
         'time_elapsed',
         'failed',
         'attempt',
@@ -23,7 +25,10 @@ class Monitor extends Model
         'failed' => 'boolean',
     ];
 
-    protected $dates = [];
+    protected $dates = [
+        'started_at',
+        'finished_at',
+    ];
 
     public $timestamps = false;
 
@@ -34,6 +39,11 @@ class Monitor extends Model
         $this->setTable(config('queue-monitor.table'));
     }
 
+    public function scopeOrdered($query)
+    {
+        return $query->orderBy('started_at', 'asc');
+    }
+
     public function startedAtExact(): Carbon
     {
         return Carbon::parse($this->started_at_exact);
@@ -42,5 +52,10 @@ class Monitor extends Model
     public function finishedAtExact(): Carbon
     {
         return Carbon::parse($this->finished_at_exact);
+    }
+
+    public function basename()
+    {
+        return basename($this->name);
     }
 }
