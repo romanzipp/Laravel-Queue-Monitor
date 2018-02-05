@@ -34,7 +34,7 @@ class QueueMonitorHandler
 
     /**
      * Handle Job Failing
-     * @param  handleJobFailed $event
+     * @param  JobFailed $event
      * @return void
      */
     public function handleJobFailed(JobFailed $event)
@@ -98,7 +98,7 @@ class QueueMonitorHandler
             ->limit(1)
             ->first();
 
-        if (!$monitor) {
+        if ($monitor == null) {
             return;
         }
 
