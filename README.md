@@ -9,6 +9,28 @@ The Idea has been inspirated by gilbitron's [laravel-queue-monitor](https://gith
 * Support for milliseconds
 * Model for Queue Monitorings
 
+## Installation
+
+```
+composer require romanzipp/laravel-queue-monitor
+```
+
+Or add `romanzipp/laravel-queue-monitor` to your `composer.json`
+
+```
+"romanzipp/laravel-twitch": "dev-master"
+```
+
+Run composer update to pull the latest version.
+
+**If you use Laravel 5.5+ you are already done, otherwise continue:**
+
+```php
+romanzipp\QueueMonitor\Providers\QueueMonitorProvider::class,
+```
+
+Add Service Provider to your app.php configuration file:
+
 ## Configuration
 
 Copy configuration to config folder:
