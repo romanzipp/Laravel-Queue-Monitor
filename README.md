@@ -8,8 +8,6 @@
 
 This package offers monitoring like "Laravel Horizon" for database queue.
 
-The Idea has been inspirated by gilbitron's [laravel-queue-monitor](https://github.com/gilbitron/laravel-queue-monitor) package.
-
 ## Enhancements
 
 * Support for milliseconds
@@ -63,7 +61,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use romanzipp\QueueMonitor\Traits\DontMonitor; // <-
+use romanzipp\QueueMonitor\Traits\DontMonitor; // <---
 
 class ExampleJob implements ShouldQueue
 {
@@ -71,7 +69,7 @@ class ExampleJob implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-    use DontMonitor; // <-
+    use DontMonitor; // <---
 
     /**
      * Create a new job instance.
@@ -125,6 +123,10 @@ Monitor::today();
 Monitor::today()->failed();
 ```
 
-## To do
+## ToDo
 
 * Add Job & Artisan Command for automatic cleanup of old database entries
+
+----
+
+The Idea has been inspirated by gilbitron's [laravel-queue-monitor](https://github.com/gilbitron/laravel-queue-monitor) package.
