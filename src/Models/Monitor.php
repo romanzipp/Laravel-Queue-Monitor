@@ -39,10 +39,38 @@ class Monitor extends Model
         $this->setTable(config('queue-monitor.table'));
     }
 
+    /**
+     * Scopes
+     */
+
     public function scopeOrdered($query)
     {
         return $query->orderBy('started_at', 'asc');
     }
+
+    public function scopeLastHour($query)
+    {
+        return $query->where('started_at', '<', Carbon::now()->subHours(1));
+    }
+
+    public function scopeToday($query)
+    {
+        return $query->whereRaw('DATE(started_at) = ?', [Carbon::now()->subHours(1)->format('Y-m-d')]);
+    }
+
+    public function scopeFailed($query)
+    {
+        return $query->where('failed', true);
+    }
+
+    public function scopeSucceeded($query)
+    {
+        return $query->where('failed', false);
+    }
+
+    /**
+     * Methods
+     */
 
     public function startedAtExact(): Carbon
     {

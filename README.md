@@ -42,6 +42,21 @@ foreach ($jobs as $job) {
 }
 ```
 
+### Model Scopes
+
+```php
+// Filter by Status
+Monitor::failed();
+Monitor::succeeded();
+
+// Filter by Date
+Monitor::lastHour();
+Monitor::today();
+
+// Chain Scopes
+Monitor::today()->failed();
+```
+
 ## To do
 
 * Add Job & Artisan Command for automatic cleanup of old database entries
