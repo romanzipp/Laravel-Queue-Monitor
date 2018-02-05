@@ -55,7 +55,7 @@ $ php artisan migrate
 
 The package automaticly logs all dispatched jobs.
 
-Exclude job from beding monitored:
+### Exclude job from beding monitored
 
 ```php
 use Illuminate\Bus\Queueable;
@@ -95,7 +95,7 @@ class ExampleJob implements ShouldQueue
 }
 ```
 
-Retrieve processed Jobs:
+### Retrieve processed Jobs
 
 ```php
 use romanzipp\QueueMonitor\Models\Monitor;
