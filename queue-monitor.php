@@ -1,3 +1,5 @@
 <?php
 
-return [];
+return [
+    'table' => 'queue_monitor',
+];

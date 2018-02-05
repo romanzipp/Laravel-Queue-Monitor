@@ -1,0 +1,120 @@
+<?php
+
+namespace romanzipp\QueueMonitor;
+
+use Illuminate\Queue\Events\JobExceptionOccurred;
+use Illuminate\Queue\Events\JobFailed;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Queue\Jobs\Job;
+use Illuminate\Support\Carbon;
+use romanzipp\QueueMonitor\Models\Monitor;
+
+class QueueMonitorHandler
+{
+    /**
+     * Handle Job Processing
+     * @param  JobProcessing $event
+     * @return void
+     */
+    public function handleJobProcessing(JobProcessing $event)
+    {
+        $this->jobStarted($event->job);
+    }
+
+    /**
+     * Handle Job Processed
+     * @param  JobProcessed $event
+     * @return void
+     */
+    public function handleJobProcessed(JobProcessed $event)
+    {
+        $this->jobFinished($event->job);
+    }
+
+    /**
+     * Handle Job Failing
+     * @param  handleJobFailed $event
+     * @return void
+     */
+    public function handleJobFailed(JobFailed $event)
+    {
+        $this->jobFinished($event->job, true);
+    }
+
+    /**
+     * Handle Job Exception Occurred
+     * @param  JobExceptionOccurred $event
+     * @return void
+     */
+    public function handleJobExceptionOccurred(JobExceptionOccurred $event)
+    {
+        $this->jobFinished($event->job, true, $event->exception);
+    }
+
+    /**
+     * Get Job ID
+     * @param  Job    $job
+     * @return string|int
+     */
+    protected function getJobId(Job $job)
+    {
+        if (method_exists($job, 'getJobId') && $job->getJobId()) {
+            return $job->getJobId();
+        }
+
+        return sha1($job->getRawBody());
+    }
+
+    /**
+     * Start Queue Monitoring for Job
+     * @param  Job    $job
+     * @return void
+     */
+    protected function jobStarted(Job $job)
+    {
+        $now = Carbon::now();
+
+        Monitor::create([
+            'job_id' => $this->getJobId($job),
+            'name' => $job->resolveName(),
+            'queue' => $job->getQueue(),
+            'started_at' => $now,
+            'started_at_exact' => $now->format('Y-m-d H:i:s.u'),
+        ]);
+    }
+
+    /**
+     * Finish Queue Monitoring for Job
+     * @param  Job     $job
+     * @param  boolean $failed
+     * @param  mixed   $exception
+     * @return void
+     */
+    protected function jobFinished(Job $job, bool $failed = false, $exception = null)
+    {
+        $monitor = Monitor::where('job_id', $this->getJobId($job))
+            ->orderBy('started_at', 'desc')
+            ->limit(1)
+            ->first();
+
+        if (!$monitor) {
+            return;
+        }
+
+        $now = Carbon::now();
+
+        $elapsedInterval = Carbon::parse($monitor->started_at)->diff($now);
+
+        $timeElapsed = (float) $elapsedInterval->s + $elapsedInterval->f;
+
+        Monitor::where('id', $monitor->id)->update([
+            'finished_at' => $now,
+            'finished_at_exact' => $now->format('Y-m-d H:i:s.u'),
+            'time_elapsed' => $timeElapsed,
+            'failed' => $failed,
+            'attempt' => $job->attempts(),
+            'exception' => $exception ? $exception->getMessage() : null,
+        ]);
+    }
+}

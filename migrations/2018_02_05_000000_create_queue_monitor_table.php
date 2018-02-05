@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateQueueMonitorTable extends Migration
 {
@@ -12,18 +13,26 @@ class CreateQueueMonitorTable extends Migration
      */
     public function up()
     {
-        Schema::create('queue_monitor', function (Blueprint $table) {
+        $tableName = config('queue-monitor.table');
+
+        Schema::create($tableName, function (Blueprint $table) {
             $table->increments('id');
+
             $table->string('job_id')->index();
             $table->string('name')->nullable();
             $table->string('queue')->nullable();
+
             $table->timestamp('started_at')->nullable()->index();
+            $table->string('started_at_exact')->nullable(); // MySQL + Laravel Support for milliseconds is junky
+
             $table->timestamp('finished_at')->nullable();
-            $table->integer('time_elapsed')->nullable()->index();
+            $table->string('finished_at_exact')->nullable(); // MySQL + Laravel Support for milliseconds is junky
+
+            $table->float('time_elapsed', 12, 6)->nullable()->index();
             $table->boolean('failed')->default(false)->index();
             $table->integer('attempt')->default(0);
-            $table->text('exception')->nullable();
-            $table->text('data')->nullable();
+            $table->longText('exception')->nullable();
+            $table->longText('data')->nullable();
         });
     }
 
@@ -34,6 +43,8 @@ class CreateQueueMonitorTable extends Migration
      */
     public function down()
     {
-        Schema::drop('queue_monitor');
+        $tableName = config('queue-monitor.table');
+
+        Schema::drop($tableName);
     }
 }
