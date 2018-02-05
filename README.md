@@ -55,6 +55,46 @@ $ php artisan migrate
 
 The package automaticly logs all dispatched jobs.
 
+Exclude job from beding monitored:
+
+```php
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use romanzipp\QueueMonitor\Traits\DontMonitor; // <-
+
+class ExampleJob implements ShouldQueue
+{
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
+    use DontMonitor; // <-
+
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        //
+    }
+}
+```
+
 Retrieve processed Jobs:
 
 ```php

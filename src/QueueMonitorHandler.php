@@ -73,6 +73,10 @@ class QueueMonitorHandler
      */
     protected function jobStarted(Job $job)
     {
+        if (!$this->shouldBeMonitored($job)) {
+            return;
+        }
+
         $now = Carbon::now();
 
         Monitor::create([
@@ -93,6 +97,10 @@ class QueueMonitorHandler
      */
     protected function jobFinished(Job $job, bool $failed = false, $exception = null)
     {
+        if (!$this->shouldBeMonitored($job)) {
+            return;
+        }
+
         $monitor = Monitor::where('job_id', $this->getJobId($job))
             ->orderBy('started_at', 'desc')
             ->limit(1)
@@ -116,5 +124,15 @@ class QueueMonitorHandler
             'attempt' => $job->attempts(),
             'exception' => $exception ? $exception->getMessage() : null,
         ]);
+    }
+
+    /**
+     * Determine wether the Job should be monitored, default true
+     * @param  Job    $job
+     * @return bool
+     */
+    protected function shouldBeMonitored(Job $job): bool
+    {
+        return !method_exists($job, 'dontMonitor');
     }
 }
