@@ -1,5 +1,11 @@
 # Laravel Queue Monitor
 
+[![Latest Stable Version](https://poser.pugx.org/romanzipp/laravel-queue-monitor/version)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
+[![Total Downloads](https://poser.pugx.org/romanzipp/laravel-queue-monitor/downloads)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
+[![License](https://poser.pugx.org/romanzipp/laravel-queue-monitor/license)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/badges/build.png?b=master)](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/build-status/master)
+
 This package offers monitoring like "Laravel Horizon" for database queue.
 
 The Idea has been inspirated by gilbitron's [laravel-queue-monitor](https://github.com/gilbitron/laravel-queue-monitor) package.
@@ -18,7 +24,7 @@ composer require romanzipp/laravel-queue-monitor
 Or add `romanzipp/laravel-queue-monitor` to your `composer.json`
 
 ```
-"romanzipp/laravel-twitch": "dev-master"
+"romanzipp/laravel-queue-monitor": "dev-master"
 ```
 
 Run composer update to pull the latest version.
