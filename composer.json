@@ -3,7 +3,7 @@
     "description": "Queue Monitoring for Laravel Database Job Queue",
     "type": "library",
     "license": "MIT",
-    "version": "0.1",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "romanzipp",
