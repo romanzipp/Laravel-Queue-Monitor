@@ -22,7 +22,7 @@ composer require romanzipp/laravel-queue-monitor
 Or add `romanzipp/laravel-queue-monitor` to your `composer.json`
 
 ```
-"romanzipp/laravel-queue-monitor": "dev-master"
+"romanzipp/laravel-queue-monitor": "*"
 ```
 
 Run composer update to pull the latest version.
