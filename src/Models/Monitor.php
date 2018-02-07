@@ -93,4 +93,22 @@ class Monitor extends Model
     {
         return basename($this->name);
     }
+
+    public function isFinished()
+    {
+        if ($this->failed) {
+            return true;
+        }
+
+        return $this->finished_at !== null;
+    }
+
+    public function isSucceeded()
+    {
+        if (!$this->isFinished()) {
+            return false;
+        }
+
+        return $this->failed == false;
+    }
 }
