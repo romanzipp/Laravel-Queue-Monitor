@@ -19,6 +19,8 @@ class Monitor extends Model
         'failed',
         'attempt',
         'exception',
+        'progress',
+        'data',
     ];
 
     protected $casts = [
@@ -42,10 +44,15 @@ class Monitor extends Model
     /**
      * Scopes
      */
+    
+    public function scopeWhereJob($query, $jobId)
+    {
+        return $query->where('job_id', $jobId);
+    }
 
     public function scopeOrdered($query)
     {
-        return $query->orderBy('started_at', 'asc');
+        return $query->orderBy('started_at', 'desc');
     }
 
     public function scopeLastHour($query)
