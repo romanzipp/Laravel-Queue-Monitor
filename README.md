@@ -93,6 +93,55 @@ class ExampleJob implements ShouldQueue
 }
 ```
 
+### Update Job Progress / Custom Data
+
+You can update the progress of the current job, like supported by FFMpeg
+
+```php
+use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
+use romanzipp\QueueMonitor\Traits\QueueMonitor; // <--- Queue Monitor data
+
+class ExampleJob implements ShouldQueue
+{
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
+    use QueueMonitor; // <---
+
+    /**
+     * Create a new job instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Execute the job.
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        // Save progress, if job driver supports
+        $ffmpeg->on('progress', function ($percentage) {
+
+            $this->queueProgress($percentage);
+        });
+
+        // Save data if finished
+        $this->queueData(['foo' => 'bar']);
+    }
+}
+```
+
 ### Retrieve processed Jobs
 
 ```php
