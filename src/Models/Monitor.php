@@ -94,7 +94,11 @@ class Monitor extends Model
         return basename($this->name);
     }
 
-    public function isFinished()
+    /**
+     * Determine wether job is finished
+     * @return boolean
+     */
+    public function isFinished(): bool
     {
         if ($this->failed) {
             return true;
@@ -103,7 +107,11 @@ class Monitor extends Model
         return $this->finished_at !== null;
     }
 
-    public function isSucceeded()
+    /**
+     * Determine wether job has succeeded
+     * @return boolean
+     */
+    public function isSucceeded(): bool
     {
         if (!$this->isFinished()) {
             return false;
