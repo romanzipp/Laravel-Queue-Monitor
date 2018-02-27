@@ -3,6 +3,7 @@
 namespace romanzipp\QueueMonitor\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 
 class Monitor extends Model
@@ -44,7 +45,7 @@ class Monitor extends Model
     /**
      * Scopes
      */
-    
+
     public function scopeWhereJob($query, $jobId)
     {
         return $query->where('job_id', $jobId);
@@ -91,7 +92,7 @@ class Monitor extends Model
 
     public function basename()
     {
-        return basename($this->name);
+        return Arr::last(explode('\\', $this->name));
     }
 
     /**
