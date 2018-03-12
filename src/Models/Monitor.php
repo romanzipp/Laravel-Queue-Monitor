@@ -90,9 +90,19 @@ class Monitor extends Model
         return Carbon::parse($this->finished_at_exact);
     }
 
-    public function basename()
+    public function getBasenameAttribute()
     {
         return Arr::last(explode('\\', $this->name));
+    }
+
+    public function basename()
+    {
+        return $this->basename;
+    }
+
+    public function getParsedDataAttribute(): array
+    {
+        return json_decode($this->data, true) ?? [];
     }
 
     /**

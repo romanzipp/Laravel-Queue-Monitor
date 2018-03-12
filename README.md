@@ -6,10 +6,12 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/badges/build.png?b=master)](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/build-status/master)
 
-This package offers monitoring like "Laravel Horizon" for database queue.
+This package offers monitoring like [Laravel Horizon](https://laravel.com/docs/horizon) for database queue.
 
-## Enhancements
+## Features
 
+* Monitor all jobs like [Laravel Horizon](https://laravel.com/docs/horizon), but not only for redis
+* Handles failed jobs with exception
 * Support for milliseconds
 * Model for Queue Monitorings
 
@@ -51,7 +53,7 @@ $ php artisan migrate
 
 ## Usage
 
-The package automaticly logs all dispatched jobs.
+The package automaticly logs **all dispatched jobs**.
 
 ### Exclude job from beding monitored
 
@@ -71,21 +73,11 @@ class ExampleJob implements ShouldQueue
     use SerializesModels;
     use DontMonitor; // <---
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         //
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         //
@@ -113,21 +105,11 @@ class ExampleJob implements ShouldQueue
     use SerializesModels;
     use QueueMonitor; // <---
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         //
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
     public function handle()
     {
         // Save progress, if job driver supports
@@ -136,7 +118,7 @@ class ExampleJob implements ShouldQueue
             $this->queueProgress($percentage);
         });
 
-        // Save data if finished
+        // Save data if finished. Must be type of array
         $this->queueData(['foo' => 'bar']);
     }
 }
@@ -170,6 +152,14 @@ Monitor::today();
 
 // Chain Scopes
 Monitor::today()->failed();
+
+// Get parsed custom Monitor data
+
+$monitor = Monitor::find(1);
+
+$monitor->data; // Raw data string
+
+$monitor->parsed_data; // JSON decoded data, always array
 ```
 
 ## ToDo

@@ -31,10 +31,10 @@ trait QueueMonitor
 
     /**
      * Set Monitor data
-     * @param  mixed $data Custom data
+     * @param  array $data Custom data
      * @return void
      */
-    public function queueData($data)
+    public function queueData(array $data)
     {
         $monitor = $this->getQueueMonitor();
 
@@ -43,7 +43,7 @@ trait QueueMonitor
         }
 
         $monitor->update([
-            'data' => serialize($data),
+            'data' => json_encode($data),
         ]);
     }
 
