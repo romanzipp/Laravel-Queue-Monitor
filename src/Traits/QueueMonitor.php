@@ -53,10 +53,23 @@ trait QueueMonitor
      */
     private function getQueueMonitor()
     {
-        if (method_exists($this->job, 'getJobId') && $this->job->getJobId()) {
-            $jobId = $this->job->getJobId();
-        } else {
-            $jobId = sha1($this->job->getRawBody());
+        $jobId = value(function () {
+
+            if (method_exists($this->job, 'getJobId') && $this->job->getJobId()) {
+
+                return $this->job->getJobId();
+            }
+
+            if (method_exists($this->job, 'getRawBody')) {
+
+                return sha1($this->job->getRawBody());
+            }
+
+            return null;
+        });
+
+        if ($jobId === null) {
+            return null;
         }
 
         $monitor = Monitor::whereJob($jobId)
