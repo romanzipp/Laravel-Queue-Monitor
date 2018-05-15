@@ -85,6 +85,7 @@ class QueueMonitorHandler
             'queue' => $job->getQueue(),
             'started_at' => $now,
             'started_at_exact' => $now->format('Y-m-d H:i:s.u'),
+            'attempt' => $job->attempts(),
         ]);
     }
 
@@ -121,7 +122,6 @@ class QueueMonitorHandler
             'finished_at_exact' => $now->format('Y-m-d H:i:s.u'),
             'time_elapsed' => $timeElapsed,
             'failed' => $failed,
-            'attempt' => $job->attempts(),
             'exception' => $exception ? $exception->getMessage() : null,
         ]);
     }
