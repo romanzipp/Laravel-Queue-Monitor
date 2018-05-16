@@ -12,7 +12,7 @@ trait QueueMonitor
      * @param  int    $progress Progress as integer 0-100
      * @return void
      */
-    public function queueProgress(int $progress)
+    public function queueProgress(int $progress): void
     {
         if ($progress < 0 || $progress > 100) {
             throw new Exception('Progress value must be between 0 and 100');
@@ -34,7 +34,7 @@ trait QueueMonitor
      * @param  array $data Custom data
      * @return void
      */
-    public function queueData(array $data)
+    public function queueData(array $data): void
     {
         $monitor = $this->getQueueMonitor();
 
