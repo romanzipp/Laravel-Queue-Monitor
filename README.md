@@ -53,37 +53,7 @@ $ php artisan migrate
 
 ## Usage
 
-The package automaticly logs **all dispatched jobs**.
-
-### Exclude job from beding monitored
-
-```php
-use Illuminate\Bus\Queueable;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Bus\Dispatchable;
-use romanzipp\QueueMonitor\Traits\DontMonitor; // <---
-
-class ExampleJob implements ShouldQueue
-{
-    use Dispatchable;
-    use InteractsWithQueue;
-    use Queueable;
-    use SerializesModels;
-    use DontMonitor; // <---
-
-    public function __construct()
-    {
-        //
-    }
-
-    public function handle()
-    {
-        //
-    }
-}
-```
+To monitor a job, add the `romanzipp\QueueMonitor\Traits\QueueMonitor` Trait.
 
 ### Update Job Progress / Custom Data
 
@@ -95,7 +65,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use romanzipp\QueueMonitor\Traits\QueueMonitor; // <--- Queue Monitor data
+use romanzipp\QueueMonitor\Traits\QueueMonitor; // <---
 
 class ExampleJob implements ShouldQueue
 {
@@ -104,11 +74,6 @@ class ExampleJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
     use QueueMonitor; // <---
-
-    public function __construct()
-    {
-        //
-    }
 
     public function handle()
     {
