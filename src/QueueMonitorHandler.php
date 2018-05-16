@@ -114,9 +114,9 @@ class QueueMonitorHandler
 
         $now = Carbon::now();
 
-        $startedAt = Carbon::parse($monitor->started_at);
+        $startedAt = Carbon::parse($monitor->started_at_exact);
 
-        $timeElapsed = (float) $now->diffInSeconds($startedAt) + $now->diff($startedAt)->f;
+        $timeElapsed = (float) $startedAt->diffInSeconds($now) + $startedAt->diff($now)->f;
 
         Monitor::where('id', $monitor->id)->update([
             'finished_at' => $now,
