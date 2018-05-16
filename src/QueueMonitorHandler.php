@@ -58,10 +58,9 @@ class QueueMonitorHandler
      * @param  Job    $job
      * @return string|int
      */
-    protected function getJobId(Job $job)
+    public static function getJobId(Job $job)
     {
         if ($jobId = $job->getJobId()) {
-
             return $jobId;
         }
 
@@ -82,7 +81,7 @@ class QueueMonitorHandler
         $now = Carbon::now();
 
         Monitor::create([
-            'job_id' => $this->getJobId($job),
+            'job_id' => self::getJobId($job),
             'name' => $job->resolveName(),
             'queue' => $job->getQueue(),
             'started_at' => $now,
@@ -104,7 +103,7 @@ class QueueMonitorHandler
             return;
         }
 
-        $monitor = Monitor::where('job_id', $this->getJobId($job))
+        $monitor = Monitor::where('job_id', self::getJobId($job))
             ->orderBy('started_at', 'desc')
             ->limit(1)
             ->first();

@@ -4,6 +4,7 @@ namespace romanzipp\QueueMonitor\Traits;
 
 use Exception;
 use romanzipp\QueueMonitor\Models\Monitor;
+use romanzipp\QueueMonitor\QueueMonitorHandler;
 
 trait QueueMonitor
 {
@@ -18,9 +19,7 @@ trait QueueMonitor
             throw new Exception('Progress value must be between 0 and 100');
         }
 
-        $monitor = $this->getQueueMonitor();
-
-        if ($monitor == null) {
+        if (!$monitor = $this->getQueueMonitor()) {
             return;
         }
 
@@ -36,9 +35,7 @@ trait QueueMonitor
      */
     public function queueData(array $data): void
     {
-        $monitor = $this->getQueueMonitor();
-
-        if ($monitor == null) {
+        if (!$monitor = $this->getQueueMonitor()) {
             return;
         }
 
@@ -51,32 +48,19 @@ trait QueueMonitor
      * Return Queue Monitor Model
      * @return Monitor|null
      */
-    private function getQueueMonitor()
+    protected function getQueueMonitor()
     {
-        $jobId = value(function () {
-
-            if (method_exists($this->job, 'getJobId') && $this->job->getJobId()) {
-
-                return $this->job->getJobId();
-            }
-
-            if (method_exists($this->job, 'getRawBody')) {
-
-                return sha1($this->job->getRawBody());
-            }
-
-            return null;
-        });
-
-        if ($jobId === null) {
+        if (!property_exists($this, 'job')) {
             return null;
         }
 
-        $monitor = Monitor::whereJob($jobId)
+        if (!$jobId = QueueMonitorHandler::getJobId($this->job)) {
+            return null;
+        }
+
+        return Monitor::whereJob($jobId)
             ->orderBy('started_at', 'desc')
             ->limit(1)
             ->first();
-
-        return $monitor;
     }
 }
