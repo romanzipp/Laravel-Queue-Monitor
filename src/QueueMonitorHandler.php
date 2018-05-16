@@ -9,6 +9,7 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Carbon;
 use romanzipp\QueueMonitor\Models\Monitor;
+use romanzipp\QueueMonitor\Traits\QueueMonitor;
 
 class QueueMonitorHandler
 {
@@ -17,7 +18,7 @@ class QueueMonitorHandler
      * @param  JobProcessing $event
      * @return void
      */
-    public function handleJobProcessing(JobProcessing $event)
+    public function handleJobProcessing(JobProcessing $event): void
     {
         $this->jobStarted($event->job);
     }
@@ -27,7 +28,7 @@ class QueueMonitorHandler
      * @param  JobProcessed $event
      * @return void
      */
-    public function handleJobProcessed(JobProcessed $event)
+    public function handleJobProcessed(JobProcessed $event): void
     {
         $this->jobFinished($event->job);
     }
@@ -37,7 +38,7 @@ class QueueMonitorHandler
      * @param  JobFailed $event
      * @return void
      */
-    public function handleJobFailed(JobFailed $event)
+    public function handleJobFailed(JobFailed $event): void
     {
         $this->jobFinished($event->job, true);
     }
@@ -47,7 +48,7 @@ class QueueMonitorHandler
      * @param  JobExceptionOccurred $event
      * @return void
      */
-    public function handleJobExceptionOccurred(JobExceptionOccurred $event)
+    public function handleJobExceptionOccurred(JobExceptionOccurred $event): void
     {
         $this->jobFinished($event->job, true, $event->exception);
     }
@@ -59,8 +60,9 @@ class QueueMonitorHandler
      */
     protected function getJobId(Job $job)
     {
-        if (method_exists($job, 'getJobId') && $job->getJobId()) {
-            return $job->getJobId();
+        if ($jobId = $job->getJobId()) {
+
+            return $jobId;
         }
 
         return sha1($job->getRawBody());
@@ -71,7 +73,7 @@ class QueueMonitorHandler
      * @param  Job    $job
      * @return void
      */
-    protected function jobStarted(Job $job)
+    protected function jobStarted(Job $job): void
     {
         if (!$this->shouldBeMonitored($job)) {
             return;
@@ -96,7 +98,7 @@ class QueueMonitorHandler
      * @param  mixed   $exception
      * @return void
      */
-    protected function jobFinished(Job $job, bool $failed = false, $exception = null)
+    protected function jobFinished(Job $job, bool $failed = false, $exception = null): void
     {
         if (!$this->shouldBeMonitored($job)) {
             return;
@@ -133,6 +135,8 @@ class QueueMonitorHandler
      */
     protected function shouldBeMonitored(Job $job): bool
     {
-        return method_exists($job, 'getQueueMonitor') == false && method_exists($job, 'getRawBody');
+        $class = $job->resolveName();
+
+        return array_key_exists(QueueMonitor::class, class_uses($class));
     }
 }
