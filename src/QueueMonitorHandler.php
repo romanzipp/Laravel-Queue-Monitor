@@ -133,6 +133,6 @@ class QueueMonitorHandler
      */
     protected function shouldBeMonitored(Job $job): bool
     {
-        return method_exists($job, 'dontMonitor') == false && method_exists($job, 'getRawBody');
+        return method_exists($job, 'getQueueMonitor') == false && method_exists($job, 'getRawBody');
     }
 }
