@@ -54,6 +54,10 @@ trait QueueMonitor
             return null;
         }
 
+        if (!$this->job) {
+            return null;
+        }
+
         if (!$jobId = QueueMonitorHandler::getJobId($this->job)) {
             return null;
         }
