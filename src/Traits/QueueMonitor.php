@@ -45,6 +45,17 @@ trait QueueMonitor
     }
 
     /**
+     * Delete Queue Monitor object
+     * @return void
+     */
+    protected function deleteQueueMonitor(): void
+    {
+        if ($monitor = $this->getQueueMonitor()) {
+            $monitor->delete();
+        }
+    }
+
+    /**
      * Return Queue Monitor Model
      * @return Monitor|null
      */
