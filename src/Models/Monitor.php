@@ -53,7 +53,9 @@ class Monitor extends Model
 
     public function scopeOrdered($query)
     {
-        return $query->orderBy('started_at', 'desc');
+        return $query
+            ->orderBy('started_at', 'desc')
+            ->orderBy('started_at_exact', 'desc');
     }
 
     public function scopeLastHour($query)
