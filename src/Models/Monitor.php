@@ -112,7 +112,11 @@ class Monitor extends Model
             return null;
         }
 
-        $secondsRunning = now()->getTimestamp() - $this->created_at->getTimestamp();
+        if (!$this->started_at) {
+            return null;
+        }
+
+        $secondsRunning = now()->getTimestamp() - $this->started_at->getTimestamp();
 
         return (float) ($secondsRunning - ($secondsRunning * $this->progress / 100));
     }
