@@ -97,14 +97,29 @@ class Monitor extends Model
         return Arr::last(explode('\\', $this->name));
     }
 
-    public function basename()
-    {
-        return $this->basename;
-    }
-
     public function getParsedDataAttribute(): array
     {
         return json_decode($this->data, true) ?? [];
+    }
+
+    public function getRemainingSecondsAttribute(): ?float
+    {
+        if ($this->isFinished()) {
+            return null;
+        }
+
+        if ($this->progress === null) {
+            return null;
+        }
+
+        $secondsRunning = now()->getTimestamp() - $this->created_at->getTimestamp();
+
+        return (float) ($secondsRunning - ($secondsRunning * $this->progress / 100));
+    }
+
+    public function basename()
+    {
+        return $this->basename;
     }
 
     /**
