@@ -60,7 +60,7 @@ class Monitor extends Model
 
     public function scopeLastHour($query)
     {
-        return $query->where('started_at', '<', Carbon::now()->subHours(1));
+        return $query->where('started_at', '>', Carbon::now()->subHours(1));
     }
 
     public function scopeToday($query)
