@@ -20,7 +20,7 @@ class QueueMonitorProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            dirname(__DIR__) . '/../queue-monitor.php' => config_path('queue-monitor.php'),
+            dirname(__DIR__) . '/../config/queue-monitor.php' => config_path('queue-monitor.php'),
         ], 'config');
 
         $this->loadMigrationsFrom(
@@ -52,7 +52,7 @@ class QueueMonitorProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__) . '/../queue-monitor.php', 'queue-monitor'
+            dirname(__DIR__) . '/../config/queue-monitor.php', 'queue-monitor'
         );
     }
 }

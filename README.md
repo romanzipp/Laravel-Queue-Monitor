@@ -43,7 +43,7 @@ Add Service Provider to your app.php configuration file:
 Copy configuration to config folder:
 
 ```
-$ php artisan vendor:publish --provider=romanzipp\QueueMonitor\Providers\QueueMonitorProvider
+$ php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider"
 ```
 
 Migrate the Queue Monitoring table. The table name itself can be configured in the config file.
