@@ -1,11 +1,11 @@
 # Laravel Queue Monitor
 
-[![Latest Stable Version](https://poser.pugx.org/romanzipp/laravel-queue-monitor/version)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
-[![Total Downloads](https://poser.pugx.org/romanzipp/laravel-queue-monitor/downloads)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
-[![License](https://poser.pugx.org/romanzipp/laravel-queue-monitor/license)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/?branch=master)
-[![Build Status](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/badges/build.png?b=master)](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/build-status/master)
-[![StyleCI](https://styleci.io/repos/120360910/shield?branch=master&style=flat)](https://styleci.io/repos/120360910)
+[![Latest Stable Version](https://img.shields.io/packagist/v/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
+[![Total Downloads](https://img.shields.io/packagist/dt/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
+[![License](https://img.shields.io/packagist/l/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
+[![Code Quality](https://img.shields.io/scrutinizer/g/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://scrutinizer-ci.com/g/romanzipp/laravel-queue-monitor/?branch=master)
+[![Build Status](https://img.shields.io/scrutinizer/build/g/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/build-status/master)
+[![StyleCI](https://styleci.io/repos/120360910/shield?branch=master&style=flat-square)](https://styleci.io/repos/120360910)
 
 This package offers monitoring like [Laravel Horizon](https://laravel.com/docs/horizon) for database queue.
 
