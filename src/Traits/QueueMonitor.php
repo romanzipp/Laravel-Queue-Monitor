@@ -19,7 +19,7 @@ trait QueueMonitor
             throw new Exception('Progress value must be between 0 and 100');
         }
 
-        if (!$monitor = $this->getQueueMonitor()) {
+        if ( ! $monitor = $this->getQueueMonitor()) {
             return;
         }
 
@@ -30,12 +30,12 @@ trait QueueMonitor
 
     /**
      * Set Monitor data
-     * @param  array $data Custom data
+     * @param  array  $data Custom data
      * @return void
      */
     public function queueData(array $data): void
     {
-        if (!$monitor = $this->getQueueMonitor()) {
+        if ( ! $monitor = $this->getQueueMonitor()) {
             return;
         }
 
@@ -61,15 +61,15 @@ trait QueueMonitor
      */
     protected function getQueueMonitor()
     {
-        if (!property_exists($this, 'job')) {
+        if ( ! property_exists($this, 'job')) {
             return null;
         }
 
-        if (!$this->job) {
+        if ( ! $this->job) {
             return null;
         }
 
-        if (!$jobId = QueueMonitorHandler::getJobId($this->job)) {
+        if ( ! $jobId = QueueMonitorHandler::getJobId($this->job)) {
             return null;
         }
 

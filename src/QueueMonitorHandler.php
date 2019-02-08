@@ -55,7 +55,7 @@ class QueueMonitorHandler
 
     /**
      * Get Job ID
-     * @param  Job    $job
+     * @param  Job          $job
      * @return string|int
      */
     public static function getJobId(Job $job)
@@ -74,19 +74,19 @@ class QueueMonitorHandler
      */
     protected function jobStarted(Job $job): void
     {
-        if (!$this->shouldBeMonitored($job)) {
+        if ( ! $this->shouldBeMonitored($job)) {
             return;
         }
 
         $now = Carbon::now();
 
         Monitor::create([
-            'job_id' => self::getJobId($job),
-            'name' => $job->resolveName(),
-            'queue' => $job->getQueue(),
-            'started_at' => $now,
+            'job_id'           => self::getJobId($job),
+            'name'             => $job->resolveName(),
+            'queue'            => $job->getQueue(),
+            'started_at'       => $now,
             'started_at_exact' => $now->format('Y-m-d H:i:s.u'),
-            'attempt' => $job->attempts(),
+            'attempt'          => $job->attempts(),
         ]);
     }
 
@@ -99,7 +99,7 @@ class QueueMonitorHandler
      */
     protected function jobFinished(Job $job, bool $failed = false, $exception = null): void
     {
-        if (!$this->shouldBeMonitored($job)) {
+        if ( ! $this->shouldBeMonitored($job)) {
             return;
         }
 
@@ -119,11 +119,11 @@ class QueueMonitorHandler
         $timeElapsed = (float) $startedAt->diffInSeconds($now) + $startedAt->diff($now)->f;
 
         Monitor::where('id', $monitor->id)->update([
-            'finished_at' => $now,
+            'finished_at'       => $now,
             'finished_at_exact' => $now->format('Y-m-d H:i:s.u'),
-            'time_elapsed' => $timeElapsed,
-            'failed' => $failed,
-            'exception' => $exception ? $exception->getMessage() : null,
+            'time_elapsed'      => $timeElapsed,
+            'failed'            => $failed,
+            'exception'         => $exception ? $exception->getMessage() : null,
         ]);
     }
 
