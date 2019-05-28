@@ -5,7 +5,6 @@
 [![License](https://img.shields.io/packagist/l/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
 [![Code Quality](https://img.shields.io/scrutinizer/g/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://scrutinizer-ci.com/g/romanzipp/laravel-queue-monitor/?branch=master)
 [![Build Status](https://img.shields.io/scrutinizer/build/g/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://scrutinizer-ci.com/g/romanzipp/Laravel-Queue-Monitor/build-status/master)
-[![StyleCI](https://styleci.io/repos/120360910/shield?branch=master&style=flat-square)](https://styleci.io/repos/120360910)
 
 This package offers monitoring like [Laravel Horizon](https://laravel.com/docs/horizon) for database queue.
 
@@ -22,21 +21,13 @@ This package offers monitoring like [Laravel Horizon](https://laravel.com/docs/h
 composer require romanzipp/laravel-queue-monitor
 ```
 
-Or add `romanzipp/laravel-queue-monitor` to your `composer.json`
+**If you use Laravel 5.5+ you are already done, otherwise continue.**
 
-```
-"romanzipp/laravel-queue-monitor": "*"
-```
-
-Run composer update to pull the latest version.
-
-**If you use Laravel 5.5+ you are already done, otherwise continue:**
+Add Service Provider to your app.php configuration file:
 
 ```php
 romanzipp\QueueMonitor\Providers\QueueMonitorProvider::class,
 ```
-
-Add Service Provider to your app.php configuration file:
 
 ## Configuration
 
