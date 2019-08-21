@@ -20,7 +20,7 @@ class CreateQueueMonitorTable extends Migration
 
             $table->string('job_id')->index();
             $table->string('name')->nullable();
-            $table->string('queue')->nullable()->index();
+            $table->string('queue')->nullable();
 
             $table->timestamp('started_at')->nullable()->index();
             $table->string('started_at_exact')->nullable(); // MySQL + Laravel Support for milliseconds is junky

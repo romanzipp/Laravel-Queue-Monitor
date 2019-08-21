@@ -87,6 +87,7 @@ class QueueMonitorHandler
             'started_at'       => $now,
             'started_at_exact' => $now->format('Y-m-d H:i:s.u'),
             'attempt'          => $job->attempts(),
+            'tags'             => method_exists($job, 'tags') ? $job->tags() : null,
         ]);
     }
 

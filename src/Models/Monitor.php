@@ -22,6 +22,7 @@ class Monitor extends Model
         'exception',
         'progress',
         'data',
+        'tags',
     ];
 
     protected $casts = [
