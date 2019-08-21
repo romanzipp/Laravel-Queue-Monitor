@@ -17,7 +17,7 @@ class UpdateQueueMonitorTableAddTagSupport extends Migration
 
         Schema::table($tableName, function (Blueprint $table) {
             $table->longText('tags')->nullable();
-            $table->index(['queue', 'queue_index']);
+            $table->index('queue', 'queue_index');
         });
     }
 
