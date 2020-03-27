@@ -153,7 +153,7 @@ class Monitor extends Model implements MonitorContract
      */
     public function getException(): ?Throwable
     {
-        if ($this->exception === null) {
+        if ($this->exception_class === null) {
             return null;
         }
 
