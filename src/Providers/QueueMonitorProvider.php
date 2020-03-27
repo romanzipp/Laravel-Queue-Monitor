@@ -27,20 +27,26 @@ class QueueMonitorProvider extends ServiceProvider
             dirname(__DIR__) . '/../migrations'
         );
 
-        app(QueueManager::class)->before(function (JobProcessing $event) {
-            app(QueueMonitorHandler::class)->handleJobProcessing($event);
+        /** @var QueueManager $manager */
+        $manager = app(QueueManager::class);
+
+        /** @var QueueManager $manager */
+        $handler = app(QueueMonitorHandler::class);
+
+        $manager->before(static function (JobProcessing $event) use ($handler) {
+            $handler->handleJobProcessing($event);
         });
 
-        app(QueueManager::class)->after(function (JobProcessed $event) {
-            app(QueueMonitorHandler::class)->handleJobProcessed($event);
+        $manager->after(static function (JobProcessed $event) use ($handler) {
+            $handler->handleJobProcessed($event);
         });
 
-        app(QueueManager::class)->failing(function (JobFailed $event) {
-            app(QueueMonitorHandler::class)->handleJobFailed($event);
+        $manager->failing(static function (JobFailed $event) use ($handler) {
+            $handler->handleJobFailed($event);
         });
 
-        app(QueueManager::class)->exceptionOccurred(function (JobExceptionOccurred $event) {
-            app(QueueMonitorHandler::class)->handleJobExceptionOccurred($event);
+        $manager->exceptionOccurred(static function (JobExceptionOccurred $event) use ($handler) {
+            $handler->handleJobExceptionOccurred($event);
         });
     }
 
