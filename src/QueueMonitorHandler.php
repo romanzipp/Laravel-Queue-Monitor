@@ -8,12 +8,24 @@ use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Carbon;
-use romanzipp\QueueMonitor\Models\Monitor;
+use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class QueueMonitorHandler
 {
     private const TIMESTAMP_EXACT_FORMAT = 'Y-m-d H:i:s.u';
+
+    public static $model;
+
+    /**
+     * Get the model used to store the monitoring data.
+     *
+     * @return \romanzipp\QueueMonitor\Models\Contracts\MonitorContract
+     */
+    public static function getModel(): MonitorContract
+    {
+        return new self::$model;
+    }
 
     /**
      * Handle Job Processing.
@@ -88,7 +100,9 @@ class QueueMonitorHandler
 
         $now = Carbon::now();
 
-        Monitor::query()->create([
+        $model = self::getModel();
+
+        $model::query()->create([
             'job_id' => self::getJobId($job),
             'name' => $job->resolveName(),
             'queue' => $job->getQueue(),
@@ -112,7 +126,9 @@ class QueueMonitorHandler
             return;
         }
 
-        $monitor = Monitor::query()
+        $model = self::getModel();
+
+        $monitor = $model::query()
             ->where('job_id', self::getJobId($job))
             ->orderBy('started_at', 'desc')
             ->first();
@@ -121,7 +137,7 @@ class QueueMonitorHandler
             return;
         }
 
-        /** @var Monitor $monitor */
+        /** @var MonitorContract $monitor */
 
         $now = Carbon::now();
 
@@ -129,7 +145,7 @@ class QueueMonitorHandler
             $timeElapsed = (float) $startedAt->diffInSeconds($now) + $startedAt->diff($now)->f;
         }
 
-        Monitor::query()
+        $model::query()
             ->where('id', $monitor->id)
             ->update([
                 'finished_at' => $now,

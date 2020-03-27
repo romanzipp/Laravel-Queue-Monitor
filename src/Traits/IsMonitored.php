@@ -2,7 +2,7 @@
 
 namespace romanzipp\QueueMonitor\Traits;
 
-use romanzipp\QueueMonitor\Models\Monitor;
+use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 use romanzipp\QueueMonitor\QueueMonitorHandler;
 
 /**
@@ -85,9 +85,9 @@ trait IsMonitored
     /**
      * Return Queue Monitor Model.
      *
-     * @return Monitor|null
+     * @return MonitorContract|null
      */
-    protected function getQueueMonitor(): ?Monitor
+    protected function getQueueMonitor(): ?MonitorContract
     {
         if ( ! property_exists($this, 'job')) {
             return null;
@@ -101,7 +101,9 @@ trait IsMonitored
             return null;
         }
 
-        return Monitor::whereJob($jobId)
+        $model = QueueMonitorHandler::getModel();
+
+        return $model::whereJob($jobId)
             ->orderBy('started_at', 'desc')
             ->limit(1)
             ->first();
