@@ -19,9 +19,9 @@ class QueueMonitorHandler
      * @param JobProcessing $event
      * @return void
      */
-    public function handleJobProcessing(JobProcessing $event): void
+    public static function handleJobProcessing(JobProcessing $event): void
     {
-        $this->jobStarted($event->job);
+        self::jobStarted($event->job);
     }
 
     /**
@@ -30,9 +30,9 @@ class QueueMonitorHandler
      * @param JobProcessed $event
      * @return void
      */
-    public function handleJobProcessed(JobProcessed $event): void
+    public static function handleJobProcessed(JobProcessed $event): void
     {
-        $this->jobFinished($event->job);
+        self::jobFinished($event->job);
     }
 
     /**
@@ -41,9 +41,9 @@ class QueueMonitorHandler
      * @param JobFailed $event
      * @return void
      */
-    public function handleJobFailed(JobFailed $event): void
+    public static function handleJobFailed(JobFailed $event): void
     {
-        $this->jobFinished($event->job, true);
+        self::jobFinished($event->job, true);
     }
 
     /**
@@ -52,9 +52,9 @@ class QueueMonitorHandler
      * @param JobExceptionOccurred $event
      * @return void
      */
-    public function handleJobExceptionOccurred(JobExceptionOccurred $event): void
+    public static function handleJobExceptionOccurred(JobExceptionOccurred $event): void
     {
-        $this->jobFinished($event->job, true, $event->exception);
+        self::jobFinished($event->job, true, $event->exception);
     }
 
     /**
@@ -78,9 +78,9 @@ class QueueMonitorHandler
      * @param Job $job
      * @return void
      */
-    protected function jobStarted(Job $job): void
+    protected static function jobStarted(Job $job): void
     {
-        if ( ! $this->shouldBeMonitored($job)) {
+        if ( ! self::shouldBeMonitored($job)) {
             return;
         }
 
@@ -104,9 +104,9 @@ class QueueMonitorHandler
      * @param mixed $exception
      * @return void
      */
-    protected function jobFinished(Job $job, bool $failed = false, $exception = null): void
+    protected static function jobFinished(Job $job, bool $failed = false, $exception = null): void
     {
-        if ( ! $this->shouldBeMonitored($job)) {
+        if ( ! self::shouldBeMonitored($job)) {
             return;
         }
 
@@ -142,7 +142,7 @@ class QueueMonitorHandler
      * @param Job $job
      * @return bool
      */
-    protected function shouldBeMonitored(Job $job): bool
+    public static function shouldBeMonitored(Job $job): bool
     {
         return array_key_exists(QueueMonitor::class, class_uses_recursive(
             $job->resolveName()

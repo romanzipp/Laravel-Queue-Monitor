@@ -30,23 +30,20 @@ class QueueMonitorProvider extends ServiceProvider
         /** @var QueueManager $manager */
         $manager = app(QueueManager::class);
 
-        /** @var QueueManager $manager */
-        $handler = app(QueueMonitorHandler::class);
-
-        $manager->before(static function (JobProcessing $event) use ($handler) {
-            $handler->handleJobProcessing($event);
+        $manager->before(static function (JobProcessing $event) {
+            QueueMonitorHandler::handleJobProcessing($event);
         });
 
-        $manager->after(static function (JobProcessed $event) use ($handler) {
-            $handler->handleJobProcessed($event);
+        $manager->after(static function (JobProcessed $event) {
+            QueueMonitorHandler::handleJobProcessed($event);
         });
 
-        $manager->failing(static function (JobFailed $event) use ($handler) {
-            $handler->handleJobFailed($event);
+        $manager->failing(static function (JobFailed $event) {
+            QueueMonitorHandler::handleJobFailed($event);
         });
 
-        $manager->exceptionOccurred(static function (JobExceptionOccurred $event) use ($handler) {
-            $handler->handleJobExceptionOccurred($event);
+        $manager->exceptionOccurred(static function (JobExceptionOccurred $event) {
+            QueueMonitorHandler::handleJobExceptionOccurred($event);
         });
     }
 
