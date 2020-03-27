@@ -22,12 +22,12 @@ use Illuminate\Support\Carbon;
  * @property integer|null $progress
  * @property string|null $exception
  * @property string|null $data
- * @method static \Illuminate\Database\Eloquent\Builder|Monitor whereJob()
- * @method static \Illuminate\Database\Eloquent\Builder|Monitor ordered()
- * @method static \Illuminate\Database\Eloquent\Builder|Monitor lastHour()
- * @method static \Illuminate\Database\Eloquent\Builder|Monitor today()
- * @method static \Illuminate\Database\Eloquent\Builder|Monitor failed()
- * @method static \Illuminate\Database\Eloquent\Builder|Monitor succeeded()
+ * @method static Builder|Monitor whereJob()
+ * @method static Builder|Monitor ordered()
+ * @method static Builder|Monitor lastHour()
+ * @method static Builder|Monitor today()
+ * @method static Builder|Monitor failed()
+ * @method static Builder|Monitor succeeded()
  */
 class Monitor extends Model
 {
