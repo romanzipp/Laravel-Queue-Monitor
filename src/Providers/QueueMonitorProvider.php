@@ -19,13 +19,16 @@ class QueueMonitorProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->publishes([
-            dirname(__DIR__) . '/../config/queue-monitor.php' => config_path('queue-monitor.php'),
-        ], 'config');
+        if ($this->app->runningInConsole()) {
 
-        $this->loadMigrationsFrom(
-            dirname(__DIR__) . '/../migrations'
-        );
+            $this->publishes([
+                dirname(__DIR__) . '/../config/queue-monitor.php' => config_path('queue-monitor.php'),
+            ], 'config');
+
+            $this->loadMigrationsFrom(
+                dirname(__DIR__) . '/../migrations'
+            );
+        }
 
         /** @var QueueManager $manager */
         $manager = app(QueueManager::class);
@@ -54,8 +57,10 @@ class QueueMonitorProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(
-            dirname(__DIR__) . '/../config/queue-monitor.php', 'queue-monitor'
-        );
+        if ( ! $this->app->configurationIsCached()) {
+            $this->mergeConfigFrom(
+                dirname(__DIR__) . '/../config/queue-monitor.php', 'queue-monitor'
+            );
+        }
     }
 }
