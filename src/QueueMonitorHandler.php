@@ -103,7 +103,7 @@ class QueueMonitorHandler
      *
      * @param Job $job
      * @param boolean $failed
-     * @param mixed $exception
+     * @param \Exception $exception
      * @return void
      */
     protected static function jobFinished(Job $job, bool $failed = false, $exception = null): void
@@ -121,18 +121,20 @@ class QueueMonitorHandler
             return;
         }
 
+        /** @var Monitor $monitor */
+
         $now = Carbon::now();
 
-        $startedAt = Carbon::parse($monitor->started_at_exact);
-
-        $timeElapsed = (float) $startedAt->diffInSeconds($now) + $startedAt->diff($now)->f;
+        if ($startedAt = $monitor->getStartedAtExact()) {
+            $timeElapsed = (float) $startedAt->diffInSeconds($now) + $startedAt->diff($now)->f;
+        }
 
         Monitor::query()
             ->where('id', $monitor->id)
             ->update([
                 'finished_at' => $now,
                 'finished_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
-                'time_elapsed' => $timeElapsed,
+                'time_elapsed' => $timeElapsed ?? 0.0,
                 'failed' => $failed,
                 'exception' => $exception ? $exception->getMessage() : null,
             ]);
