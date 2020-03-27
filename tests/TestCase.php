@@ -17,13 +17,16 @@ class TestCase extends BaseTestCase
         QueueMonitor::$loadMigrations = true;
 
         parent::setUp();
+
+        $this->withoutMockingConsoleOutput();
+        $this->withoutExceptionHandling();
     }
 
     protected function dispatch(BaseJob $job): void
     {
         dispatch($job);
 
-        $this->artisan('queue:work --once')->run();
+        $this->artisan('queue:work --once');
     }
 
     protected function getPackageProviders($app)
