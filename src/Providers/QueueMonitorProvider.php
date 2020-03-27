@@ -9,7 +9,7 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Support\ServiceProvider;
 use romanzipp\QueueMonitor\Models\Monitor;
-use romanzipp\QueueMonitor\QueueMonitorHandler;
+use romanzipp\QueueMonitor\Services\QueueMonitor;
 
 class QueueMonitorProvider extends ServiceProvider
 {
@@ -22,7 +22,7 @@ class QueueMonitorProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
 
-            if (QueueMonitorHandler::$loadMigrations) {
+            if (QueueMonitor::$loadMigrations) {
                 $this->loadMigrationsFrom(
                     dirname(__DIR__) . '/../migrations'
                 );
@@ -41,19 +41,19 @@ class QueueMonitorProvider extends ServiceProvider
         $manager = app(QueueManager::class);
 
         $manager->before(static function (JobProcessing $event) {
-            QueueMonitorHandler::handleJobProcessing($event);
+            QueueMonitor::handleJobProcessing($event);
         });
 
         $manager->after(static function (JobProcessed $event) {
-            QueueMonitorHandler::handleJobProcessed($event);
+            QueueMonitor::handleJobProcessed($event);
         });
 
         $manager->failing(static function (JobFailed $event) {
-            QueueMonitorHandler::handleJobFailed($event);
+            QueueMonitor::handleJobFailed($event);
         });
 
         $manager->exceptionOccurred(static function (JobExceptionOccurred $event) {
-            QueueMonitorHandler::handleJobExceptionOccurred($event);
+            QueueMonitor::handleJobExceptionOccurred($event);
         });
     }
 
@@ -69,7 +69,7 @@ class QueueMonitorProvider extends ServiceProvider
                 dirname(__DIR__) . '/../config/queue-monitor.php', 'queue-monitor'
             );
 
-            QueueMonitorHandler::$model = config('queue-monitor.model') ?: Monitor::class;
+            QueueMonitor::$model = config('queue-monitor.model') ?: Monitor::class;
         }
     }
 }

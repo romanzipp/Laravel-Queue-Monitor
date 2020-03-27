@@ -3,7 +3,7 @@
 namespace romanzipp\QueueMonitor\Traits;
 
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
-use romanzipp\QueueMonitor\QueueMonitorHandler;
+use romanzipp\QueueMonitor\Services\QueueMonitor;
 
 /**
  * @mixin \Illuminate\Queue\InteractsWithQueue
@@ -97,11 +97,11 @@ trait IsMonitored
             return null;
         }
 
-        if ( ! $jobId = QueueMonitorHandler::getJobId($this->job)) {
+        if ( ! $jobId = QueueMonitor::getJobId($this->job)) {
             return null;
         }
 
-        $model = QueueMonitorHandler::getModel();
+        $model = QueueMonitor::getModel();
 
         return $model::whereJob($jobId)
             ->orderBy('started_at', 'desc')
