@@ -8,6 +8,8 @@ class FailingJob extends Job
 {
     public function handle(): void
     {
-        throw new Exception('Whoops');
+        $this->job->markAsFailed();
+
+        // throw new Exception('Whoops');
     }
 }
