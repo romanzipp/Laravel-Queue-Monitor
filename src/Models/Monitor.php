@@ -6,6 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 
+/**
+ * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor whereJob()
+ * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor ordered()
+ * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor lastHour()
+ * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor today()
+ * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor failed()
+ * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor succeeded()
+ */
 class Monitor extends Model
 {
     protected $fillable = [
