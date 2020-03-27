@@ -9,7 +9,7 @@ use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Carbon;
 use romanzipp\QueueMonitor\Models\Monitor;
-use romanzipp\QueueMonitor\Traits\QueueMonitor;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class QueueMonitorHandler
 {
@@ -148,7 +148,7 @@ class QueueMonitorHandler
      */
     public static function shouldBeMonitored(JobContract $job): bool
     {
-        return array_key_exists(QueueMonitor::class, class_uses_recursive(
+        return array_key_exists(IsMonitored::class, class_uses_recursive(
             $job->resolveName()
         ));
     }
