@@ -14,7 +14,8 @@ use romanzipp\QueueMonitor\Traits\QueueMonitor;
 class QueueMonitorHandler
 {
     /**
-     * Handle Job Processing
+     * Handle Job Processing.
+     *
      * @param JobProcessing $event
      * @return void
      */
@@ -24,7 +25,8 @@ class QueueMonitorHandler
     }
 
     /**
-     * Handle Job Processed
+     * Handle Job Processed.
+     *
      * @param JobProcessed $event
      * @return void
      */
@@ -34,7 +36,8 @@ class QueueMonitorHandler
     }
 
     /**
-     * Handle Job Failing
+     * Handle Job Failing.
+     *
      * @param JobFailed $event
      * @return void
      */
@@ -44,7 +47,8 @@ class QueueMonitorHandler
     }
 
     /**
-     * Handle Job Exception Occurred
+     * Handle Job Exception Occurred.
+     *
      * @param JobExceptionOccurred $event
      * @return void
      */
@@ -68,7 +72,8 @@ class QueueMonitorHandler
     }
 
     /**
-     * Start Queue Monitoring for Job
+     * Start Queue Monitoring for Job.
+     *
      * @param Job $job
      * @return void
      */
@@ -91,7 +96,8 @@ class QueueMonitorHandler
     }
 
     /**
-     * Finish Queue Monitoring for Job
+     * Finish Queue Monitoring for Job.
+     *
      * @param Job $job
      * @param boolean $failed
      * @param mixed $exception
@@ -128,7 +134,8 @@ class QueueMonitorHandler
     }
 
     /**
-     * Determine wether the Job should be monitored, default true
+     * Determine weather the Job should be monitored, default true.
+     *
      * @param Job $job
      * @return bool
      */
