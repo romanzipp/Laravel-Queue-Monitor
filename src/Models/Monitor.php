@@ -113,21 +113,21 @@ class Monitor extends Model
         return Carbon::parse($this->finished_at_exact);
     }
 
-    public function getRemainingSeconds(): ?float
+    public function getRemainingSeconds(): float
     {
         if ($this->isFinished()) {
-            return null;
+            return 0.0;
         }
 
         if ($this->progress === null) {
-            return null;
+            return 0.0;
         }
 
         if ( ! $this->started_at) {
-            return null;
+            return 0.0;
         }
 
-        $secondsRunning = now()->getTimestamp() - $this->started_at->getTimestamp();
+        $secondsRunning = Carbon::now()->getTimestamp() - $this->started_at->getTimestamp();
 
         return ($secondsRunning - ($secondsRunning * $this->progress / 100));
     }

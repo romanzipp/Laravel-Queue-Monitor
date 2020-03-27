@@ -166,6 +166,7 @@ $job->getStartedAtExact();
 $job->getFinishedAtExact();
 
 // If the job is still running, get the estimated seconds remaining
+// Notice: This requires a progress to be set
 $job->getRemainingSeconds();
 
 // Retrieve any data that has been set while execution
@@ -241,6 +242,13 @@ The job trait has been renamed to a more intuitive name.
 ```diff
 - $monitor->isSucceeded()
 + $monitor->hasSucceeded()
+```
+
+The `getRemainingSeconds()` method now always returns a `float` instead of `float|null`,
+
+```diff
+- public function getRemainingSeconds(): ?float
++ public function getRemainingSeconds(): float
 ```
 
 #### New Methods
