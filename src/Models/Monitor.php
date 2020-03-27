@@ -7,6 +7,20 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 
 /**
+ * @property int id
+ * @property string $job_id
+ * @property string|null $name
+ * @property string|null $queue
+ * @property \Illuminate\Support\Carbon|null $started_at
+ * @property string|null $started_at_exact
+ * @property \Illuminate\Support\Carbon|null $finished_at
+ * @property string|null $finished_at_exact
+ * @property float $time_elapsed
+ * @property boolean $failed
+ * @property integer $attempt
+ * @property integer|null $progress
+ * @property string|null $exception
+ * @property string|null $data
  * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor whereJob()
  * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor ordered()
  * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor lastHour()
