@@ -120,10 +120,10 @@ class QueueMonitor
      *
      * @param JobContract $job
      * @param boolean $failed
-     * @param Throwable $exception
+     * @param Throwable|null $exception
      * @return void
      */
-    protected static function jobFinished(JobContract $job, bool $failed = false, Throwable $exception = null): void
+    protected static function jobFinished(JobContract $job, bool $failed = false, ?Throwable $exception = null): void
     {
         if ( ! self::shouldBeMonitored($job)) {
             return;
@@ -148,15 +148,22 @@ class QueueMonitor
             $timeElapsed = (float) $startedAt->diffInSeconds($now) + $startedAt->diff($now)->f;
         }
 
-        $model::query()
-            ->where('id', $monitor->id)
-            ->update([
-                'finished_at' => $now,
-                'finished_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
-                'time_elapsed' => $timeElapsed ?? 0.0,
-                'failed' => $failed,
-                'exception' => $exception ? $exception->getMessage() : null,
-            ]);
+        $attributes = [
+            'finished_at' => $now,
+            'finished_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
+            'time_elapsed' => $timeElapsed ?? 0.0,
+            'failed' => $failed,
+        ];
+
+        if ($exception !== null) {
+            $attributes += [
+                'exception' => (string) $exception,
+                'exception_class' => get_class($exception),
+                'exception_message' => $exception->getMessage(),
+            ];
+        }
+
+        $monitor->update($attributes);
     }
 
     /**
