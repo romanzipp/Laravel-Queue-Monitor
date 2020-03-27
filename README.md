@@ -127,6 +127,7 @@ class ExampleJob implements ShouldQueue
 ```php
 use romanzipp\QueueMonitor\Models\Monitor;
 
+/** @var Monitor $job */
 $job = Monitor::query()->first();
 
 // Exact start & finish dates with milliseconds
@@ -161,10 +162,6 @@ Monitor::today()->failed();
 
 - [ ] Add Job & Artisan Command for automatic cleanup of old database entries
 
-----
-
-The Idea has been inspirated by gilbitron's [laravel-queue-monitor](https://github.com/gilbitron/laravel-queue-monitor) package.
-
 ## Upgrading from 1.0 to 2.0
 
 ### The Monitor Model
@@ -173,16 +170,28 @@ The Idea has been inspirated by gilbitron's [laravel-queue-monitor](https://gith
 - ->basename()
 - ->basename
 + ->getBaseame()
+```
 
+```diff
 - ->parsed_data
 + ->getData()
+```
 
+```diff
 - remaing_seconds
 + getRemainingSeconds()
+```
 
+```diff
 - startedAtExact()
 + getStartedAtExact()
+```
 
+```diff
 - finishedAtExact()
 + getFinishedAtExact()
 ```
+
+----
+
+This package was inspired by gilbitron's [laravel-queue-monitor](https://github.com/gilbitron/laravel-queue-monitor) which is not maintained anymore.
