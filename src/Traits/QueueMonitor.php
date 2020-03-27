@@ -10,7 +10,7 @@ trait QueueMonitor
 {
     /**
      * Update progress
-     * @param  int    $progress Progress as integer 0-100
+     * @param int $progress Progress as integer 0-100
      * @return void
      */
     public function queueProgress(int $progress): void
@@ -30,7 +30,7 @@ trait QueueMonitor
 
     /**
      * Set Monitor data
-     * @param  array  $data Custom data
+     * @param array $data Custom data
      * @return void
      */
     public function queueData(array $data): void

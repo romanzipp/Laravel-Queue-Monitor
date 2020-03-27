@@ -102,7 +102,7 @@ class Monitor extends Model
         return json_decode($this->data, true) ?? [];
     }
 
-    public function getRemainingSecondsAttribute():  ? float
+    public function getRemainingSecondsAttribute(): ?float
     {
         if ($this->isFinished()) {
             return null;
@@ -130,7 +130,7 @@ class Monitor extends Model
      * Determine wether job is finished
      * @return boolean
      */
-    public function isFinished() : bool
+    public function isFinished(): bool
     {
         if ($this->failed) {
             return true;

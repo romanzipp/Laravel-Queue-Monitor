@@ -15,7 +15,7 @@ class QueueMonitorHandler
 {
     /**
      * Handle Job Processing
-     * @param  JobProcessing $event
+     * @param JobProcessing $event
      * @return void
      */
     public function handleJobProcessing(JobProcessing $event): void
@@ -25,7 +25,7 @@ class QueueMonitorHandler
 
     /**
      * Handle Job Processed
-     * @param  JobProcessed $event
+     * @param JobProcessed $event
      * @return void
      */
     public function handleJobProcessed(JobProcessed $event): void
@@ -35,7 +35,7 @@ class QueueMonitorHandler
 
     /**
      * Handle Job Failing
-     * @param  JobFailed $event
+     * @param JobFailed $event
      * @return void
      */
     public function handleJobFailed(JobFailed $event): void
@@ -45,7 +45,7 @@ class QueueMonitorHandler
 
     /**
      * Handle Job Exception Occurred
-     * @param  JobExceptionOccurred $event
+     * @param JobExceptionOccurred $event
      * @return void
      */
     public function handleJobExceptionOccurred(JobExceptionOccurred $event): void
@@ -55,7 +55,7 @@ class QueueMonitorHandler
 
     /**
      * Get Job ID
-     * @param  Job          $job
+     * @param Job $job
      * @return string|int
      */
     public static function getJobId(Job $job)
@@ -69,7 +69,7 @@ class QueueMonitorHandler
 
     /**
      * Start Queue Monitoring for Job
-     * @param  Job    $job
+     * @param Job $job
      * @return void
      */
     protected function jobStarted(Job $job): void
@@ -81,20 +81,20 @@ class QueueMonitorHandler
         $now = Carbon::now();
 
         Monitor::create([
-            'job_id'           => self::getJobId($job),
-            'name'             => $job->resolveName(),
-            'queue'            => $job->getQueue(),
-            'started_at'       => $now,
+            'job_id' => self::getJobId($job),
+            'name' => $job->resolveName(),
+            'queue' => $job->getQueue(),
+            'started_at' => $now,
             'started_at_exact' => $now->format('Y-m-d H:i:s.u'),
-            'attempt'          => $job->attempts(),
+            'attempt' => $job->attempts(),
         ]);
     }
 
     /**
      * Finish Queue Monitoring for Job
-     * @param  Job     $job
-     * @param  boolean $failed
-     * @param  mixed   $exception
+     * @param Job $job
+     * @param boolean $failed
+     * @param mixed $exception
      * @return void
      */
     protected function jobFinished(Job $job, bool $failed = false, $exception = null): void
@@ -119,17 +119,17 @@ class QueueMonitorHandler
         $timeElapsed = (float) $startedAt->diffInSeconds($now) + $startedAt->diff($now)->f;
 
         Monitor::where('id', $monitor->id)->update([
-            'finished_at'       => $now,
+            'finished_at' => $now,
             'finished_at_exact' => $now->format('Y-m-d H:i:s.u'),
-            'time_elapsed'      => $timeElapsed,
-            'failed'            => $failed,
-            'exception'         => $exception ? $exception->getMessage() : null,
+            'time_elapsed' => $timeElapsed,
+            'failed' => $failed,
+            'exception' => $exception ? $exception->getMessage() : null,
         ]);
     }
 
     /**
      * Determine wether the Job should be monitored, default true
-     * @param  Job    $job
+     * @param Job $job
      * @return bool
      */
     protected function shouldBeMonitored(Job $job): bool
