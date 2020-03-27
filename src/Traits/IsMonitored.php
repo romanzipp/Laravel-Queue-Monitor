@@ -11,6 +11,8 @@ use romanzipp\QueueMonitor\QueueMonitorHandler;
  */
 trait IsMonitored
 {
+    private $progressCurrentChunk = 0;
+
     /**
      * Update progress.
      *
@@ -30,6 +32,20 @@ trait IsMonitored
         $monitor->update([
             'progress' => $progress,
         ]);
+    }
+
+    /**
+     * Automatically update the current progress in each chunk iteration.
+     *
+     * @param int $collectionCount The total collection item amount
+     * @param int $perChunk The size of each chunk
+     * @return void
+     */
+    public function queueProgressChunk(int $collectionCount, int $perChunk): void
+    {
+        $this->queueProgress(
+            ++$this->progressCurrentChunk * $perChunk / $collectionCount * 100
+        );
     }
 
     /**

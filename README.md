@@ -69,6 +69,33 @@ class ExampleJob implements ShouldQueue
 
 You can set a **progress value** (0-100) to get an estimation of a job progression.
 
+```php
+use Illuminate\Contracts\Queue\ShouldQueue;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
+
+class ExampleJob implements ShouldQueue
+{
+    use IsMonitored;
+
+    public function handle()
+    {
+        $this->queueProgress(0);
+
+        // Do something...
+
+        $this->queueProgress(50);
+
+        // Do something...
+
+        $this->queueProgress(100);
+    }
+}
+``` 
+
+### Set progress in chunk
+
+A common scenario for a job is iterating through large collections.
+
 This example job loops through a large amount of users and updates it's progress value with each chunk iteration.
 
 ```php
@@ -85,12 +112,11 @@ class ExampleJob implements ShouldQueue
         $usersCount = User::count();
 
         $perChunk = 50;
-        $currentChunk = 0;
 
         User::query()
-            ->chunk($perChunk, function (Collection $users) use (&$currentChunk, $perChunk, $usersCount) {
+            ->chunk($perChunk, function (Collection $users) use ($perChunk, $usersCount) {
 
-                $this->queueProgress(++$currentChunk * $perChunk / $usersCount * 100);
+                $this->queueProgressChunk($usersCount‚ $perChunk);
 
                 foreach ($users as $user) {
                     // ...
