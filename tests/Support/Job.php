@@ -7,7 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use romanzipp\QueueMonitor\Traits\QueueMonitor;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class Job extends BaseJob implements ShouldQueue
 {
@@ -15,5 +15,5 @@ class Job extends BaseJob implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-    use QueueMonitor;
+    use IsMonitored;
 }

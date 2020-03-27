@@ -53,7 +53,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use romanzipp\QueueMonitor\Traits\QueueMonitor; // <---
+use romanzipp\QueueMonitor\Traits\IsMonitored; // <---
 
 class ExampleJob implements ShouldQueue
 {
@@ -61,7 +61,7 @@ class ExampleJob implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
-    use QueueMonitor; // <---
+    use IsMonitored; // <---
 }
 ```
 
@@ -74,11 +74,11 @@ This example job loops through a large amount of users and updates it's progress
 ```php
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
-use romanzipp\QueueMonitor\Traits\QueueMonitor;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class ExampleJob implements ShouldQueue
 {
-    use QueueMonitor;
+    use IsMonitored;
 
     public function handle()
     {
@@ -106,11 +106,11 @@ This package also allows to set custom data on the monitoring model.
 
 ```php
 use Illuminate\Contracts\Queue\ShouldQueue;
-use romanzipp\QueueMonitor\Traits\QueueMonitor;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class ExampleJob implements ShouldQueue
 {
-    use QueueMonitor;
+    use IsMonitored;
 
     public function handle()
     {
@@ -163,6 +163,15 @@ Monitor::today()->failed();
 - [ ] Add Job & Artisan Command for automatic cleanup of old database entries
 
 ## Upgrading from 1.0 to 2.0
+
+### The Job Trait
+
+The job trait has been renamed to a more intuitive name.
+
+```diff
+- use romanzipp\QueueMonitor\Traits\QueueMonitor;
++ use romanzipp\QueueMonitor\Traits\IsMonitored; 
+```
 
 ### The Monitor Model
 

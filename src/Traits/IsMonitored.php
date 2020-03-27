@@ -9,7 +9,7 @@ use romanzipp\QueueMonitor\QueueMonitorHandler;
 /**
  * @mixin \Illuminate\Queue\InteractsWithQueue
  */
-trait QueueMonitor
+trait IsMonitored
 {
     /**
      * Update progress.
