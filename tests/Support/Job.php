@@ -9,7 +9,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use romanzipp\QueueMonitor\Traits\QueueMonitor;
 
-class MonitoredJob extends BaseJob implements ShouldQueue
+class Job extends BaseJob implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

@@ -3,31 +3,31 @@
 namespace romanzipp\QueueMonitor\Tests;
 
 use romanzipp\QueueMonitor\Models\Monitor;
-use romanzipp\QueueMonitor\Tests\Support\ExtendingMonitoredJob;
-use romanzipp\QueueMonitor\Tests\Support\MonitoredJob;
+use romanzipp\QueueMonitor\Tests\Support\ExtendingJob;
+use romanzipp\QueueMonitor\Tests\Support\Job;
 use romanzipp\QueueMonitor\Tests\Support\NotMonitoredJob;
 
 class MonitorCreationTest extends TestCase
 {
     public function testCreateMonitor()
     {
-        $this->dispatchNow(new MonitoredJob);
+        $this->dispatch(new Job);
 
-        $this->assertCount(1, Monitor::all());
-        $this->assertEquals(MonitoredJob::class, Monitor::query()->first()->name);
+        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        $this->assertEquals(Job::class, $monitor->name);
     }
 
     public function testCreateMonitorFromExtending()
     {
-        $this->dispatchNow(new ExtendingMonitoredJob);
+        $this->dispatch(new ExtendingJob);
 
-        $this->assertCount(1, Monitor::all());
-        $this->assertEquals(ExtendingMonitoredJob::class, Monitor::query()->first()->name);
+        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        $this->assertEquals(ExtendingJob::class, $monitor->name);
     }
 
     public function testDontCreateMonitor()
     {
-        $this->dispatchNow(new NotMonitoredJob);
+        $this->dispatch(new NotMonitoredJob);
 
         $this->assertCount(0, Monitor::all());
     }
