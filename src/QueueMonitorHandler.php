@@ -2,11 +2,11 @@
 
 namespace romanzipp\QueueMonitor;
 
+use Illuminate\Contracts\Queue\Job;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Queue\Jobs\Job;
 use Illuminate\Support\Carbon;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Traits\QueueMonitor;
@@ -58,7 +58,8 @@ class QueueMonitorHandler
     }
 
     /**
-     * Get Job ID
+     * Get Job ID.
+     *
      * @param Job $job
      * @return string|int
      */
@@ -85,7 +86,7 @@ class QueueMonitorHandler
 
         $now = Carbon::now();
 
-        Monitor::create([
+        Monitor::query()->create([
             'job_id' => self::getJobId($job),
             'name' => $job->resolveName(),
             'queue' => $job->getQueue(),
@@ -109,12 +110,12 @@ class QueueMonitorHandler
             return;
         }
 
-        $monitor = Monitor::where('job_id', self::getJobId($job))
+        $monitor = Monitor::query()
+            ->where('job_id', self::getJobId($job))
             ->orderBy('started_at', 'desc')
-            ->limit(1)
             ->first();
 
-        if ($monitor == null) {
+        if ($monitor === null) {
             return;
         }
 
@@ -124,13 +125,15 @@ class QueueMonitorHandler
 
         $timeElapsed = (float) $startedAt->diffInSeconds($now) + $startedAt->diff($now)->f;
 
-        Monitor::where('id', $monitor->id)->update([
-            'finished_at' => $now,
-            'finished_at_exact' => $now->format('Y-m-d H:i:s.u'),
-            'time_elapsed' => $timeElapsed,
-            'failed' => $failed,
-            'exception' => $exception ? $exception->getMessage() : null,
-        ]);
+        Monitor::query()
+            ->where('id', $monitor->id)
+            ->update([
+                'finished_at' => $now,
+                'finished_at_exact' => $now->format('Y-m-d H:i:s.u'),
+                'time_elapsed' => $timeElapsed,
+                'failed' => $failed,
+                'exception' => $exception ? $exception->getMessage() : null,
+            ]);
     }
 
     /**
