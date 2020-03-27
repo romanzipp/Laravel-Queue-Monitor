@@ -32,13 +32,13 @@ romanzipp\QueueMonitor\Providers\QueueMonitorProvider::class,
 
 ## Configuration
 
-Copy configuration to config folder:
+Copy configuration & migration to your project:
 
 ```
 $ php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider"
 ```
 
-Migrate the Queue Monitoring table. The table name itself can be configured in the config file.
+Migrate the Queue Monitoring table. The table name can be configured in the config file or via the published migration.
 
 ```
 $ php artisan migrate
