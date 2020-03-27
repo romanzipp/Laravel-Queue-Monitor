@@ -10,7 +10,6 @@ class MonitoredFailingJob extends BaseJob
 
     public function handle(): void
     {
-        $this->queueData(['foo'=>'bar']);
         throw new IntentionallyFailedException('Whoops');
     }
 }
