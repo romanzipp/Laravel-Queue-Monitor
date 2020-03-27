@@ -144,8 +144,8 @@ class QueueMonitorHandler
      */
     protected function shouldBeMonitored(Job $job): bool
     {
-        $class = $job->resolveName();
-
-        return array_key_exists(QueueMonitor::class, class_uses($class));
+        return array_key_exists(QueueMonitor::class, class_uses_recursive(
+            $job->resolveName()
+        ));
     }
 }
