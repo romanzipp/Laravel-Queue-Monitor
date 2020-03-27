@@ -6,6 +6,9 @@ use InvalidArgumentException;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\QueueMonitorHandler;
 
+/**
+ * @mixin \Illuminate\Queue\InteractsWithQueue
+ */
 trait QueueMonitor
 {
     /**
@@ -53,9 +56,11 @@ trait QueueMonitor
      */
     protected function deleteQueueMonitor(): void
     {
-        if ($monitor = $this->getQueueMonitor()) {
-            $monitor->delete();
+        if ( ! $monitor = $this->getQueueMonitor()) {
+            return;
         }
+
+        $monitor->delete();
     }
 
     /**
@@ -63,7 +68,7 @@ trait QueueMonitor
      *
      * @return Monitor|null
      */
-    protected function getQueueMonitor()
+    protected function getQueueMonitor(): ?Monitor
     {
         if ( ! property_exists($this, 'job')) {
             return null;
