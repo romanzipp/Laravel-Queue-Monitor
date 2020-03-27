@@ -2,7 +2,7 @@
 
 namespace romanzipp\QueueMonitor;
 
-use Illuminate\Contracts\Queue\Job;
+use Illuminate\Contracts\Queue\Job as JobContract;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
@@ -62,10 +62,10 @@ class QueueMonitorHandler
     /**
      * Get Job ID.
      *
-     * @param Job $job
+     * @param JobContract $job
      * @return string|int
      */
-    public static function getJobId(Job $job)
+    public static function getJobId(JobContract $job)
     {
         if ($jobId = $job->getJobId()) {
             return $jobId;
@@ -77,10 +77,10 @@ class QueueMonitorHandler
     /**
      * Start Queue Monitoring for Job.
      *
-     * @param Job $job
+     * @param JobContract $job
      * @return void
      */
-    protected static function jobStarted(Job $job): void
+    protected static function jobStarted(JobContract $job): void
     {
         if ( ! self::shouldBeMonitored($job)) {
             return;
@@ -101,12 +101,12 @@ class QueueMonitorHandler
     /**
      * Finish Queue Monitoring for Job.
      *
-     * @param Job $job
+     * @param JobContract $job
      * @param boolean $failed
      * @param \Exception $exception
      * @return void
      */
-    protected static function jobFinished(Job $job, bool $failed = false, $exception = null): void
+    protected static function jobFinished(JobContract $job, bool $failed = false, $exception = null): void
     {
         if ( ! self::shouldBeMonitored($job)) {
             return;
@@ -143,10 +143,10 @@ class QueueMonitorHandler
     /**
      * Determine weather the Job should be monitored, default true.
      *
-     * @param Job $job
+     * @param JobContract $job
      * @return bool
      */
-    public static function shouldBeMonitored(Job $job): bool
+    public static function shouldBeMonitored(JobContract $job): bool
     {
         return array_key_exists(QueueMonitor::class, class_uses_recursive(
             $job->resolveName()
