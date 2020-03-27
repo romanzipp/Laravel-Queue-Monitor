@@ -157,13 +157,13 @@ class Monitor extends Model
     }
 
     /**
-     * Determine weather job is finished.
+     * check if the job is finished.
      *
      * @return boolean
      */
     public function isFinished(): bool
     {
-        if ($this->failed) {
+        if ($this->hasFailed()) {
             return true;
         }
 
@@ -171,16 +171,26 @@ class Monitor extends Model
     }
 
     /**
-     * Determine weather job has succeeded.
+     * Check if the job has failed.
+     *
+     * @return bool
+     */
+    public function hasFailed(): bool
+    {
+        return $this->failed === true;
+    }
+
+    /**
+     * check if the job has succeeded.
      *
      * @return boolean
      */
-    public function isSucceeded(): bool
+    public function hasSucceeded(): bool
     {
         if ( ! $this->isFinished()) {
             return false;
         }
 
-        return $this->failed === false;
+        return ! $this->hasFailed();
     }
 }
