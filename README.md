@@ -126,3 +126,25 @@ $monitor->parsed_data; // JSON decoded data, always array
 ----
 
 The Idea has been inspirated by gilbitron's [laravel-queue-monitor](https://github.com/gilbitron/laravel-queue-monitor) package.
+
+## Upgrading
+
+### Monitor Model
+
+```diff
+- ->basename()
+- ->basename
++ ->getBaseame()
+
+- ->parsed_data
++ ->getData()
+
+- remaing_seconds
++ getRemainingSeconds()
+
+- startedAtExact()
++ getStartedAtExact()
+
+- finishedAtExact()
++ getFinishedAtExact()
+```

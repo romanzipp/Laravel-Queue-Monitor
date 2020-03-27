@@ -22,12 +22,12 @@ use Illuminate\Support\Carbon;
  * @property integer|null $progress
  * @property string|null $exception
  * @property string|null $data
- * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor whereJob()
- * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor ordered()
- * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor lastHour()
- * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor today()
- * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor failed()
- * @method static \Illuminate\Database\Eloquent\Builder|\romanzipp\QueueMonitor\Models\Monitor succeeded()
+ * @method static \Illuminate\Database\Eloquent\Builder|Monitor whereJob()
+ * @method static \Illuminate\Database\Eloquent\Builder|Monitor ordered()
+ * @method static \Illuminate\Database\Eloquent\Builder|Monitor lastHour()
+ * @method static \Illuminate\Database\Eloquent\Builder|Monitor today()
+ * @method static \Illuminate\Database\Eloquent\Builder|Monitor failed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Monitor succeeded()
  */
 class Monitor extends Model
 {
@@ -51,8 +51,10 @@ class Monitor extends Model
         $this->setTable(config('queue-monitor.table'));
     }
 
-    /**
+    /*
+     *--------------------------------------------------------------------------
      * Scopes
+     *--------------------------------------------------------------------------
      */
 
     public function scopeWhereJob(Builder $query, $jobId)
@@ -87,31 +89,31 @@ class Monitor extends Model
         return $query->where('failed', false);
     }
 
-    /**
+    /*
+     *--------------------------------------------------------------------------
      * Methods
+     *--------------------------------------------------------------------------
      */
 
-    public function startedAtExact(): Carbon
+    public function getStartedAtExact(): ?Carbon
     {
+        if ($this->started_at_exact === null) {
+            return null;
+        }
+
         return Carbon::parse($this->started_at_exact);
     }
 
-    public function finishedAtExact(): Carbon
+    public function getFinishedAtExact(): ?Carbon
     {
+        if ($this->finished_at_exact === null) {
+            return null;
+        }
+
         return Carbon::parse($this->finished_at_exact);
     }
 
-    public function getBasenameAttribute()
-    {
-        return Arr::last(explode('\\', $this->name));
-    }
-
-    public function getParsedDataAttribute(): array
-    {
-        return json_decode($this->data, true) ?? [];
-    }
-
-    public function getRemainingSecondsAttribute(): ?float
+    public function getRemainingSeconds(): ?float
     {
         if ($this->isFinished()) {
             return null;
@@ -127,12 +129,31 @@ class Monitor extends Model
 
         $secondsRunning = now()->getTimestamp() - $this->started_at->getTimestamp();
 
-        return (float) ($secondsRunning - ($secondsRunning * $this->progress / 100));
+        return ($secondsRunning - ($secondsRunning * $this->progress / 100));
     }
 
-    public function basename()
+    /**
+     * Get any optional data that has been added to the monitor model within the job.
+     *
+     * @return array
+     */
+    public function getData(): array
     {
-        return $this->basename;
+        return json_decode($this->data, true) ?? [];
+    }
+
+    /**
+     * Get the base class name of the job.
+     *
+     * @return string|null
+     */
+    public function getBasename(): ?string
+    {
+        if ($this->name === null) {
+            return null;
+        }
+
+        return Arr::last(explode('\\', $this->name));
     }
 
     /**
@@ -160,6 +181,6 @@ class Monitor extends Model
             return false;
         }
 
-        return $this->failed == false;
+        return $this->failed === false;
     }
 }
