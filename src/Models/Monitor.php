@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
+use Throwable;
 
 /**
  * @property int id
@@ -22,6 +23,8 @@ use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
  * @property integer $attempt
  * @property integer|null $progress
  * @property string|null $exception
+ * @property string|null $exception_class
+ * @property string|null $exception_message
  * @property string|null $data
  * @method static Builder|Monitor whereJob()
  * @method static Builder|Monitor ordered()
@@ -141,6 +144,20 @@ class Monitor extends Model implements MonitorContract
     public function getData(): array
     {
         return json_decode($this->data, true) ?? [];
+    }
+
+    /**
+     * Recreate the exception.
+     *
+     * @return \Throwable|null
+     */
+    public function getException(): ?Throwable
+    {
+        if ($this->exception === null) {
+            return null;
+        }
+
+        return new $this->exception_class($this->exception_message);
     }
 
     /**

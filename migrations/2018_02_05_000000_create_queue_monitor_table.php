@@ -35,6 +35,9 @@ class CreateQueueMonitorTable extends Migration
             $table->integer('progress')->nullable();
 
             $table->longText('exception')->nullable();
+            $table->text('exception_message')->nullable();
+            $table->text('exception_class')->nullable();
+
             $table->longText('data')->nullable();
         });
     }
