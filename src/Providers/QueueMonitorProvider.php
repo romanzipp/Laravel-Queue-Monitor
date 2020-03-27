@@ -8,6 +8,7 @@ use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Support\ServiceProvider;
+use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\QueueMonitorHandler;
 
 class QueueMonitorProvider extends ServiceProvider
@@ -61,6 +62,8 @@ class QueueMonitorProvider extends ServiceProvider
             $this->mergeConfigFrom(
                 dirname(__DIR__) . '/../config/queue-monitor.php', 'queue-monitor'
             );
+
+            QueueMonitorHandler::$model = config('queue-monitor.model') ?: Monitor::class;
         }
     }
 }

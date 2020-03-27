@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 
 /**
  * @property int id
@@ -29,7 +30,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Monitor failed()
  * @method static Builder|Monitor succeeded()
  */
-class Monitor extends Model
+class Monitor extends Model implements MonitorContract
 {
     protected $guarded = [];
 
