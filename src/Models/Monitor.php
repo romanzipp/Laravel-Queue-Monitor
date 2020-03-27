@@ -2,6 +2,7 @@
 
 namespace romanzipp\QueueMonitor\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
@@ -30,24 +31,10 @@ use Illuminate\Support\Carbon;
  */
 class Monitor extends Model
 {
-    protected $fillable = [
-        'job_id',
-        'name',
-        'queue',
-        'started_at',
-        'started_at_exact',
-        'finished_at',
-        'finished_at_exact',
-        'time_elapsed',
-        'failed',
-        'attempt',
-        'exception',
-        'progress',
-        'data',
-    ];
+    protected $guarded = [];
 
     protected $casts = [
-        'failed' => 'boolean',
+        'failed' => 'bool',
     ];
 
     protected $dates = [
@@ -68,34 +55,34 @@ class Monitor extends Model
      * Scopes
      */
 
-    public function scopeWhereJob($query, $jobId)
+    public function scopeWhereJob(Builder $query, $jobId)
     {
         return $query->where('job_id', $jobId);
     }
 
-    public function scopeOrdered($query)
+    public function scopeOrdered(Builder $query)
     {
         return $query
             ->orderBy('started_at', 'desc')
             ->orderBy('started_at_exact', 'desc');
     }
 
-    public function scopeLastHour($query)
+    public function scopeLastHour(Builder $query)
     {
         return $query->where('started_at', '>', Carbon::now()->subHours(1));
     }
 
-    public function scopeToday($query)
+    public function scopeToday(Builder $query)
     {
         return $query->whereRaw('DATE(started_at) = ?', [Carbon::now()->subHours(1)->format('Y-m-d')]);
     }
 
-    public function scopeFailed($query)
+    public function scopeFailed(Builder $query)
     {
         return $query->where('failed', true);
     }
 
-    public function scopeSucceeded($query)
+    public function scopeSucceeded(Builder $query)
     {
         return $query->where('failed', false);
     }
