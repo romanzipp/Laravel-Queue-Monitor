@@ -2,7 +2,7 @@
 
 namespace romanzipp\QueueMonitor\Tests\Support;
 
-class ExtendingMonitoredJob extends MonitoredJob
+class MonitoredExtendingJob extends MonitoredJob
 {
 
 }
