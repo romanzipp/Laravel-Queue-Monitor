@@ -9,7 +9,8 @@ use romanzipp\QueueMonitor\QueueMonitorHandler;
 trait QueueMonitor
 {
     /**
-     * Update progress
+     * Update progress.
+     *
      * @param int $progress Progress as integer 0-100
      * @return void
      */
@@ -29,7 +30,8 @@ trait QueueMonitor
     }
 
     /**
-     * Set Monitor data
+     * Set Monitor data.
+     *
      * @param array $data Custom data
      * @return void
      */
@@ -45,7 +47,8 @@ trait QueueMonitor
     }
 
     /**
-     * Delete Queue Monitor object
+     * Delete Queue Monitor object.
+     *
      * @return void
      */
     protected function deleteQueueMonitor(): void
@@ -56,7 +59,8 @@ trait QueueMonitor
     }
 
     /**
-     * Return Queue Monitor Model
+     * Return Queue Monitor Model.
+     *
      * @return Monitor|null
      */
     protected function getQueueMonitor()

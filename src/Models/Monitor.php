@@ -127,7 +127,8 @@ class Monitor extends Model
     }
 
     /**
-     * Determine wether job is finished
+     * Determine weather job is finished.
+     *
      * @return boolean
      */
     public function isFinished(): bool
@@ -140,7 +141,8 @@ class Monitor extends Model
     }
 
     /**
-     * Determine wether job has succeeded
+     * Determine weather job has succeeded.
+     *
      * @return boolean
      */
     public function isSucceeded(): bool
