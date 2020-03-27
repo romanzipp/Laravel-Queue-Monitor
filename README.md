@@ -243,7 +243,7 @@ The job trait has been renamed to a more intuitive name.
 + $monitor->hasSucceeded()
 ```
 
-### New Methods
+#### New Methods
 
 ```diff
 + $monitor->hasFailed()
