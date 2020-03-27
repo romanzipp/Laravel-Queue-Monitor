@@ -200,6 +200,13 @@ Monitor::today()->failed();
 
 ## Upgrading from 1.0 to 2.0
 
+### Database
+
+Add the following fields to your queue monitor table:
+
+- `exception_message` (string, nullable)
+- `exception_class` (string, nullable)
+
 ### The Job Trait
 
 The job trait has been renamed to a more intuitive name.
