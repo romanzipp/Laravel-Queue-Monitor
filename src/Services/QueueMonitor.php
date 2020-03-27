@@ -1,6 +1,6 @@
 <?php
 
-namespace romanzipp\QueueMonitor;
+namespace romanzipp\QueueMonitor\Services;
 
 use Illuminate\Contracts\Queue\Job as JobContract;
 use Illuminate\Queue\Events\JobExceptionOccurred;
@@ -11,7 +11,7 @@ use Illuminate\Support\Carbon;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
-class QueueMonitorHandler
+class QueueMonitor
 {
     private const TIMESTAMP_EXACT_FORMAT = 'Y-m-d H:i:s.u';
 

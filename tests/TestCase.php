@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Queue\QueueManager;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use romanzipp\QueueMonitor\Providers\QueueMonitorProvider;
-use romanzipp\QueueMonitor\QueueMonitorHandler;
+use romanzipp\QueueMonitor\Services\QueueMonitor;
 
 class TestCase extends BaseTestCase
 {
@@ -15,7 +15,7 @@ class TestCase extends BaseTestCase
 
     public function setUp(): void
     {
-        QueueMonitorHandler::$loadMigrations=true;
+        QueueMonitor::$loadMigrations=true;
 
         parent::setUp();
     }
