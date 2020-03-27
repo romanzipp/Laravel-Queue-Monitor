@@ -13,6 +13,8 @@ use romanzipp\QueueMonitor\Traits\QueueMonitor;
 
 class QueueMonitorHandler
 {
+    private const TIMESTAMP_EXACT_FORMAT = 'Y-m-d H:i:s.u';
+
     /**
      * Handle Job Processing.
      *
@@ -91,7 +93,7 @@ class QueueMonitorHandler
             'name' => $job->resolveName(),
             'queue' => $job->getQueue(),
             'started_at' => $now,
-            'started_at_exact' => $now->format('Y-m-d H:i:s.u'),
+            'started_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
             'attempt' => $job->attempts(),
         ]);
     }
@@ -129,7 +131,7 @@ class QueueMonitorHandler
             ->where('id', $monitor->id)
             ->update([
                 'finished_at' => $now,
-                'finished_at_exact' => $now->format('Y-m-d H:i:s.u'),
+                'finished_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
                 'time_elapsed' => $timeElapsed,
                 'failed' => $failed,
                 'exception' => $exception ? $exception->getMessage() : null,
