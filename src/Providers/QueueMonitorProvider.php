@@ -22,13 +22,19 @@ class QueueMonitorProvider extends ServiceProvider
     {
         if ($this->app->runningInConsole()) {
 
+            if (QueueMonitorHandler::$loadMigrations) {
+                $this->loadMigrationsFrom(
+                    dirname(__DIR__) . '/../migrations'
+                );
+            }
+
             $this->publishes([
                 dirname(__DIR__) . '/../config/queue-monitor.php' => config_path('queue-monitor.php'),
             ], 'config');
 
-            $this->loadMigrationsFrom(
-                dirname(__DIR__) . '/../migrations'
-            );
+            $this->publishes([
+                dirname(__DIR__) . '/../migrations' => database_path('migrations'),
+            ], 'migrations');
         }
 
         /** @var QueueManager $manager */

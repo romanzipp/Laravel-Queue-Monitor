@@ -15,6 +15,8 @@ class QueueMonitorHandler
 {
     private const TIMESTAMP_EXACT_FORMAT = 'Y-m-d H:i:s.u';
 
+    public static $loadMigrations = false;
+
     public static $model;
 
     /**
