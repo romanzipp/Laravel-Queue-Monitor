@@ -154,8 +154,12 @@ class ExampleJob implements ShouldQueue
 ```php
 use romanzipp\QueueMonitor\Models\Monitor;
 
-/** @var Monitor $job */
 $job = Monitor::query()->first();
+
+// Check the current state of a job
+$job->isFinished();
+$job->hasFailed();
+$job->hasSucceeded();
 
 // Exact start & finish dates with milliseconds
 $job->getStartedAtExact();
@@ -166,6 +170,9 @@ $job->getRemainingSeconds();
 
 // Retrieve any data that has been set while execution
 $job->getData();
+
+// Get the base name of the executed job
+$job->getBasename();
 ```
 
 ### Model Scopes
@@ -203,30 +210,43 @@ The job trait has been renamed to a more intuitive name.
 
 ### The Monitor Model
 
+#### Changed Methods
+
 ```diff
-- ->basename()
-- ->basename
-+ ->getBaseame()
+- $monitor->basename()
+- $monitor->basename
++ $monitor->getBaseame()
 ```
 
 ```diff
-- ->parsed_data
-+ ->getData()
+- $monitor->parsed_data
++ $monitor->getData()
 ```
 
 ```diff
-- remaing_seconds
-+ getRemainingSeconds()
+- $monitor->remaing_seconds
++ $monitor->getRemainingSeconds()
 ```
 
 ```diff
-- startedAtExact()
-+ getStartedAtExact()
+- $monitor->startedAtExact()
++ $monitor->getStartedAtExact()
 ```
 
 ```diff
-- finishedAtExact()
-+ getFinishedAtExact()
+- $monitor->finishedAtExact()
++ $monitor->getFinishedAtExact()
+```
+
+```diff
+- $monitor->isSucceeded()
++ $monitor->hasSucceeded()
+```
+
+### New Methods
+
+```diff
++ $monitor->hasFailed()
 ```
 
 ----
