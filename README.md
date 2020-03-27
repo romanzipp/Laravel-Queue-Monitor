@@ -45,11 +45,7 @@ $ php artisan migrate
 
 ## Usage
 
-To monitor a job, add the `romanzipp\QueueMonitor\Traits\QueueMonitor` Trait.
-
-### Update Job Progress / Custom Data
-
-You can update the progress of the current job, like supported by FFMpeg
+To monitor a job, simply add the `romanzipp\QueueMonitor\Traits\QueueMonitor` Trait.
 
 ```php
 use Illuminate\Bus\Queueable;
@@ -66,39 +62,89 @@ class ExampleJob implements ShouldQueue
     use Queueable;
     use SerializesModels;
     use QueueMonitor; // <---
+}
+```
+
+### Set progress
+
+You can set a **progress value** (0-100) to get an estimation of a job progression.
+
+This example job loops through a large amount of users and updates it's progress value with each chunk iteration.
+
+```php
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Collection;
+use romanzipp\QueueMonitor\Traits\QueueMonitor;
+
+class ExampleJob implements ShouldQueue
+{
+    use QueueMonitor;
 
     public function handle()
     {
-        // Save progress, if job driver supports
-        $ffmpeg->on('progress', function ($percentage) {
+        $usersCount = User::count();
 
-            $this->queueProgress($percentage);
-        });
+        $perChunk = 50;
+        $currentChunk = 0;
 
-        // Save data if finished. Must be type of array
-        $this->queueData(['foo' => 'bar']);
+        User::query()
+            ->chunk($perChunk, function (Collection $users) use (&$currentChunk, $perChunk, $usersCount) {
+
+                $this->queueProgress(++$currentChunk * $perChunk / $usersCount * 100);
+
+                foreach ($users as $user) {
+                    // ...
+                }
+            });
     }
 }
-```
+``` 
+
+### Set custom data
+
+This package also allows to set custom data on the monitoring model.
+
+```php
+use Illuminate\Contracts\Queue\ShouldQueue;
+use romanzipp\QueueMonitor\Traits\QueueMonitor;
+
+class ExampleJob implements ShouldQueue
+{
+    use QueueMonitor;
+
+    public function handle()
+    {
+        $this->queueData(['foo' => 'Bar']);
+        
+        // WARNING! This is overriding the monitoring data
+        $this->queueData(['bar' => 'Foo']);
+    }
+}
+``` 
 
 ### Retrieve processed Jobs
 
 ```php
 use romanzipp\QueueMonitor\Models\Monitor;
 
-$jobs = Monitor::ordered()->get();
+$job = Monitor::query()->first();
 
-foreach ($jobs as $job) {
+// Exact start & finish dates with milliseconds
+$job->getStartedAtExact();
+$job->getFinishedAtExact();
 
-    // Exact start & finish dates with milliseconds
-    $job->startedAtExact();
-    $job->finishedAtExact();
-}
+// If the job is still running, get the estimated seconds remaining
+$job->getRemainingSeconds();
+
+// Retrieve any data that has been set while execution
+$job->getData();
 ```
 
 ### Model Scopes
 
 ```php
+use romanzipp\QueueMonitor\Models\Monitor;
+
 // Filter by Status
 Monitor::failed();
 Monitor::succeeded();
@@ -109,27 +155,19 @@ Monitor::today();
 
 // Chain Scopes
 Monitor::today()->failed();
-
-// Get parsed custom Monitor data
-
-$monitor = Monitor::find(1);
-
-$monitor->data; // Raw data string
-
-$monitor->parsed_data; // JSON decoded data, always array
 ```
 
 ## ToDo
 
-* Add Job & Artisan Command for automatic cleanup of old database entries
+- [ ] Add Job & Artisan Command for automatic cleanup of old database entries
 
 ----
 
 The Idea has been inspirated by gilbitron's [laravel-queue-monitor](https://github.com/gilbitron/laravel-queue-monitor) package.
 
-## Upgrading
+## Upgrading from 1.0 to 2.0
 
-### Monitor Model
+### The Monitor Model
 
 ```diff
 - ->basename()
