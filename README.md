@@ -10,10 +10,11 @@ This package offers monitoring like [Laravel Horizon](https://laravel.com/docs/h
 
 ## Features
 
-* Monitor all jobs like [Laravel Horizon](https://laravel.com/docs/horizon), but not only for redis
-* Handles failed jobs with exception
-* Support for milliseconds
-* Model for Queue Monitorings
+- Monitor jobs like [Laravel Horizon](https://laravel.com/docs/horizon) for any queue
+- Handle failing jobs with storing exception
+- Monitor job progress
+- Get an estimated time remaining for a job
+- Store additional data for a job monitoring
 
 ## Installation
 
@@ -186,6 +187,7 @@ Monitor::today()->failed();
 
 ## ToDo
 
+- [ ] Offer configuration to use own monitoring model
 - [ ] Add Job & Artisan Command for automatic cleanup of old database entries
 
 ## Upgrading from 1.0 to 2.0
