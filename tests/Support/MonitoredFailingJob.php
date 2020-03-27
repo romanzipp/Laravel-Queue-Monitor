@@ -4,7 +4,7 @@ namespace romanzipp\QueueMonitor\Tests\Support;
 
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
-class FailingJob extends BaseJob
+class MonitoredFailingJob extends BaseJob
 {
     use IsMonitored;
 
