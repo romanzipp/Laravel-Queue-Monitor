@@ -7,13 +7,13 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use romanzipp\QueueMonitor\Providers\QueueMonitorProvider;
-use romanzipp\QueueMonitor\Tests\Support\MonitoredJob;
+use romanzipp\QueueMonitor\Tests\Support\Job;
 
 class TestCase extends BaseTestCase
 {
     use DatabaseMigrations;
 
-    protected function dispatchNow(ShouldQueue $job)
+    protected function dispatch(ShouldQueue $job)
     {
         app(Dispatcher::class)->dispatch(
             $job
