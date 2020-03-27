@@ -28,7 +28,9 @@ class CreateQueueMonitorTable extends Migration
             $table->string('finished_at_exact')->nullable();
 
             $table->float('time_elapsed', 12, 6)->nullable()->index();
+
             $table->boolean('failed')->default(false)->index();
+
             $table->integer('attempt')->default(0);
             $table->integer('progress')->nullable();
 
