@@ -2,7 +2,6 @@
 
 namespace romanzipp\QueueMonitor\Traits;
 
-use InvalidArgumentException;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\QueueMonitorHandler;
 
@@ -21,8 +20,12 @@ trait IsMonitored
      */
     public function queueProgress(int $progress): void
     {
-        if ($progress < 0 || $progress > 100) {
-            throw new InvalidArgumentException('Progress value must be between 0 and 100');
+        if ($progress < 0) {
+            $progress = 0;
+        }
+
+        if ($progress > 100) {
+            $progress = 100;
         }
 
         if ( ! $monitor = $this->getQueueMonitor()) {
