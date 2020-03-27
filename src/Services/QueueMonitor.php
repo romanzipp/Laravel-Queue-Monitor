@@ -60,7 +60,7 @@ class QueueMonitor
      */
     public static function handleJobFailed(JobFailed $event): void
     {
-        self::jobFinished($event->job, true);
+        self::jobFinished($event->job, true, $event->exception);
     }
 
     /**
