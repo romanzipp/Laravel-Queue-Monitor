@@ -2,12 +2,11 @@
 
 namespace romanzipp\QueueMonitor\Tests;
 
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Queue\QueueManager;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use romanzipp\QueueMonitor\Providers\QueueMonitorProvider;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
+use romanzipp\QueueMonitor\Tests\Support\BaseJob;
 
 class TestCase extends BaseTestCase
 {
@@ -15,17 +14,16 @@ class TestCase extends BaseTestCase
 
     public function setUp(): void
     {
-        QueueMonitor::$loadMigrations=true;
+        QueueMonitor::$loadMigrations = true;
 
         parent::setUp();
     }
 
-    protected function dispatch(ShouldQueue $job)
+    protected function dispatch(BaseJob $job): void
     {
-        app(QueueManager::class)->push($job);
+        dispatch($job);
 
-        // Not attaching Job
-        // app(Dispatcher::class)->dispatch($job);
+        $this->artisan('queue:work --once')->run();
     }
 
     protected function getPackageProviders($app)
