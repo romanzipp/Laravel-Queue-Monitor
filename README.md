@@ -45,7 +45,7 @@ $ php artisan migrate
 
 ## Usage
 
-To monitor a job, simply add the `romanzipp\QueueMonitor\Traits\QueueMonitor` Trait.
+To monitor a job, simply add the `romanzipp\QueueMonitor\Traits\IsMonitored` Trait.
 
 ```php
 use Illuminate\Bus\Queueable;
