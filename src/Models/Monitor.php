@@ -2,6 +2,7 @@
 
 namespace romanzipp\QueueMonitor\Models;
 
+use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
@@ -149,15 +150,24 @@ class Monitor extends Model implements MonitorContract
     /**
      * Recreate the exception.
      *
+     * @param bool $rescue Wrap the exception recreation to catch exceptions
      * @return \Throwable|null
      */
-    public function getException(): ?Throwable
+    public function getException(bool $rescue = true): ?Throwable
     {
         if ($this->exception_class === null) {
             return null;
         }
 
-        return new $this->exception_class($this->exception_message);
+        if ( ! $rescue) {
+            return new $this->exception_class($this->exception_message);
+        }
+
+        try {
+            return new $this->exception_class($this->exception_message);
+        } catch (Exception $exception) {
+            return null;
+        }
     }
 
     /**
