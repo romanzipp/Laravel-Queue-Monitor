@@ -4,6 +4,8 @@ namespace romanzipp\QueueMonitor\Tests;
 
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithData;
+use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithMergedData;
+use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithMergedDataConflicting;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithProgress;
 
 class MonitorAttributesTest extends TestCase
@@ -16,6 +18,26 @@ class MonitorAttributesTest extends TestCase
         $this->assertEquals(MonitoredJobWithData::class, $monitor->name);
         $this->assertEquals('{"foo":"bar"}', $monitor->data);
         $this->assertEquals(['foo' => 'bar'], $monitor->getData());
+    }
+
+    public function testMergeData()
+    {
+        $this->dispatch(new MonitoredJobWithMergedData);
+
+        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        $this->assertEquals(MonitoredJobWithMergedData::class, $monitor->name);
+        $this->assertEquals('{"foo":"foo","bar":"bar"}', $monitor->data);
+        $this->assertEquals(['foo' => 'foo', 'bar' => 'bar'], $monitor->getData());
+    }
+
+    public function testMergeDataConflicting()
+    {
+        $this->dispatch(new MonitoredJobWithMergedDataConflicting);
+
+        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        $this->assertEquals(MonitoredJobWithMergedDataConflicting::class, $monitor->name);
+        $this->assertEquals('{"foo":"new"}', $monitor->data);
+        $this->assertEquals(['foo' => 'new'], $monitor->getData());
     }
 
     public function testProgress()

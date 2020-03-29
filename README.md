@@ -145,6 +145,9 @@ class ExampleJob implements ShouldQueue
         
         // WARNING! This is overriding the monitoring data
         $this->queueData(['bar' => 'Foo']);
+
+        // To preserve previous data and merge the given payload, set the $merge parameter true
+        $this->queueData(['bar' => 'Foo'], true);
     }
 }
 ``` 

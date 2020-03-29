@@ -55,12 +55,17 @@ trait IsMonitored
      * Set Monitor data.
      *
      * @param array $data Custom data
+     * @param bool $merge Merge the data instead of overriding
      * @return void
      */
-    public function queueData(array $data): void
+    public function queueData(array $data, bool $merge = false): void
     {
         if ( ! $monitor = $this->getQueueMonitor()) {
             return;
+        }
+
+        if ($merge) {
+            $data = array_merge($monitor->getData(), $data);
         }
 
         $monitor->update([
