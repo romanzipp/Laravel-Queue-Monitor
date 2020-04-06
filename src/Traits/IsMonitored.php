@@ -110,7 +110,6 @@ trait IsMonitored
 
         return $model::whereJob($jobId)
             ->orderBy('started_at', 'desc')
-            ->limit(1)
             ->first();
     }
 }
