@@ -18,7 +18,7 @@ jobs:
         php: [7.2, 7.3, 7.4]
         composer_flags: [--prefer-stable, --prefer-lowest]
         
-    name: "[${{ matrix.php }}] Composer ${{ matrix.composer_flags }}"
+    name: "[PHP ${{ matrix.php }}] Composer: ${{ matrix.composer_flags }}"
 
     runs-on: ubuntu-latest
     
