@@ -15,15 +15,21 @@ jobs:
     
     strategy:
       matrix:
-        composer_flags:
-          - ""
-          - --prefer-lowest
+        php: [7.2, 7.3, 7.4]
+        composer_flags: [--prefer-stable, --prefer-lowest]
+        
+    name: "[${{ matrix.php }}] Composer ${{ matrix.composer_flags }}"
 
     runs-on: ubuntu-latest
     
     steps:
 
     - uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: nanasess/setup-php@master
+      with:
+        php-version: ${{ matrix.php }}
 
     - name: Install dependencies
       run: composer update --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist ${{ matrix.composer_flags }}
