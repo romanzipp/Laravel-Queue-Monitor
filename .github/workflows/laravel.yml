@@ -16,9 +16,9 @@ jobs:
     strategy:
       matrix:
         php: [7.2, 7.3, 7.4]
-        composer_flags: [--prefer-stable, --prefer-lowest]
+        composer-dependency: [prefer-stable, prefer-lowest]
         
-    name: "[PHP ${{ matrix.php }}] Composer: ${{ matrix.composer_flags }}"
+    name: "PHP ${{ matrix.php }} - ${{ matrix.composer-dependency }}"
 
     runs-on: ubuntu-latest
     
@@ -32,7 +32,7 @@ jobs:
         php-version: ${{ matrix.php }}
 
     - name: Install dependencies
-      run: composer update --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist ${{ matrix.composer_flags }}
+      run: composer update --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist --${{ matrix.composer-dependency }}
 
     - name: Execute tests
       run: vendor/bin/phpunit
