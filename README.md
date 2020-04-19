@@ -215,10 +215,9 @@ Monitor::today();
 Monitor::today()->failed();
 ```
 
-## ToDo
+## UI
 
-- [ ] Offer configuration to use own monitoring model
-- [ ] Add Job & Artisan Command for automatic cleanup of old database entries
+![Preview](https://raw.githubusercontent.com/romanzipp/Laravel-Queue-Monitor/master/preview.png)
 
 ## Upgrading
 
