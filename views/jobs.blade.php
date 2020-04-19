@@ -13,6 +13,32 @@
         Queue Monitor
     </h1>
 
+    <div class="mb-6 pl-4 border-l-4 border-blue-600">
+
+        <form action="" method="get">
+
+            <div class="flex items-center my-2">
+
+                <input type="checkbox" name="only_failed" id="only-failed" @if($filters['onlyFailed']) checked @endif>
+
+                <label for="only-failed" class="text-sm ml-2 text-gray-900">
+                    Only show failed jobs
+                </label>
+
+            </div>
+
+            <div>
+
+                <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-xs font-medium uppercase tracking-wider text-white rounded">
+                    Filter
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
     <div class="overflow-x-auto shadow-lg">
 
         <table class="w-full rounded whitespace-no-wrap">

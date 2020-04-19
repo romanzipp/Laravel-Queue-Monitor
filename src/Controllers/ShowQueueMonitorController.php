@@ -16,9 +16,13 @@ class ShowQueueMonitorController extends Controller
             'only_failed' => ['nullable'],
         ]);
 
+        $filters = [
+            'onlyFailed' => (bool) Arr::get($data, 'only_failed'),
+        ];
+
         $jobs = Monitor::query()
-            ->when(Arr::get($data, 'only_failed'), static function (Builder $builder) {
-                $builder->whereNotNull('failed_at');
+            ->when($filters['onlyFailed'], static function (Builder $builder) {
+                $builder->where('failed', 1);
             })
             ->paginate(
                 config('queue-monitor.ui.per_page')
@@ -29,6 +33,7 @@ class ShowQueueMonitorController extends Controller
 
         return view('queue-monitor::jobs', [
             'jobs' => $jobs,
+            'filters' => $filters,
         ]);
     }
 }
