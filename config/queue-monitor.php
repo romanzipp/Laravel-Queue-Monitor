@@ -13,4 +13,22 @@ return [
      * interface or extend the base model.
      */
     'model' => \romanzipp\QueueMonitor\Models\Monitor::class,
+
+    /*
+     * The optional UI settings.
+     */
+    'ui' => [
+
+        'enabled' => true,
+
+        /*
+         * Set the route prefix to be used to display monitored jobs.
+         */
+        'route' => 'jobs',
+
+        /*
+         * Set the monitored jobs count to be displayed per page.
+         */
+        'per_page' => 35,
+    ],
 ];

@@ -24,17 +24,28 @@ class QueueMonitorProvider extends ServiceProvider
 
             if (QueueMonitor::$loadMigrations) {
                 $this->loadMigrationsFrom(
-                    dirname(__DIR__) . '/../migrations'
+                    __DIR__ . '/../migrations'
                 );
             }
 
             $this->publishes([
-                dirname(__DIR__) . '/../config/queue-monitor.php' => config_path('queue-monitor.php'),
+                __DIR__ . '/../config/queue-monitor.php' => config_path('queue-monitor.php'),
             ], 'config');
 
             $this->publishes([
-                dirname(__DIR__) . '/../migrations' => database_path('migrations'),
+                __DIR__ . '/../migrations' => database_path('migrations'),
             ], 'migrations');
+        }
+        if (config('queue-monitor.ui.enabled')) {
+
+            $this->loadRoutesFrom(
+                __DIR__ . '/../../routes/routes.php'
+            );
+
+            $this->loadViewsFrom(
+                __DIR__ . '/../../views',
+                'queue-monitor'
+            );
         }
 
         /** @var QueueManager $manager */
@@ -65,8 +76,10 @@ class QueueMonitorProvider extends ServiceProvider
     public function register()
     {
         if ( ! $this->app->configurationIsCached()) {
+
             $this->mergeConfigFrom(
-                dirname(__DIR__) . '/../config/queue-monitor.php', 'queue-monitor'
+                __DIR__ . '/../config/queue-monitor.php',
+                'queue-monitor'
             );
 
             QueueMonitor::$model = config('queue-monitor.model') ?: Monitor::class;
