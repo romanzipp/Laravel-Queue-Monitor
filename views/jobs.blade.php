@@ -20,12 +20,13 @@
             <thead class="bg-gray-100">
 
                 <tr>
-                    <th class="px-3 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Status</th>
-                    <th class="px-3 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Job</th>
-                    <th class="px-3 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Details</th>
-                    <th class="px-3 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Progress</th>
-                    <th class="px-3 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Duration</th>
-                    <th class="px-3 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Error</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Status</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Job</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Details</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Progress</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Duration</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Started</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Error</th>
                 </tr>
 
             </thead>
@@ -38,13 +39,13 @@
 
                         <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
 
-                            @if(!$job->is_finished)
+                            @if(!$job->isFinished())
 
                                 <div class="inline-flex flex-1 px-2 text-xs font-medium leading-5 rounded-full bg-blue-200 text-blue-800">
                                     Running
                                 </div>
 
-                            @elseif($job->has_succeeded)
+                            @elseif($job->hasSucceeded())
 
                                 <div class="inline-flex flex-1 px-2 text-xs font-medium leading-5 rounded-full bg-green-200 text-green-800">
                                     Success
@@ -60,10 +61,6 @@
 
                         </td>
 
-                        <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
-                            {{ $job->id }}
-                        </td>
-
                         <td class="p-4 text-gray-800 text-sm leading-5 font-medium border-b border-gray-200">
 
                             {{ $job->getBaseName() }}
@@ -71,6 +68,20 @@
                             <span class="ml-1 text-xs text-gray-600">
                                 #{{ $job->job_id }}
                             </span>
+
+                        </td>
+
+                        <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+
+                            <div class="text-xs">
+                                <span class="text-gray-600 font-medium">Queue:</span>
+                                <span class="font-semibold">{{ $job->queue }}</span>
+                            </div>
+
+                            <div class="text-xs">
+                                <span class="text-gray-600 font-medium">Attempt:</span>
+                                <span class="font-semibold">{{ $job->attempt }}</span>
+                            </div>
 
                         </td>
 
@@ -97,14 +108,18 @@
                         </td>
 
                         <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+                            {{ sprintf('%02.2f', (float) $job->time_elapsed) }} s
+                        </td>
+
+                        <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
                             {{ $job->started_at->diffForHumans() }}
                         </td>
 
                         <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
 
-                            @if($job->has_failed)
+                            @if($job->hasFailed() && $job->exception_message !== null)
 
-                                <textarea rows="4" class="w-64 text-xs p-1 border rounded" readonly>{{ $job->exception }}</textarea>
+                                <textarea rows="4" class="w-64 text-xs p-1 border rounded" readonly>{{ $job->exception_message }}</textarea>
 
                             @else
                                 -
