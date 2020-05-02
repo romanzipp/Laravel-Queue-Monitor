@@ -1,39 +1,34 @@
 name: Tests
 
 on:
-  
-  push:
-    branches: 
-      - '*'
 
-  pull_request:
-    branches:
-      - '*'
+  push:
+    branches: [ '*' ]
 
 jobs:
   test:
-    
+
     strategy:
       fail-fast: false
       matrix:
         php: [7.2, 7.3, 7.4]
         composer-dependency: [prefer-stable, prefer-lowest]
-        
+
     name: "PHP ${{ matrix.php }} - ${{ matrix.composer-dependency }}"
 
     runs-on: ubuntu-latest
-    
+
     steps:
 
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Setup PHP
-      uses: nanasess/setup-php@master
-      with:
-        php-version: ${{ matrix.php }}
+      - name: Setup PHP
+        uses: nanasess/setup-php@master
+        with:
+          php-version: ${{ matrix.php }}
 
-    - name: Install dependencies
-      run: composer update --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist --${{ matrix.composer-dependency }}
+      - name: Install dependencies
+        run: composer update --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist --${{ matrix.composer-dependency }}
 
-    - name: Execute tests
-      run: vendor/bin/phpunit
+      - name: Execute tests
+        run: vendor/bin/phpunit
