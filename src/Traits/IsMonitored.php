@@ -10,6 +10,11 @@ use romanzipp\QueueMonitor\Services\QueueMonitor;
  */
 trait IsMonitored
 {
+    /**
+     * Internal variable used for tracking chunking progress.
+     *
+     * @var int
+     */
     private $progressCurrentChunk = 0;
 
     /**
