@@ -19,13 +19,6 @@ return [
      */
     'ui' => [
 
-        'enabled' => true,
-
-        /*
-         * Set the route prefix to be used to display monitored jobs.
-         */
-        'route' => 'jobs',
-
         /*
          * Set the monitored jobs count to be displayed per page.
          */
