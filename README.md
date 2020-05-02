@@ -152,6 +152,25 @@ class ExampleJob implements ShouldQueue
 }
 ``` 
 
+### Only keep failed jobs
+
+You can override the `keepMonitorOnSuccess()` method to only store failed monitor entries of an executed job. This can be used if you only want to keep  failed monitors for jobs that are frequently executed but worth to monitor. Alternatively you can use Laravel's built in `failed_jobs` table.
+
+```php
+use Illuminate\Contracts\Queue\ShouldQueue;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
+
+class ExampleJob implements ShouldQueue
+{
+    use IsMonitored;
+
+    public static function keepMonitorOnSuccess(): bool
+    {
+        return false;
+    }
+}
+``` 
+
 ### Retrieve processed Jobs
 
 ```php
