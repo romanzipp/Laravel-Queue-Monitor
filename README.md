@@ -44,6 +44,27 @@ Migrate the Queue Monitoring table. The table name can be configured in the conf
 $ php artisan migrate
 ```
 
+## UI
+
+You can enable the optional UI routes by calling `Route::queueMonitor()` inside your route file, similar to the official [ui scaffolding](https://github.com/laravel/ui).
+
+```php
+Route::prefix('jobs')->group(function () {
+    Route::queueMonitor();
+});
+```
+
+### Routes
+
+| Route | Action              |
+| ----- | ------------------- |
+| `/`   | Show the jobs table |
+
+See the [full configuration file](https://github.com/romanzipp/Laravel-Queue-Monitor/blob/master/config/queue-monitor.php) for more information.
+
+![Preview](https://raw.githubusercontent.com/romanzipp/Laravel-Queue-Monitor/master/preview.png)
+
+
 ## Usage
 
 To monitor a job, simply add the `romanzipp\QueueMonitor\Traits\IsMonitored` Trait.
@@ -214,28 +235,6 @@ Monitor::today();
 // Chain Scopes
 Monitor::today()->failed();
 ```
-
-## UI
-
-You can enable the optional UI routes by calling `Route::queueMonitor()` inside your route file, similar to the official [ui scaffolding](https://github.com/laravel/ui).
-
-```php
-Route::prefix('jobs')->group(function () {
-
-    Route::queueMonitor();
-
-});
-```
-
-### Routes
-
-| Route | Action              |
-| ----- | ------------------- |
-| `/`   | Show the jobs table |
-
-See the [full configuration file](https://github.com/romanzipp/Laravel-Queue-Monitor/blob/master/config/queue-monitor.php) for more information.
-
-![Preview](https://raw.githubusercontent.com/romanzipp/Laravel-Queue-Monitor/master/preview.png)
 
 ## Upgrading
 
