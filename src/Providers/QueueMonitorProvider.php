@@ -7,8 +7,10 @@ use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\QueueManager;
+use Illuminate\Routing\Route;
 use Illuminate\Support\ServiceProvider;
 use romanzipp\QueueMonitor\Models\Monitor;
+use romanzipp\QueueMonitor\Routes\QueueMonitorRoutes;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
 
 class QueueMonitorProvider extends ServiceProvider
@@ -36,14 +38,13 @@ class QueueMonitorProvider extends ServiceProvider
                 __DIR__ . '/../../migrations' => database_path('migrations'),
             ], 'migrations');
         }
-        $this->loadRoutesFrom(
-            __DIR__ . '/../../routes/routes.php'
-        );
 
         $this->loadViewsFrom(
             __DIR__ . '/../../views',
             'queue-monitor'
         );
+
+        Route::mixin(new QueueMonitorRoutes);
 
         /** @var QueueManager $manager */
         $manager = app(QueueManager::class);
