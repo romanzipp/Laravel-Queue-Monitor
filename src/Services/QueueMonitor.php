@@ -148,6 +148,16 @@ class QueueMonitor
             $timeElapsed = (float) $startedAt->diffInSeconds($now) + $startedAt->diff($now)->f;
         }
 
+        /** @var IsMonitored $resolvedJob */
+        $resolvedJob = $job->resolveName();
+
+        if ($exception === null && $resolvedJob::keepMonitorOnSuccess() === false) {
+
+            $monitor->delete();
+
+            return;
+        }
+
         $attributes = [
             'finished_at' => $now,
             'finished_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),

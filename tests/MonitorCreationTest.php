@@ -5,6 +5,8 @@ namespace romanzipp\QueueMonitor\Tests;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredExtendingJob;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJob;
+use romanzipp\QueueMonitor\Tests\Support\MonitoredPartiallyKeptFailingJob;
+use romanzipp\QueueMonitor\Tests\Support\MonitoredPartiallyKeptJob;
 use romanzipp\QueueMonitor\Tests\Support\UnmonitoredJob;
 
 class MonitorCreationTest extends TestCase
@@ -30,5 +32,20 @@ class MonitorCreationTest extends TestCase
         $this->dispatch(new UnmonitoredJob);
 
         $this->assertCount(0, Monitor::all());
+    }
+
+    public function testDontKeepSuccessfulMonitor()
+    {
+        $this->dispatch(new MonitoredPartiallyKeptJob);
+
+        $this->assertCount(0, Monitor::all());
+    }
+
+    public function testDontKeepSuccessfulMonitorFailing()
+    {
+        $this->dispatch(new MonitoredPartiallyKeptFailingJob);
+
+        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        $this->assertEquals(MonitoredPartiallyKeptFailingJob::class, $monitor->name);
     }
 }

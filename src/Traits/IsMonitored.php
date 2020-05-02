@@ -117,4 +117,16 @@ trait IsMonitored
             ->orderBy('started_at', 'desc')
             ->first();
     }
+
+    /**
+     * Weather to keep successful monitor models. This can be used if you only want to keep
+     * failed monitors for jobs that are frequently executed but worth to monitor. You are free
+     * to use the Laravel built-in failed job procedures.
+     *
+     * @return bool
+     */
+    public static function keepMonitorOnSuccess(): bool
+    {
+        return true;
+    }
 }
