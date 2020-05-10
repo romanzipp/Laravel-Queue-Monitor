@@ -24,6 +24,7 @@ class ShowQueueMonitorController extends Controller
             ->when($filters['onlyFailed'], static function (Builder $builder) {
                 $builder->where('failed', 1);
             })
+            ->ordered()
             ->paginate(
                 config('queue-monitor.ui.per_page')
             )
