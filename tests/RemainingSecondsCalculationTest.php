@@ -13,7 +13,7 @@ class RemainingSecondsCalculationTest extends TestCase
         $monitor = $this->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 50);
 
         $this->assertEquals(30, $monitor->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:30')));
-        $this->assertEquals('30s', $monitor->getRemainingInterval(Carbon::parse('2020-01-01 10:00:30'))->forHumans(null, true));
+        $this->assertEquals('30 seconds', $monitor->getRemainingInterval(Carbon::parse('2020-01-01 10:00:30'))->forHumans());
     }
 
     public function testSecondCalculation()
@@ -21,14 +21,14 @@ class RemainingSecondsCalculationTest extends TestCase
         $monitor = $this->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 5);
 
         $this->assertEquals(19, $monitor->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:01')));
-        $this->assertEquals('19s', $monitor->getRemainingInterval(Carbon::parse('2020-01-01 10:00:01'))->forHumans(null, true));
+        $this->assertEquals('19 seconds', $monitor->getRemainingInterval(Carbon::parse('2020-01-01 10:00:01'))->forHumans());
     }
 
     public function testThirdCalculation()
     {
         $monitor = $this->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 1);
         $this->assertEquals(495, $monitor->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:05')));
-        $this->assertEquals('8m 15s', $monitor->getRemainingInterval(Carbon::parse('2020-01-01 10:00:05'))->forHumans(null, true));
+        $this->assertEquals('8 minutes 15 seconds', $monitor->getRemainingInterval(Carbon::parse('2020-01-01 10:00:05'))->forHumans());
     }
 
     public function createMonitor(Carbon $startedAt, int $progress): Monitor
