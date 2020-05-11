@@ -143,7 +143,7 @@ class Monitor extends Model implements MonitorContract
     public function getRemainingInterval(Carbon $now = null): CarbonInterval
     {
         return CarbonInterval::seconds(
-            $this->getRemainingSeconds($now)
+            (int) $this->getRemainingSeconds($now)
         )->cascade();
     }
 
