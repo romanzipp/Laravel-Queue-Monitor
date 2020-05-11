@@ -2,6 +2,7 @@
 
 namespace romanzipp\QueueMonitor\Models;
 
+use Carbon\CarbonInterval;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -137,6 +138,13 @@ class Monitor extends Model implements MonitorContract
         }
 
         return (100 - $this->progress) / ($this->progress / ($now->getTimestamp() - $this->started_at->getTimestamp()));
+    }
+
+    public function getRemainingInterval(Carbon $now = null): CarbonInterval
+    {
+        return CarbonInterval::seconds(
+            $this->getRemainingSeconds($now)
+        )->cascade();
     }
 
     /**

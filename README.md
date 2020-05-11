@@ -213,6 +213,7 @@ $job->getFinishedAtExact();
 // If the job is still running, get the estimated seconds remaining
 // Notice: This requires a progress to be set
 $job->getRemainingSeconds();
+$job->getRemainingInterval(); // Carbon\CarbonInterval
 
 // Retrieve any data that has been set while execution
 $job->getData();
