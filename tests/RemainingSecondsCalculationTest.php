@@ -3,7 +3,6 @@
 namespace romanzipp\QueueMonitor\Tests;
 
 use Carbon\Carbon;
-use Carbon\CarbonInterface;
 use Illuminate\Support\Str;
 use romanzipp\QueueMonitor\Models\Monitor;
 
@@ -30,7 +29,7 @@ class RemainingSecondsCalculationTest extends TestCase
         $this->assertEquals(495, $monitor->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:05')));
     }
 
-    public function createMonitor(CarbonInterface $startedAt, int $progress): Monitor
+    public function createMonitor(Carbon $startedAt, int $progress): Monitor
     {
         /** @var Monitor $monitor */
         $monitor = Monitor::query()->create([
