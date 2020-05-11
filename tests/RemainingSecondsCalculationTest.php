@@ -2,7 +2,7 @@
 
 namespace romanzipp\QueueMonitor\Tests;
 
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use romanzipp\QueueMonitor\Models\Monitor;
 
