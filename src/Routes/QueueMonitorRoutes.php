@@ -18,7 +18,7 @@ class QueueMonitorRoutes
 
             /** @var \Illuminate\Routing\Router $this */
 
-            $this->get('', ShowQueueMonitorController::class);
+            $this->get('', '\romanzipp\QueueMonitor\Controllers\ShowQueueMonitorController');
         };
     }
 }
