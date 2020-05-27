@@ -125,11 +125,7 @@ class Monitor extends Model implements MonitorContract
             $now = Carbon::now();
         }
 
-        if ($this->isFinished()) {
-            return 0.0;
-        }
-
-        if ($this->progress === null) {
+        if ($this->progress === null || $this->isFinished()) {
             return 0.0;
         }
 
@@ -137,7 +133,11 @@ class Monitor extends Model implements MonitorContract
             return 0.0;
         }
 
-        return (100 - $this->progress) / ($this->progress / ($now->getTimestamp() - $this->started_at->getTimestamp()));
+        if (($timeDiff = $now->getTimestamp() - $this->started_at->getTimestamp()) === 0) {
+            return 0.0;
+        }
+
+        return (100 - $this->progress) / ($this->progress / $timeDiff);
     }
 
     public function getRemainingInterval(Carbon $now = null): CarbonInterval
