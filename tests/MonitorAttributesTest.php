@@ -13,6 +13,7 @@ class MonitorAttributesTest extends TestCase
     public function testData()
     {
         $this->dispatch(new MonitoredJobWithData);
+        $this->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredJobWithData::class, $monitor->name);
@@ -23,6 +24,7 @@ class MonitorAttributesTest extends TestCase
     public function testMergeData()
     {
         $this->dispatch(new MonitoredJobWithMergedData);
+        $this->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredJobWithMergedData::class, $monitor->name);
@@ -33,6 +35,7 @@ class MonitorAttributesTest extends TestCase
     public function testMergeDataConflicting()
     {
         $this->dispatch(new MonitoredJobWithMergedDataConflicting);
+        $this->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredJobWithMergedDataConflicting::class, $monitor->name);
@@ -43,6 +46,7 @@ class MonitorAttributesTest extends TestCase
     public function testProgress()
     {
         $this->dispatch(new MonitoredJobWithProgress(50));
+        $this->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredJobWithProgress::class, $monitor->name);
@@ -52,6 +56,7 @@ class MonitorAttributesTest extends TestCase
     public function testProgressTooLarge()
     {
         $this->dispatch(new MonitoredJobWithProgress(120));
+        $this->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredJobWithProgress::class, $monitor->name);
@@ -61,6 +66,7 @@ class MonitorAttributesTest extends TestCase
     public function testProgressNegative()
     {
         $this->dispatch(new MonitoredJobWithProgress(-20));
+        $this->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredJobWithProgress::class, $monitor->name);

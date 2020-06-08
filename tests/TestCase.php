@@ -3,6 +3,7 @@
 namespace romanzipp\QueueMonitor\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use romanzipp\QueueMonitor\Providers\QueueMonitorProvider;
@@ -30,16 +31,26 @@ class TestCase extends BaseTestCase
         }
     }
 
-    protected function dispatch(BaseJob $job): void
+    protected function dispatch(BaseJob $job): self
     {
         dispatch($job);
 
-        $this->workQueue();
+        return $this;
+    }
+
+    protected function assertDispatched(string $jobClass): self
+    {
+        $rows = DB::select('SELECT * FROM jobs');
+
+        $this->assertCount(1, $rows);
+        $this->assertEquals($jobClass, json_decode($rows[0]->payload)->displayName);
+
+        return $this;
     }
 
     protected function workQueue(): void
     {
-        $this->artisan('queue:work --once');
+        $this->artisan('queue:work --once --sleep 1');
     }
 
     protected function getPackageProviders($app)

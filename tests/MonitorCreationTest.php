@@ -15,7 +15,10 @@ class MonitorCreationTest extends TestCase
 {
     public function testCreateMonitor()
     {
-        $this->dispatch(new MonitoredJob);
+        $this
+            ->dispatch(new MonitoredJob)
+            ->assertDispatched(MonitoredJob::class)
+            ->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredJob::class, $monitor->name);
@@ -23,7 +26,10 @@ class MonitorCreationTest extends TestCase
 
     public function testCreateMonitorFromExtending()
     {
-        $this->dispatch(new MonitoredExtendingJob);
+        $this
+            ->dispatch(new MonitoredExtendingJob)
+            ->assertDispatched(MonitoredExtendingJob::class)
+            ->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredExtendingJob::class, $monitor->name);
@@ -31,21 +37,30 @@ class MonitorCreationTest extends TestCase
 
     public function testDontCreateMonitor()
     {
-        $this->dispatch(new UnmonitoredJob);
+        $this
+            ->dispatch(new UnmonitoredJob)
+            ->assertDispatched(UnmonitoredJob::class)
+            ->workQueue();
 
         $this->assertCount(0, Monitor::all());
     }
 
     public function testDontKeepSuccessfulMonitor()
     {
-        $this->dispatch(new MonitoredPartiallyKeptJob);
+        $this
+            ->dispatch(new MonitoredPartiallyKeptJob)
+            ->assertDispatched(MonitoredPartiallyKeptJob::class)
+            ->workQueue();
 
         $this->assertCount(0, Monitor::all());
     }
 
     public function testDontKeepSuccessfulMonitorFailing()
     {
-        $this->dispatch(new MonitoredPartiallyKeptFailingJob);
+        $this
+            ->dispatch(new MonitoredPartiallyKeptFailingJob)
+            ->assertDispatched(MonitoredPartiallyKeptFailingJob::class)
+            ->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredPartiallyKeptFailingJob::class, $monitor->name);
@@ -53,7 +68,10 @@ class MonitorCreationTest extends TestCase
 
     public function testBroadcastingJob()
     {
-        $this->dispatch(new MonitoredBroadcastingJob);
+        $this
+            ->dispatch(new MonitoredBroadcastingJob)
+            ->assertDispatched(MonitoredBroadcastingJob::class)
+            ->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredBroadcastingJob::class, $monitor->name);
@@ -63,6 +81,7 @@ class MonitorCreationTest extends TestCase
     {
         MonitoredJob::dispatch();
 
+        $this->assertDispatched(MonitoredJob::class);
         $this->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
@@ -73,6 +92,7 @@ class MonitorCreationTest extends TestCase
     {
         MonitoredJobWithArguments::dispatch('foo');
 
+        $this->assertDispatched(MonitoredJobWithArguments::class);
         $this->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
