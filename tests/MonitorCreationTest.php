@@ -6,6 +6,7 @@ use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredBroadcastingJob;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredExtendingJob;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJob;
+use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithArguments;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredPartiallyKeptFailingJob;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredPartiallyKeptJob;
 use romanzipp\QueueMonitor\Tests\Support\UnmonitoredJob;
@@ -56,5 +57,25 @@ class MonitorCreationTest extends TestCase
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredBroadcastingJob::class, $monitor->name);
+    }
+
+    public function testDispatchingJobViaDispatchableTrait()
+    {
+        MonitoredJob::dispatch();
+
+        $this->workQueue();
+
+        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        $this->assertEquals(MonitoredJob::class, $monitor->name);
+    }
+
+    public function testDispatchingJobViaDispatchableTraitWithArguments()
+    {
+        MonitoredJobWithArguments::dispatch('foo');
+
+        $this->workQueue();
+
+        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        $this->assertEquals(MonitoredJobWithArguments::class, $monitor->name);
     }
 }
