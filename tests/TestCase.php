@@ -34,6 +34,11 @@ class TestCase extends BaseTestCase
     {
         dispatch($job);
 
+        $this->workQueue();
+    }
+
+    protected function workQueue(): void
+    {
         $this->artisan('queue:work --once');
     }
 
