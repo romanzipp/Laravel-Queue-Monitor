@@ -79,8 +79,8 @@ class QueueMonitorProvider extends ServiceProvider
                 __DIR__ . '/../../config/queue-monitor.php',
                 'queue-monitor'
             );
-
-            QueueMonitor::$model = config('queue-monitor.model') ?: Monitor::class;
         }
+
+        QueueMonitor::$model = config('queue-monitor.model') ?: Monitor::class;
     }
 }
