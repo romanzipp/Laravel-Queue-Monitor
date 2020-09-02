@@ -2,7 +2,6 @@
 
 namespace romanzipp\QueueMonitor\Models;
 
-use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -120,7 +119,7 @@ class Monitor extends Model implements MonitorContract
         return Carbon::parse($this->finished_at_exact);
     }
 
-    public function getRemainingSeconds(CarbonInterface $now = null): float
+    public function getRemainingSeconds(Carbon $now = null): float
     {
         if ($now === null) {
             $now = Carbon::now();
