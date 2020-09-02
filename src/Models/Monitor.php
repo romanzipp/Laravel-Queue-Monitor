@@ -125,7 +125,7 @@ class Monitor extends Model implements MonitorContract
             $now = Carbon::now();
         }
 
-        if ($this->progress === null || $this->isFinished()) {
+        if ($this->progress == null || $this->isFinished()) {
             return 0.0;
         }
 
