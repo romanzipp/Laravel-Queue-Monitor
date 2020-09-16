@@ -2,6 +2,7 @@
 
 namespace romanzipp\QueueMonitor\Tests\Support;
 
+use romanzipp\QueueMonitor\Services\QueueMonitor;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class MonitoredFailingJobWithHugeExceptionMessage extends BaseJob
@@ -11,7 +12,7 @@ class MonitoredFailingJobWithHugeExceptionMessage extends BaseJob
     public function handle(): void
     {
         throw new IntentionallyFailedException(
-            str_repeat('x', 5000)
+            str_repeat('x', QueueMonitor::MAX_BYTES_TEXT + 10)
         );
     }
 }
