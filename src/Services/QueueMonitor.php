@@ -16,6 +16,10 @@ class QueueMonitor
 {
     private const TIMESTAMP_EXACT_FORMAT = 'Y-m-d H:i:s.u';
 
+    public const MAX_BYTES_TEXT = 65535;
+
+    public const MAX_BYTES_LONGTEXT = 4294967295;
+
     public static $loadMigrations = false;
 
     public static $model;
@@ -167,9 +171,9 @@ class QueueMonitor
 
         if ($exception !== null) {
             $attributes += [
-                'exception' => (string) $exception,
+                'exception' => mb_strcut((string) $exception, 0, self::MAX_BYTES_TEXT),
                 'exception_class' => get_class($exception),
-                'exception_message' => $exception->getMessage(),
+                'exception_message' => mb_strcut($exception->getMessage(), 0, self::MAX_BYTES_LONGTEXT),
             ];
         }
 

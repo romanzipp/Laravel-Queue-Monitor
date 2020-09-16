@@ -5,6 +5,7 @@ namespace romanzipp\QueueMonitor\Tests;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Tests\Support\IntentionallyFailedException;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredFailingJob;
+use romanzipp\QueueMonitor\Tests\Support\MonitoredFailingJobWithHugeExceptionMessage;
 
 class MonitorStateHandlingTest extends TestCase
 {
@@ -18,6 +19,19 @@ class MonitorStateHandlingTest extends TestCase
         $this->assertEquals(MonitoredFailingJob::class, $monitor->name);
         $this->assertEquals(IntentionallyFailedException::class, $monitor->exception_class);
         $this->assertEquals('Whoops', $monitor->exception_message);
+        $this->assertInstanceOf(IntentionallyFailedException::class, $monitor->getException());
+    }
+
+    public function testFailingWithHugeExceptionMessage()
+    {
+        $this->dispatch(new MonitoredFailingJobWithHugeExceptionMessage);
+        $this->workQueue();
+
+        $this->assertCount(1, Monitor::all());
+        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        $this->assertEquals(MonitoredFailingJobWithHugeExceptionMessage::class, $monitor->name);
+        $this->assertEquals(IntentionallyFailedException::class, $monitor->exception_class);
+        $this->assertEquals(str_repeat('x', 5000), $monitor->exception_message);
         $this->assertInstanceOf(IntentionallyFailedException::class, $monitor->getException());
     }
 }
