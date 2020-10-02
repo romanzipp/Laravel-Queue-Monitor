@@ -22,26 +22,18 @@ This package offers monitoring like [Laravel Horizon](https://laravel.com/docs/h
 composer require romanzipp/laravel-queue-monitor
 ```
 
-**If you use Laravel 5.5+ you are already done, otherwise continue.**
-
-Add Service Provider to your app.php configuration file:
-
-```php
-romanzipp\QueueMonitor\Providers\QueueMonitorProvider::class,
-```
-
 ## Configuration
 
 Copy configuration & migration to your project:
 
 ```
-$ php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider"
+php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider"
 ```
 
 Migrate the Queue Monitoring table. The table name can be configured in the config file or via the published migration.
 
 ```
-$ php artisan migrate
+php artisan migrate
 ```
 
 ## Usage
