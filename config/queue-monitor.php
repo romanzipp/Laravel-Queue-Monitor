@@ -25,8 +25,8 @@ return [
         'per_page' => 35,
 
         /*
-         *  Show stored data under Details column
+         *  Show custom data stored on model
          */
-        'show_data' => false,
+        'show_custom_data' => false,
     ],
 ];

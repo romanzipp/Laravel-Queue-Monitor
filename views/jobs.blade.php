@@ -55,7 +55,7 @@
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Job</th>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Details</th>
 
-                    @if(config('queue-monitor.ui.show_data'))
+                    @if(config('queue-monitor.ui.show_custom_data'))
 
                         <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Custom Data</th>
 
@@ -132,7 +132,7 @@
 
                         </td>
 
-                        @if(config('queue-monitor.ui.show_data'))
+                        @if(config('queue-monitor.ui.show_custom_data'))
 
                             <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
 
