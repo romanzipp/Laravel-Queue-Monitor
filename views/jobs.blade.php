@@ -54,6 +54,13 @@
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Status</th>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Job</th>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Details</th>
+
+                    @if(config('queue-monitor.ui.show_data'))
+
+                        <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Custom Data</th>
+
+                    @endif
+
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Progress</th>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Duration</th>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Started</th>
@@ -124,6 +131,19 @@
                             @endif
 
                         </td>
+
+                        @if(config('queue-monitor.ui.show_data'))
+
+                            <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+
+                                    <textarea rows="4"
+                                              class="w-64 text-xs p-1 border rounded"
+                                              readonly>{{ json_encode($job->getData(), JSON_PRETTY_PRINT) }}
+                                    </textarea>
+
+                            </td>
+
+                        @endif
 
                         <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
 
