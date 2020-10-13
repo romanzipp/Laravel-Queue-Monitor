@@ -23,5 +23,10 @@ return [
          * Set the monitored jobs count to be displayed per page.
          */
         'per_page' => 35,
+
+        /*
+         *  Show stored data under Details column
+         */
+        'show_data' => false,
     ],
 ];
