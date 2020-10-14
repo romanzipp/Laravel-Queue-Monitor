@@ -121,15 +121,6 @@
                                 <span class="font-semibold">{{ $job->attempt }}</span>
                             </div>
 
-                            @if(config('queue-monitor.ui.show_data'))
-                                @foreach($job->getData() as $key => $value)
-                                    <div class="text-xs">
-                                        <span class="text-gray-600 font-medium">{{ $key }}:</span>
-                                        <span class="font-semibold">{{ $value }}</span>
-                                    </div>
-                                @endforeach
-                            @endif
-
                         </td>
 
                         @if(config('queue-monitor.ui.show_custom_data'))
