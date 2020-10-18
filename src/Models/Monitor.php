@@ -21,9 +21,9 @@ use Throwable;
  * @property \Illuminate\Support\Carbon|null $finished_at
  * @property string|null $finished_at_exact
  * @property float $time_elapsed
- * @property boolean $failed
- * @property integer $attempt
- * @property integer|null $progress
+ * @property bool $failed
+ * @property int $attempt
+ * @property int|null $progress
  * @property string|null $exception
  * @property string|null $exception_class
  * @property string|null $exception_message
@@ -103,7 +103,7 @@ class Monitor extends Model implements MonitorContract
 
     public function getStartedAtExact(): ?Carbon
     {
-        if ($this->started_at_exact === null) {
+        if (null === $this->started_at_exact) {
             return null;
         }
 
@@ -112,7 +112,7 @@ class Monitor extends Model implements MonitorContract
 
     public function getFinishedAtExact(): ?Carbon
     {
-        if ($this->finished_at_exact === null) {
+        if (null === $this->finished_at_exact) {
             return null;
         }
 
@@ -121,11 +121,11 @@ class Monitor extends Model implements MonitorContract
 
     public function getRemainingSeconds(Carbon $now = null): float
     {
-        if ($now === null) {
+        if (null === $now) {
             $now = Carbon::now();
         }
 
-        if ($this->progress == null || $this->isFinished()) {
+        if (null == $this->progress || $this->isFinished()) {
             return 0.0;
         }
 
@@ -133,7 +133,7 @@ class Monitor extends Model implements MonitorContract
             return 0.0;
         }
 
-        if (($timeDiff = $now->getTimestamp() - $this->started_at->getTimestamp()) === 0) {
+        if (0 === ($timeDiff = $now->getTimestamp() - $this->started_at->getTimestamp())) {
             return 0.0;
         }
 
@@ -165,7 +165,7 @@ class Monitor extends Model implements MonitorContract
      */
     public function getException(bool $rescue = true): ?Throwable
     {
-        if ($this->exception_class === null) {
+        if (null === $this->exception_class) {
             return null;
         }
 
@@ -187,7 +187,7 @@ class Monitor extends Model implements MonitorContract
      */
     public function getBasename(): ?string
     {
-        if ($this->name === null) {
+        if (null === $this->name) {
             return null;
         }
 
@@ -197,7 +197,7 @@ class Monitor extends Model implements MonitorContract
     /**
      * check if the job is finished.
      *
-     * @return boolean
+     * @return bool
      */
     public function isFinished(): bool
     {
@@ -205,7 +205,7 @@ class Monitor extends Model implements MonitorContract
             return true;
         }
 
-        return $this->finished_at !== null;
+        return null !== $this->finished_at;
     }
 
     /**
@@ -215,13 +215,13 @@ class Monitor extends Model implements MonitorContract
      */
     public function hasFailed(): bool
     {
-        return $this->failed === true;
+        return true === $this->failed;
     }
 
     /**
      * check if the job has succeeded.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasSucceeded(): bool
     {

@@ -12,7 +12,7 @@ class MonitorAttributesTest extends TestCase
 {
     public function testData()
     {
-        $this->dispatch(new MonitoredJobWithData);
+        $this->dispatch(new MonitoredJobWithData());
         $this->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
@@ -23,7 +23,7 @@ class MonitorAttributesTest extends TestCase
 
     public function testMergeData()
     {
-        $this->dispatch(new MonitoredJobWithMergedData);
+        $this->dispatch(new MonitoredJobWithMergedData());
         $this->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
@@ -34,7 +34,7 @@ class MonitorAttributesTest extends TestCase
 
     public function testMergeDataConflicting()
     {
-        $this->dispatch(new MonitoredJobWithMergedDataConflicting);
+        $this->dispatch(new MonitoredJobWithMergedDataConflicting());
         $this->workQueue();
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());

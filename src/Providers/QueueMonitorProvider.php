@@ -23,7 +23,6 @@ class QueueMonitorProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
-
             if (QueueMonitor::$loadMigrations) {
                 $this->loadMigrationsFrom(
                     __DIR__ . '/../../migrations'
@@ -44,7 +43,7 @@ class QueueMonitorProvider extends ServiceProvider
             'queue-monitor'
         );
 
-        Route::mixin(new QueueMonitorRoutes);
+        Route::mixin(new QueueMonitorRoutes());
 
         /** @var QueueManager $manager */
         $manager = app(QueueManager::class);
@@ -74,7 +73,6 @@ class QueueMonitorProvider extends ServiceProvider
     public function register()
     {
         if ( ! $this->app->configurationIsCached()) {
-
             $this->mergeConfigFrom(
                 __DIR__ . '/../../config/queue-monitor.php',
                 'queue-monitor'

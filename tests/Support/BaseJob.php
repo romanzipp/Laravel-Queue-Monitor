@@ -17,7 +17,6 @@ abstract class BaseJob implements ShouldQueue
 
     public function handle(): void
     {
-        //
     }
 
     public function getJob()

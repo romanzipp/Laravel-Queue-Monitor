@@ -16,7 +16,7 @@ class MonitorCreationTest extends TestCase
     public function testCreateMonitor()
     {
         $this
-            ->dispatch(new MonitoredJob)
+            ->dispatch(new MonitoredJob())
             ->assertDispatched(MonitoredJob::class)
             ->workQueue();
 
@@ -27,7 +27,7 @@ class MonitorCreationTest extends TestCase
     public function testCreateMonitorFromExtending()
     {
         $this
-            ->dispatch(new MonitoredExtendingJob)
+            ->dispatch(new MonitoredExtendingJob())
             ->assertDispatched(MonitoredExtendingJob::class)
             ->workQueue();
 
@@ -38,7 +38,7 @@ class MonitorCreationTest extends TestCase
     public function testDontCreateMonitor()
     {
         $this
-            ->dispatch(new UnmonitoredJob)
+            ->dispatch(new UnmonitoredJob())
             ->assertDispatched(UnmonitoredJob::class)
             ->workQueue();
 
@@ -48,7 +48,7 @@ class MonitorCreationTest extends TestCase
     public function testDontKeepSuccessfulMonitor()
     {
         $this
-            ->dispatch(new MonitoredPartiallyKeptJob)
+            ->dispatch(new MonitoredPartiallyKeptJob())
             ->assertDispatched(MonitoredPartiallyKeptJob::class)
             ->workQueue();
 
@@ -58,7 +58,7 @@ class MonitorCreationTest extends TestCase
     public function testDontKeepSuccessfulMonitorFailing()
     {
         $this
-            ->dispatch(new MonitoredPartiallyKeptFailingJob)
+            ->dispatch(new MonitoredPartiallyKeptFailingJob())
             ->assertDispatched(MonitoredPartiallyKeptFailingJob::class)
             ->workQueue();
 
@@ -69,7 +69,7 @@ class MonitorCreationTest extends TestCase
     public function testBroadcastingJob()
     {
         $this
-            ->dispatch(new MonitoredBroadcastingJob)
+            ->dispatch(new MonitoredBroadcastingJob())
             ->assertDispatched(MonitoredBroadcastingJob::class)
             ->workQueue();
 

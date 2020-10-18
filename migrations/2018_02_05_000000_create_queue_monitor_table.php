@@ -14,7 +14,6 @@ class CreateQueueMonitorTable extends Migration
     public function up()
     {
         Schema::create(config('queue-monitor.table'), function (Blueprint $table) {
-
             $table->increments('id');
 
             $table->string('job_id')->index();

@@ -12,7 +12,7 @@ class MonitorStateHandlingTest extends TestCase
 {
     public function testFailing()
     {
-        $this->dispatch(new MonitoredFailingJob);
+        $this->dispatch(new MonitoredFailingJob());
         $this->workQueue();
 
         $this->assertCount(1, Monitor::all());
@@ -25,7 +25,7 @@ class MonitorStateHandlingTest extends TestCase
 
     public function testFailingWithHugeExceptionMessage()
     {
-        $this->dispatch(new MonitoredFailingJobWithHugeExceptionMessage);
+        $this->dispatch(new MonitoredFailingJobWithHugeExceptionMessage());
         $this->workQueue();
 
         $this->assertCount(1, Monitor::all());
