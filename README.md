@@ -3,7 +3,6 @@
 [![Latest Stable Version](https://img.shields.io/packagist/v/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
 [![Total Downloads](https://img.shields.io/packagist/dt/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
 [![License](https://img.shields.io/packagist/l/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://packagist.org/packages/romanzipp/laravel-queue-monitor)
-[![Code Quality](https://img.shields.io/scrutinizer/g/romanzipp/laravel-queue-monitor.svg?style=flat-square)](https://scrutinizer-ci.com/g/romanzipp/laravel-queue-monitor/?branch=master)
 [![GitHub Build Status](https://img.shields.io/github/workflow/status/romanzipp/Laravel-Queue-Monitor/Tests?style=flat-square)](https://github.com/romanzipp/Laravel-Queue-Monitor/actions)
 
 This package offers monitoring like [Laravel Horizon](https://laravel.com/docs/horizon) for database queue.
