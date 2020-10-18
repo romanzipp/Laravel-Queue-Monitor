@@ -28,6 +28,7 @@ use Throwable;
  * @property string|null $exception_class
  * @property string|null $exception_message
  * @property string|null $data
+ *
  * @method static Builder|Monitor whereJob()
  * @method static Builder|Monitor ordered()
  * @method static Builder|Monitor lastHour()
@@ -161,6 +162,7 @@ class Monitor extends Model implements MonitorContract
      * Recreate the exception.
      *
      * @param bool $rescue Wrap the exception recreation to catch exceptions
+     *
      * @return \Throwable|null
      */
     public function getException(bool $rescue = true): ?Throwable

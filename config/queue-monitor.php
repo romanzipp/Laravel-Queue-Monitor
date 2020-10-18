@@ -18,7 +18,6 @@ return [
      * The optional UI settings.
      */
     'ui' => [
-
         /*
          * Set the monitored jobs count to be displayed per page.
          */

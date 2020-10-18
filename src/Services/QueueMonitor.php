@@ -38,6 +38,7 @@ class QueueMonitor
      * Handle Job Processing.
      *
      * @param JobProcessing $event
+     *
      * @return void
      */
     public static function handleJobProcessing(JobProcessing $event): void
@@ -49,6 +50,7 @@ class QueueMonitor
      * Handle Job Processed.
      *
      * @param JobProcessed $event
+     *
      * @return void
      */
     public static function handleJobProcessed(JobProcessed $event): void
@@ -60,6 +62,7 @@ class QueueMonitor
      * Handle Job Failing.
      *
      * @param JobFailed $event
+     *
      * @return void
      */
     public static function handleJobFailed(JobFailed $event): void
@@ -71,6 +74,7 @@ class QueueMonitor
      * Handle Job Exception Occurred.
      *
      * @param JobExceptionOccurred $event
+     *
      * @return void
      */
     public static function handleJobExceptionOccurred(JobExceptionOccurred $event): void
@@ -82,6 +86,7 @@ class QueueMonitor
      * Get Job ID.
      *
      * @param JobContract $job
+     *
      * @return string|int
      */
     public static function getJobId(JobContract $job)
@@ -97,6 +102,7 @@ class QueueMonitor
      * Start Queue Monitoring for Job.
      *
      * @param JobContract $job
+     *
      * @return void
      */
     protected static function jobStarted(JobContract $job): void
@@ -125,6 +131,7 @@ class QueueMonitor
      * @param JobContract $job
      * @param bool $failed
      * @param Throwable|null $exception
+     *
      * @return void
      */
     protected static function jobFinished(JobContract $job, bool $failed = false, ?Throwable $exception = null): void
@@ -145,7 +152,6 @@ class QueueMonitor
         }
 
         /** @var MonitorContract $monitor */
-
         $now = Carbon::now();
 
         if ($startedAt = $monitor->getStartedAtExact()) {
@@ -183,6 +189,7 @@ class QueueMonitor
      * Determine weather the Job should be monitored, default true.
      *
      * @param JobContract $job
+     *
      * @return bool
      */
     public static function shouldBeMonitored(JobContract $job): bool

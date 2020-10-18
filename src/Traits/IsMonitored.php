@@ -21,6 +21,7 @@ trait IsMonitored
      * Update progress.
      *
      * @param int $progress Progress as integer 0-100
+     *
      * @return void
      */
     public function queueProgress(int $progress): void
@@ -47,6 +48,7 @@ trait IsMonitored
      *
      * @param int $collectionCount The total collection item amount
      * @param int $perChunk The size of each chunk
+     *
      * @return void
      */
     public function queueProgressChunk(int $collectionCount, int $perChunk): void
@@ -61,6 +63,7 @@ trait IsMonitored
      *
      * @param array $data Custom data
      * @param bool $merge Merge the data instead of overriding
+     *
      * @return void
      */
     public function queueData(array $data, bool $merge = false): void

@@ -34,6 +34,7 @@ class ClassUses
      * Returns all traits used by a class, its parent classes and trait of their traits.
      *
      * @param object|string $class
+     *
      * @return array
      */
     public static function classUsesRecursive($class)
@@ -55,6 +56,7 @@ class ClassUses
      * Returns all traits used by a trait and its traits.
      *
      * @param string $trait
+     *
      * @return array
      */
     public static function traitUsesRecursive($trait)
