@@ -14,7 +14,7 @@ class QueueMonitorRoutes
     public function queueMonitor(): Closure
     {
         return function (array $options = []) {
-            /* @var \Illuminate\Routing\Router $this */
+            /** @var \Illuminate\Routing\Router $this */
 
             $this->get('', '\romanzipp\QueueMonitor\Controllers\ShowQueueMonitorController');
         };
