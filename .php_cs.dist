@@ -1,0 +1,34 @@
+<?php
+
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__)
+    ->exclude(['bootstrap', 'storage', 'vendor'])
+    ->name('*.php')
+    ->name('.php_cs.dist')
+    ->name('_ide_helper')
+    ->notName('*.blade.php')
+    ->ignoreDotFiles(true)
+    ->ignoreVCS(true);
+
+return PhpCsFixer\Config::create()
+    ->setRules([
+        '@Symfony' => true,
+        'array_indentation' => true,
+        'array_syntax' => ['syntax' => 'short'],
+        'binary_operator_spaces' => true,
+        'braces' => true, // https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/4487
+        'compact_nullable_typehint' => true,
+        'concat_space' => ['spacing' => 'one'],
+        'fully_qualified_strict_types' => true,
+        'no_superfluous_phpdoc_tags' => false,
+        'no_useless_return' => true,
+        'not_operator_with_space' => true,
+        'ordered_imports' => ['sortAlgorithm' => 'alpha'],
+        'php_unit_fqcn_annotation' => true,
+        'phpdoc_align' => ['align' => 'left'],
+        'phpdoc_order' => true,
+        'phpdoc_scalar' => true,
+        'phpdoc_var_without_name' => true,
+    ])
+    ->setFinder($finder);
+
