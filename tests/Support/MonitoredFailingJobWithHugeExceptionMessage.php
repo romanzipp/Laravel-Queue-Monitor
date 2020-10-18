@@ -11,8 +11,6 @@ class MonitoredFailingJobWithHugeExceptionMessage extends BaseJob
 
     public function handle(): void
     {
-        throw new IntentionallyFailedException(
-            str_repeat('x', QueueMonitor::MAX_BYTES_TEXT + 10)
-        );
+        throw new IntentionallyFailedException(str_repeat('x', QueueMonitor::MAX_BYTES_TEXT + 10));
     }
 }

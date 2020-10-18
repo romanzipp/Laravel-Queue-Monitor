@@ -31,7 +31,7 @@ class QueueMonitor
      */
     public static function getModel(): MonitorContract
     {
-        return new self::$model;
+        return new self::$model();
     }
 
     /**
@@ -123,7 +123,7 @@ class QueueMonitor
      * Finish Queue Monitoring for Job.
      *
      * @param JobContract $job
-     * @param boolean $failed
+     * @param bool $failed
      * @param Throwable|null $exception
      * @return void
      */
@@ -140,7 +140,7 @@ class QueueMonitor
             ->orderBy('started_at', 'desc')
             ->first();
 
-        if ($monitor === null) {
+        if (null === $monitor) {
             return;
         }
 
@@ -155,8 +155,7 @@ class QueueMonitor
         /** @var IsMonitored $resolvedJob */
         $resolvedJob = $job->resolveName();
 
-        if ($exception === null && $resolvedJob::keepMonitorOnSuccess() === false) {
-
+        if (null === $exception && false === $resolvedJob::keepMonitorOnSuccess()) {
             $monitor->delete();
 
             return;
@@ -169,7 +168,7 @@ class QueueMonitor
             'failed' => $failed,
         ];
 
-        if ($exception !== null) {
+        if (null !== $exception) {
             $attributes += [
                 'exception' => mb_strcut((string) $exception, 0, self::MAX_BYTES_LONGTEXT),
                 'exception_class' => get_class($exception),

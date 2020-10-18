@@ -7,5 +7,4 @@ namespace romanzipp\QueueMonitor\Models\Contracts;
  */
 interface MonitorContract
 {
-
 }
