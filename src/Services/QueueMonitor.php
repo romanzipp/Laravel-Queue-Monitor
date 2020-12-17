@@ -144,7 +144,8 @@ class QueueMonitor
 
         $monitor = $model::query()
             ->where('job_id', self::getJobId($job))
-            ->orderBy('started_at', 'desc')
+            ->orderByDesc('started_at')
+            ->orderByDesc('attempt')
             ->first();
 
         if (null === $monitor) {
