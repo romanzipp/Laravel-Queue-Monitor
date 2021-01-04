@@ -82,7 +82,7 @@ See the [full configuration file](https://github.com/romanzipp/Laravel-Queue-Mon
 
 ## Extended usage
 
-### Set progress
+### Progress
 
 You can set a **progress value** (0-100) to get an estimation of a job progression.
 
@@ -109,7 +109,7 @@ class ExampleJob implements ShouldQueue
 }
 ``` 
 
-### Set progress in chunk
+### Chunk progress
 
 A common scenario for a job is iterating through large collections.
 
@@ -120,7 +120,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
-class ExampleJob implements ShouldQueue
+class ChunkJob implements ShouldQueue
 {
     use IsMonitored;
 
@@ -141,17 +141,36 @@ class ExampleJob implements ShouldQueue
             });
     }
 }
-``` 
+```
 
-### Set custom data
+### Progress cooldown
 
-This package also allows to set custom data on the monitoring model.
+To avoid flooding the database with rapidly repeating update queries, you can set override the `progressCooldown` method and specify a length in seconds to wait before each progress update is written to the database. Notice that cooldown will always be ignore for the values 0, 25, 50, 75 and 100.
 
 ```php
 use Illuminate\Contracts\Queue\ShouldQueue;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
-class ExampleJob implements ShouldQueue
+class LazyJob implements ShouldQueue
+{
+    use IsMonitored;
+
+    public function progressCooldown(): int
+    {
+        return 10; // Wait 10 seconds between each progress update
+    }
+}
+``` 
+
+### Custom data
+
+This package also allows setting custom data in array syntax on the monitoring model.
+
+```php
+use Illuminate\Contracts\Queue\ShouldQueue;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
+
+class CustomDataJob implements ShouldQueue
 {
     use IsMonitored;
 
@@ -187,7 +206,7 @@ You can override the `keepMonitorOnSuccess()` method to only store failed monito
 use Illuminate\Contracts\Queue\ShouldQueue;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
-class ExampleJob implements ShouldQueue
+class FrequentSucceedingJob implements ShouldQueue
 {
     use IsMonitored;
 
