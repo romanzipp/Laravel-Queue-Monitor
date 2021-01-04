@@ -2,11 +2,13 @@
 
 namespace romanzipp\QueueMonitor\Tests;
 
+use Exception;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithData;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithMergedData;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithMergedDataConflicting;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithProgress;
+use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithProgressCooldown;
 
 class MonitorAttributesTest extends TestCase
 {
@@ -70,6 +72,36 @@ class MonitorAttributesTest extends TestCase
 
         $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         $this->assertEquals(MonitoredJobWithProgress::class, $monitor->name);
+        $this->assertEquals(0, $monitor->progress);
+    }
+
+    public function testProgressStandby()
+    {
+        $this->dispatch(new MonitoredJobWithProgressCooldown(0));
+        $this->workQueue();
+
+        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        $this->assertEquals(MonitoredJobWithProgressCooldown::class, $monitor->name);
+        $this->assertEquals(0, $monitor->progress);
+    }
+
+    public function testProgressStandbyIgnoredValue()
+    {
+        $this->dispatch(new MonitoredJobWithProgressCooldown(50));
+        $this->workQueue();
+
+        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        $this->assertEquals(MonitoredJobWithProgressCooldown::class, $monitor->name);
+        $this->assertEquals(50, $monitor->progress);
+    }
+
+    public function testProgressStandbyTen()
+    {
+        $this->dispatch(new MonitoredJobWithProgressCooldown(10));
+        $this->workQueue();
+
+        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        $this->assertEquals(MonitoredJobWithProgressCooldown::class, $monitor->name);
         $this->assertEquals(0, $monitor->progress);
     }
 }
