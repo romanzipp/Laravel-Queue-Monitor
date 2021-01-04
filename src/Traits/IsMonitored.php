@@ -11,6 +11,13 @@ use romanzipp\QueueMonitor\Services\QueueMonitor;
 trait IsMonitored
 {
     /**
+     * The unix timestamp explaining the last time a progress has been written to database.
+     *
+     * @var int|null
+     */
+    private $progressLastUpdated = null;
+
+    /**
      * Internal variable used for tracking chunking progress.
      *
      * @var int
@@ -26,21 +33,21 @@ trait IsMonitored
      */
     public function queueProgress(int $progress): void
     {
-        if ($progress < 0) {
-            $progress = 0;
-        }
-
-        if ($progress > 100) {
-            $progress = 100;
-        }
+        $progress = min(100, max(0, $progress));
 
         if ( ! $monitor = $this->getQueueMonitor()) {
+            return;
+        }
+
+        if ($this->isQueueProgressOnCooldown($progress)) {
             return;
         }
 
         $monitor->update([
             'progress' => $progress,
         ]);
+
+        $this->progressLastUpdated = time();
     }
 
     /**
@@ -79,6 +86,27 @@ trait IsMonitored
         $monitor->update([
             'data' => json_encode($data),
         ]);
+    }
+
+    /**
+     * Check if the monitor should skip writing the progress to database avoiding rapid update queries.
+     * The progress values 0, 25, 50, 75 and 100 will always be written.
+     *
+     * @param int $progress
+     *
+     * @return bool
+     */
+    private function isQueueProgressOnCooldown(int $progress): bool
+    {
+        if (in_array($progress, [0, 25, 50, 75, 100])) {
+            return false;
+        }
+
+        if (null === $this->progressLastUpdated) {
+            return false;
+        }
+
+        return time() - $this->progressLastUpdated < $this->progressCooldown();
     }
 
     /**
@@ -131,5 +159,16 @@ trait IsMonitored
     public static function keepMonitorOnSuccess(): bool
     {
         return true;
+    }
+
+    /**
+     * The time in seconds to wait before a following queue progress update will be issued.
+     * This is used to avoid writing many progress updates to the database. 0 = no delay.
+     *
+     * @return int
+     */
+    public function progressCooldown(): int
+    {
+        return 0;
     }
 }
