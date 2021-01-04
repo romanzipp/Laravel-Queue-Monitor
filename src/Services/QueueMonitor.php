@@ -177,7 +177,7 @@ class QueueMonitor
 
         if (null !== $exception) {
             $attributes += [
-                'exception' => mb_strcut((string) $exception, 0, self::MAX_BYTES_LONGTEXT),
+                'exception' => mb_strcut((string) $exception, 0, min(PHP_INT_MAX, self::MAX_BYTES_LONGTEXT)),
                 'exception_class' => get_class($exception),
                 'exception_message' => mb_strcut($exception->getMessage(), 0, self::MAX_BYTES_TEXT),
             ];
