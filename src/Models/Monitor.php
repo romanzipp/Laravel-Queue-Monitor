@@ -129,29 +129,25 @@ class Monitor extends Model implements MonitorContract
      */
     public function getRemainingSeconds(Carbon $now = null): float
     {
-        if (null === $now) {
-            $now = Carbon::now();
-        }
-
-        if (null == $this->progress || $this->isFinished()) {
-            return 0.0;
-        }
-
-        if ( ! $this->started_at) {
-            return 0.0;
-        }
-
-        if (0 === ($timeDiff = $now->getTimestamp() - $this->started_at->getTimestamp())) {
-            return 0.0;
-        }
-
-        return (100 - $this->progress) / ($this->progress / $timeDiff);
+        return $this->getRemainingInterval($now)->totalSeconds;
     }
 
     public function getRemainingInterval(Carbon $now = null): CarbonInterval
     {
+        if (null === $now) {
+            $now = Carbon::now();
+        }
+
+        if (null === $this->progress || $this->isFinished() || ! $this->started_at) {
+            return CarbonInterval::seconds(0);
+        }
+
+        if (0 === ($timeDiff = $now->getTimestamp() - $this->started_at->getTimestamp())) {
+            return CarbonInterval::seconds(0);
+        }
+
         return CarbonInterval::seconds(
-            (int) $this->getRemainingSeconds($now)
+            (100 - $this->progress) / ($this->progress / $timeDiff)
         )->cascade();
     }
 
@@ -164,17 +160,7 @@ class Monitor extends Model implements MonitorContract
      */
     public function getElapsedSeconds(Carbon $end = null): float
     {
-        if (null === $end) {
-            $end = $this->getFinishedAtExact() ?? $this->finished_at ?? Carbon::now();
-        }
-
-        $startedAt = $this->getStartedAtExact() ?? $this->started_at;
-
-        if (null === $startedAt) {
-            return 0.0;
-        }
-
-        return ($this->getStartedAtExact() ?? $this->started_at)->diffInSeconds($end);
+        return $this->getElapsedInterval($end)->totalSeconds;
     }
 
     public function getElapsedInterval(Carbon $end = null): CarbonInterval
@@ -186,16 +172,10 @@ class Monitor extends Model implements MonitorContract
         $startedAt = $this->getStartedAtExact() ?? $this->started_at;
 
         if (null === $startedAt) {
-            return CarbonInterval::second(0);
+            return CarbonInterval::seconds(0);
         }
 
-        if (method_exists($startedAt, 'diffInMilliseconds')) {
-            $diff = $startedAt->diffInMilliseconds($end);
-        } else {
-            $diff = $startedAt->diffInSeconds($end);
-        }
-
-        return CarbonInterval::milliseconds($diff)->cascade();
+        return $startedAt->diffAsCarbonInterval($end);
     }
 
     /**
