@@ -59,19 +59,19 @@ class MonitorTimeCalculationTest extends TestCase
     public function testElapsedSecondsInterval()
     {
         $this->assertEquals(
-            '00:00:05.0',
+            '00:00:05',
             $this
                 ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))
                 ->getElapsedInterval(Carbon::parse('2020-01-01 10:00:05'))
-                ->format('%H:%I:%S.%f')
+                ->format('%H:%I:%S')
         );
 
         $this->assertEquals(
-            '01:00:00.0',
+            '01:00:00',
             $this
                 ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))
                 ->getElapsedInterval(Carbon::parse('2020-01-01 11:00:00'))
-                ->format('%H:%I:%S.%f')
+                ->format('%H:%I:%S')
         );
     }
 
