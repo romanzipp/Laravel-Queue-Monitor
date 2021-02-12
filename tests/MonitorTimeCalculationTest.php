@@ -6,7 +6,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use romanzipp\QueueMonitor\Models\Monitor;
 
-class RemainingSecondsCalculationTest extends TestCase
+class MonitorTimeCalculationTest extends TestCase
 {
     public function testFirstCalculation()
     {
