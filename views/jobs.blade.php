@@ -12,13 +12,17 @@
 
 </head>
 
-<body class="font-sans p-6 pb-64 bg-blue-100">
+<body class="font-sans p-6 pb-64 bg-gray-100">
 
     <h1 class="mb-6 text-5xl text-blue-900 font-bold">
         Queue Monitor
     </h1>
 
-    <div class="mb-6 pl-4 border-l-4 border-blue-600">
+    <div class="px-6 py-4 mb-6 pl-4 border-l-4 border-blue-600 bg-white rounded-md shadow-md">
+
+        <h2 class="mb-4 text-2xl font-bold text-blue-900">
+            Filter
+        </h2>
 
         <form action="" method="get">
 
@@ -32,7 +36,7 @@
 
             </div>
 
-            <div>
+            <div class="mt-4">
 
                 <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-xs font-medium uppercase tracking-wider text-white rounded">
                     Filter
@@ -48,7 +52,7 @@
 
         <table class="w-full rounded whitespace-no-wrap">
 
-            <thead class="bg-gray-100">
+            <thead class="bg-gray-200">
 
                 <tr>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Status</th>
@@ -56,15 +60,17 @@
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Details</th>
 
                     @if(config('queue-monitor.ui.show_custom_data'))
-
                         <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Custom Data</th>
-
                     @endif
 
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Progress</th>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Duration</th>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Started</th>
                     <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Error</th>
+
+                    @if(config('queue-monitor.ui.allow_deletion'))
+                        <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Action</th>
+                    @endif
                 </tr>
 
             </thead>
@@ -178,6 +184,25 @@
 
                         </td>
 
+                        @if(config('queue-monitor.ui.allow_deletion'))
+
+                            <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+
+                                <form action="{{ action(romanzipp\QueueMonitor\Controllers\DeleteMonitorController::class, $job) }}" method="post">
+
+                                    @csrf
+                                    @method('delete')
+
+                                    <button class="px-3 py-1 bg-red-200 hover:bg-red-300 text-red-800 text-xs font-medium uppercase tracking-wider text-white rounded">
+                                        Delete
+                                    </button>
+
+                                </form>
+
+                            </td>
+
+                        @endif
+
                     </tr>
 
                 @empty
@@ -248,6 +273,25 @@
         </table>
 
     </div>
+
+    @if(config('queue-monitor.ui.allow_purge'))
+
+        <div class="mt-12">
+
+            <form action="{{ action(romanzipp\QueueMonitor\Controllers\PurgeMonitorsController::class) }}" method="post">
+
+                @csrf
+                @method('delete')
+
+                <button class="px-3 py-1 bg-red-200 hover:bg-red-300 text-red-800 text-xs font-medium uppercase tracking-wider text-white rounded">
+                    Delete all entries
+                </button>
+
+            </form>
+
+        </div>
+
+    @endif
 
 </body>
 

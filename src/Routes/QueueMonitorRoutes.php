@@ -16,6 +16,14 @@ class QueueMonitorRoutes
         return function (array $options = []) {
             /** @var \Illuminate\Routing\Router $this */
             $this->get('', '\romanzipp\QueueMonitor\Controllers\ShowQueueMonitorController');
+
+            if (config('queue-monitor.ui.allow_deletion')) {
+                $this->delete('monitors/{monitor}', '\romanzipp\QueueMonitor\Controllers\DeleteMonitorController');
+            }
+
+            if (config('queue-monitor.ui.allow_purge')) {
+                $this->delete('purge', '\romanzipp\QueueMonitor\Controllers\PurgeMonitorsController');
+            }
         };
     }
 }

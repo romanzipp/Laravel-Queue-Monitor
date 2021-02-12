@@ -27,5 +27,15 @@ return [
          *  Show custom data stored on model
          */
         'show_custom_data' => false,
+
+        /**
+         * Allow the deletion of single monitor items.
+         */
+        'allow_deletion' => true,
+
+        /**
+         * Allow purging all monitor entries.
+         */
+        'allow_purge' => true,
     ],
 ];
