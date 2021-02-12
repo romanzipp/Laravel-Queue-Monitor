@@ -159,7 +159,7 @@
                         </td>
 
                         <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
-                            {{ sprintf('%02.2f', (float) $job->time_elapsed) }} s
+                            {{ $job->getElapsedInterval()->format('%H:%I:%S') }}
                         </td>
 
                         <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
