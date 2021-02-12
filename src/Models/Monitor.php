@@ -158,27 +158,27 @@ class Monitor extends Model implements MonitorContract
     /**
      * Get the currently elapsed seconds.
      *
-     * @param \Illuminate\Support\Carbon|null $now
+     * @param \Illuminate\Support\Carbon|null $end
      *
      * @return float
      */
-    public function getElapsedSeconds(Carbon $now = null): float
+    public function getElapsedSeconds(Carbon $end = null): float
     {
-        if (null === $now) {
-            $now = Carbon::now();
+        if (null === $end) {
+            $end = $this->getFinishedAtExact() ?? $this->finished_at ?? Carbon::now();
         }
 
-        return ($this->started_at_exact ?? $this->started_at)->diffInSeconds($now);
+        return ($this->getStartedAtExact() ?? $this->started_at)->diffInSeconds($end);
     }
 
-    public function getElapsedInterval(Carbon $now = null): CarbonInterval
+    public function getElapsedInterval(Carbon $end = null): CarbonInterval
     {
-        if (null === $now) {
-            $now = Carbon::now();
+        if (null === $end) {
+            $end = $this->getFinishedAtExact() ?? $this->finished_at ?? Carbon::now();
         }
 
         return CarbonInterval::milliseconds(
-            ($this->started_at_exact ?? $this->started_at)->diffInMilliseconds($now)
+            ($this->getStartedAtExact() ?? $this->started_at)->diffInMilliseconds($end)
         )->cascade();
     }
 
