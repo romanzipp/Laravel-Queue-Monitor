@@ -8,27 +8,74 @@ use romanzipp\QueueMonitor\Models\Monitor;
 
 class MonitorTimeCalculationTest extends TestCase
 {
-    public function testFirstCalculation()
+    public function testRemaingSeconds()
     {
-        $monitor = $this->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 50);
+        $this->assertEquals(
+            30,
+            $this
+                ->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 50)
+                ->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:30'))
+        );
 
-        $this->assertEquals(30, $monitor->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:30')));
+        $this->assertEquals(
+            19,
+            $this
+                ->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 5)
+                ->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:01'))
+        );
+
+        $this->assertEquals(
+            495,
+            $this
+                ->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 1)
+                ->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:05'))
+        );
     }
 
-    public function testSecondCalculation()
+    public function testElaspedSeconds()
     {
-        $monitor = $this->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 5);
+        $this->assertEquals(
+            30,
+            $this
+                ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))
+                ->getElapsedSeconds(Carbon::parse('2020-01-01 10:00:30'))
+        );
 
-        $this->assertEquals(19, $monitor->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:01')));
+        $this->assertEquals(
+            1,
+            $this
+                ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))
+                ->getElapsedSeconds(Carbon::parse('2020-01-01 10:00:01'))
+        );
+
+        $this->assertEquals(
+            5,
+            $this
+                ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))
+                ->getElapsedSeconds(Carbon::parse('2020-01-01 10:00:05'))
+        );
     }
 
-    public function testThirdCalculation()
+    public function testElapsedSecondsInterval()
     {
-        $monitor = $this->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 1);
-        $this->assertEquals(495, $monitor->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:05')));
+        $this->assertEquals(
+            '00:00:05.0',
+            $this
+                ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))
+                ->getElapsedInterval(Carbon::parse('2020-01-01 10:00:05'))
+                ->format('%H:%I:%S.%f')
+        );
+
+        $this->assertEquals(
+            '01:00:00.0',
+            $this
+                ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))
+                ->getElapsedInterval(Carbon::parse('2020-01-01 11:00:00'))
+                ->format('%H:%I:%S.%f')
+        );
     }
 
-    public function createMonitor(Carbon $startedAt, int $progress): Monitor
+    private function createMonitor(Carbon $startedAt, int $progress = null): Monitor
     {
         /** @var Monitor $monitor */
         $monitor = Monitor::query()->create([
