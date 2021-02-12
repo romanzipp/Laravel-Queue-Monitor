@@ -120,6 +120,13 @@ class Monitor extends Model implements MonitorContract
         return Carbon::parse($this->finished_at_exact);
     }
 
+    /**
+     * Get the estimated remaining seconds. This requires a job progress to be set.
+     *
+     * @param \Illuminate\Support\Carbon|null $now
+     *
+     * @return float
+     */
     public function getRemainingSeconds(Carbon $now = null): float
     {
         if (null === $now) {
