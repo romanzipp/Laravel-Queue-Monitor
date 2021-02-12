@@ -17,9 +17,9 @@ use Throwable;
  * @property string|null $name
  * @property string|null $queue
  * @property \Illuminate\Support\Carbon|null $started_at
- * @property \Illuminate\Support\Carbon|null $started_at_exact
+ * @property string|null $started_at_exact
  * @property \Illuminate\Support\Carbon|null $finished_at
- * @property \Illuminate\Support\Carbon|null $finished_at_exact
+ * @property string|null $finished_at_exact
  * @property float $time_elapsed
  * @property bool $failed
  * @property int $attempt
