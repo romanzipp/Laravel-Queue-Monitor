@@ -16,7 +16,8 @@
         "ext-mbstring": "*",
         "illuminate/database": "^5.5|^6.20.12|^7.30.3|^8.22.1",
         "illuminate/queue": "^5.5|^6.20.12|^7.30.3|^8.22.1",
-        "illuminate/support": "^5.5|^6.20.12|^7.30.3|^8.22.1"
+        "illuminate/support": "^5.5|^6.20.12|^7.30.3|^8.22.1",
+        "nesbot/carbon": "^2.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.17",
