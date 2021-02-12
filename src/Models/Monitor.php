@@ -17,9 +17,9 @@ use Throwable;
  * @property string|null $name
  * @property string|null $queue
  * @property \Illuminate\Support\Carbon|null $started_at
- * @property string|null $started_at_exact
+ * @property \Illuminate\Support\Carbon|null $started_at_exact
  * @property \Illuminate\Support\Carbon|null $finished_at
- * @property string|null $finished_at_exact
+ * @property \Illuminate\Support\Carbon|null $finished_at_exact
  * @property float $time_elapsed
  * @property bool $failed
  * @property int $attempt
@@ -152,6 +152,33 @@ class Monitor extends Model implements MonitorContract
     {
         return CarbonInterval::seconds(
             (int) $this->getRemainingSeconds($now)
+        )->cascade();
+    }
+
+    /**
+     * Get the currently elapsed seconds.
+     *
+     * @param \Illuminate\Support\Carbon|null $now
+     *
+     * @return float
+     */
+    public function getElapsedSeconds(Carbon $now = null): float
+    {
+        if (null === $now) {
+            $now = Carbon::now();
+        }
+
+        return ($this->started_at_exact ?? $this->started_at)->diffInSeconds($now);
+    }
+
+    public function getElapsedInterval(Carbon $now = null): CarbonInterval
+    {
+        if (null === $now) {
+            $now = Carbon::now();
+        }
+
+        return CarbonInterval::milliseconds(
+            ($this->started_at_exact ?? $this->started_at)->diffInMilliseconds($now)
         )->cascade();
     }
 
