@@ -4,11 +4,10 @@ namespace romanzipp\QueueMonitor\Controllers;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
 
-class ShowQueueMonitorController extends Controller
+class ShowQueueMonitorController
 {
     public function __invoke(Request $request)
     {
