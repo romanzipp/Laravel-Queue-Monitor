@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Arr;
-use romanzipp\QueueMonitor\Models\Monitor;
+use romanzipp\QueueMonitor\Services\QueueMonitor;
 
 class ShowQueueMonitorController extends Controller
 {
@@ -20,7 +20,8 @@ class ShowQueueMonitorController extends Controller
             'onlyFailed' => (bool) Arr::get($data, 'only_failed'),
         ];
 
-        $jobs = Monitor::query()
+        $jobs = QueueMonitor::getModel()
+            ->newQuery()
             ->when($filters['onlyFailed'], static function (Builder $builder) {
                 $builder->where('failed', 1);
             })
