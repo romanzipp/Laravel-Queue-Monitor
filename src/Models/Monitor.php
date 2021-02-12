@@ -168,6 +168,12 @@ class Monitor extends Model implements MonitorContract
             $end = $this->getFinishedAtExact() ?? $this->finished_at ?? Carbon::now();
         }
 
+        $startedAt = $this->getStartedAtExact() ?? $this->started_at;
+
+        if (null === $startedAt) {
+            return 0.0;
+        }
+
         return ($this->getStartedAtExact() ?? $this->started_at)->diffInSeconds($end);
     }
 
@@ -177,9 +183,19 @@ class Monitor extends Model implements MonitorContract
             $end = $this->getFinishedAtExact() ?? $this->finished_at ?? Carbon::now();
         }
 
-        return CarbonInterval::milliseconds(
-            ($this->getStartedAtExact() ?? $this->started_at)->diffInMilliseconds($end)
-        )->cascade();
+        $startedAt = $this->getStartedAtExact() ?? $this->started_at;
+
+        if (null === $startedAt) {
+            return CarbonInterval::second(0);
+        }
+
+        if (method_exists($startedAt, 'diffInMilliseconds')) {
+            $diff = $startedAt->diffInMilliseconds($end);
+        } else {
+            $diff = $startedAt->diffInSeconds($end);
+        }
+
+        return CarbonInterval::milliseconds($diff)->cascade();
     }
 
     /**
