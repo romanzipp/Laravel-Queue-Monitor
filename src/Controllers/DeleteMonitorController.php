@@ -11,6 +11,6 @@ class DeleteMonitorController
     {
         $monitor->delete();
 
-        return redirect()->action(ShowQueueMonitorController::class);
+        return redirect()->route("romanzipp.showQueueMonitor");
     }
 }

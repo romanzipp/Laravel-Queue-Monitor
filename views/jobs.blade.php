@@ -188,7 +188,7 @@
 
                             <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
 
-                                <form action="{{ action(romanzipp\QueueMonitor\Controllers\DeleteMonitorController::class, $job) }}" method="post">
+                                <form action="{{ route('romanzipp.deleteMonitorEntry',[$job]) }}" method="post">
 
                                     @csrf
                                     @method('delete')
@@ -278,7 +278,7 @@
 
         <div class="mt-12">
 
-            <form action="{{ action(romanzipp\QueueMonitor\Controllers\PurgeMonitorsController::class) }}" method="post">
+            <form action="{{ route('romanzipp.purgeMonitorEntries') }}" method="post">
 
                 @csrf
                 @method('delete')

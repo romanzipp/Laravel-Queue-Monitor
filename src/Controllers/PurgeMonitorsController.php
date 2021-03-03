@@ -16,6 +16,6 @@ class PurgeMonitorsController
             $monitor->delete();
         }, 200);
 
-        return redirect()->action(ShowQueueMonitorController::class);
+        return redirect()->route('romanzipp.showQueueMonitor');
     }
 }
