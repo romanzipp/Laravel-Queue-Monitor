@@ -18,6 +18,22 @@
         Queue Monitor
     </h1>
 
+    @if($metrics)
+
+        <div class="flex -mx-4 mb-6">
+
+            @foreach($metrics->all() as $metric)
+
+                @include('queue-monitor::partials.metrics-card', [
+                    'metric' => $metric,
+                ])
+
+            @endforeach
+
+        </div>
+
+    @endif
+
     <div class="px-6 py-4 mb-6 pl-4 border-l-4 border-blue-600 bg-white rounded-md shadow-md">
 
         <h2 class="mb-4 text-2xl font-bold text-blue-900">
