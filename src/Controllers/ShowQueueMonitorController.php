@@ -5,10 +5,11 @@ namespace romanzipp\QueueMonitor\Controllers;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use romanzipp\QueueMonitor\Controllers\Payloads\Metric;
 use romanzipp\QueueMonitor\Controllers\Payloads\Metrics;
+use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
 
 class ShowQueueMonitorController
@@ -16,17 +17,34 @@ class ShowQueueMonitorController
     public function __invoke(Request $request)
     {
         $data = $request->validate([
-            'only_failed' => ['nullable'],
+            'type' => ['nullable', 'string', Rule::in(['all', 'running', 'failed', 'succeeded'])],
+            'queue' => ['nullable', 'string'],
         ]);
 
         $filters = [
-            'onlyFailed' => (bool) Arr::get($data, 'only_failed'),
+            'type' => $data['type'] ?? 'all',
+            'queue' => $data['queue'] ?? 'all',
         ];
 
         $jobs = QueueMonitor::getModel()
             ->newQuery()
-            ->when($filters['onlyFailed'], static function (Builder $builder) {
-                $builder->where('failed', 1);
+            ->when(($type = $filters['type']) && 'all' !== $type, static function (Builder $builder) use ($type) {
+                switch ($type) {
+                    case 'running':
+                        $builder->whereNull('finished_at');
+                        break;
+
+                    case 'failed':
+                        $builder->where('failed', 1)->whereNotNull('finished_at');
+                        break;
+
+                    case 'succeeded':
+                        $builder->where('failed', 0)->whereNotNull('finished_at');
+                        break;
+                }
+            })
+            ->when(($queue = $filters['queue']) && 'all' !== $queue, static function (Builder $builder) use ($queue) {
+                $builder->where('queue', $queue);
             })
             ->ordered()
             ->paginate(
@@ -35,6 +53,16 @@ class ShowQueueMonitorController
             ->appends(
                 $request->all()
             );
+
+        $queues = QueueMonitor::getModel()
+            ->newQuery()
+            ->select('queue')
+            ->groupBy('queue')
+            ->get()
+            ->map(function (MonitorContract $monitor) {
+                return $monitor->queue;
+            })
+            ->toArray();
 
         $metrics = null;
 
@@ -45,6 +73,7 @@ class ShowQueueMonitorController
         return view('queue-monitor::jobs', [
             'jobs' => $jobs,
             'filters' => $filters,
+            'queues' => $queues,
             'metrics' => $metrics,
         ]);
     }
