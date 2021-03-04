@@ -37,5 +37,7 @@ return [
          * Allow purging all monitor entries.
          */
         'allow_purge' => true,
+
+        'show_metrics' => true,
     ],
 ];
