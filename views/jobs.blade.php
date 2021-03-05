@@ -188,7 +188,7 @@
 
                             <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
 
-                                <form action="{{ route('romanzipp.deleteMonitorEntry',[$job]) }}" method="post">
+                                <form action="{{ route('queue-monitor::destroy', [$job]) }}" method="post">
 
                                     @csrf
                                     @method('delete')
