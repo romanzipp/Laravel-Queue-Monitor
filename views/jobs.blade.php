@@ -278,7 +278,7 @@
 
         <div class="mt-12">
 
-            <form action="{{ route('romanzipp.purgeMonitorEntries') }}" method="post">
+            <form action="{{ route('queue-monitor::purge') }}" method="post">
 
                 @csrf
                 @method('delete')
