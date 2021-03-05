@@ -22,7 +22,7 @@ class QueueMonitorRoutes
             }
 
             if (config('queue-monitor.ui.allow_purge')) {
-                $this->delete('purge', '\romanzipp\QueueMonitor\Controllers\PurgeMonitorsController')->name("romanzipp.purgeMonitorEntries");;
+                $this->delete('purge', '\romanzipp\QueueMonitor\Controllers\PurgeMonitorsController')->name('queue-monitor::purge');
             }
         };
     }
