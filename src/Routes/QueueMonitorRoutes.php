@@ -18,7 +18,7 @@ class QueueMonitorRoutes
             $this->get('', '\romanzipp\QueueMonitor\Controllers\ShowQueueMonitorController')->name("romanzipp.showQueueMonitor");
 
             if (config('queue-monitor.ui.allow_deletion')) {
-                $this->delete('monitors/{monitor}', '\romanzipp\QueueMonitor\Controllers\DeleteMonitorController')->name("romanzipp.deleteMonitorEntry");;
+                $this->delete('monitors/{monitor}', '\romanzipp\QueueMonitor\Controllers\DeleteMonitorController')->name('queue-monitor::destroy');
             }
 
             if (config('queue-monitor.ui.allow_purge')) {
