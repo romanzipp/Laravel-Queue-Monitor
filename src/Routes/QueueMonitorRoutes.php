@@ -15,7 +15,7 @@ class QueueMonitorRoutes
     {
         return function (array $options = []) {
             /** @var \Illuminate\Routing\Router $this */
-            $this->get('', '\romanzipp\QueueMonitor\Controllers\ShowQueueMonitorController')->name("romanzipp.showQueueMonitor");
+            $this->get('', '\romanzipp\QueueMonitor\Controllers\ShowQueueMonitorController')->name('queue-monitor::index');
 
             if (config('queue-monitor.ui.allow_deletion')) {
                 $this->delete('monitors/{monitor}', '\romanzipp\QueueMonitor\Controllers\DeleteMonitorController')->name('queue-monitor::destroy');
