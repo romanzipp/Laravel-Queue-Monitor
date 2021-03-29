@@ -20,7 +20,7 @@
 
     @if($metrics)
 
-        <div class="flex -mx-4 mb-6">
+        <div class="flex flex-wrap -mx-4 mb-2">
 
             @foreach($metrics->all() as $metric)
 
