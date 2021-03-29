@@ -43,6 +43,6 @@ return [
         /**
          * Time frame used to calculate metrics values (in days).
          */
-        'metrics_time_frame' => 2,
+        'metrics_time_frame' => 14,
     ],
 ];
