@@ -109,13 +109,13 @@ class ShowQueueMonitorController
 
         return $metrics
             ->push(
-                new Metric('Total Jobs Executed', $aggregatedInfo->count, $aggregatedComparisonInfo->count, '%d')
+                new Metric('Total Jobs Executed', $aggregatedInfo->count ?? 0, $aggregatedComparisonInfo->count, '%d')
             )
             ->push(
-                new Metric('Total Execution Time', $aggregatedInfo->total_time_elapsed, $aggregatedComparisonInfo->total_time_elapsed, '%ds')
+                new Metric('Total Execution Time', $aggregatedInfo->total_time_elapsed ?? 0, $aggregatedComparisonInfo->total_time_elapsed, '%ds')
             )
             ->push(
-                new Metric('Average Execution Time', $aggregatedInfo->average_time_elapsed, $aggregatedComparisonInfo->average_time_elapsed, '%0.2fs')
+                new Metric('Average Execution Time', $aggregatedInfo->average_time_elapsed ?? 0, $aggregatedComparisonInfo->average_time_elapsed, '%0.2fs')
             );
     }
 }
