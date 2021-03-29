@@ -21,7 +21,7 @@
                         Down from
                     @endif
                 @else
-                    Same as
+                    No change from
                 @endif
 
                 {{ $metric->format($metric->previousValue) }}

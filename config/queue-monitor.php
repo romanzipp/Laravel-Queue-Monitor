@@ -39,5 +39,10 @@ return [
         'allow_purge' => true,
 
         'show_metrics' => true,
+
+        /**
+         * Time frame used to calculate metrics values (in days).
+         */
+        'metrics_time_frame' => 2,
     ],
 ];
