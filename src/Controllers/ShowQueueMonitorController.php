@@ -80,7 +80,7 @@ class ShowQueueMonitorController
 
     public function collectMetrics(): Metrics
     {
-        $timeFrame = 30; // days
+        $timeFrame = config('queue-monitor.ui.metrics_time_frame') ?? 2;
 
         $metrics = new Metrics();
 
