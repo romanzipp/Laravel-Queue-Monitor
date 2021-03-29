@@ -2,7 +2,8 @@
 
     <div class="h-full flex flex-col justify-between p-6 bg-white rounded shadow-md">
 
-        <div class="font-semibold text-sm text-gray-600">
+        <div class="font-semibold text-sm text-gray-600"
+             title="Last {{ config('queue-monitor.ui.metrics_time_frame') ?? 14 }} days">
             {{ $metric->title }}
         </div>
 
