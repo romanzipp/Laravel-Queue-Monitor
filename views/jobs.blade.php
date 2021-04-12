@@ -18,7 +18,7 @@
         Queue Monitor
     </h1>
 
-    @if($metrics)
+    @isset($metrics)
 
         <div class="flex flex-wrap -mx-4 mb-2">
 
@@ -32,7 +32,7 @@
 
         </div>
 
-    @endif
+    @endisset
 
     <div class="px-6 py-4 mb-6 pl-4 bg-white rounded-md shadow-md">
 
