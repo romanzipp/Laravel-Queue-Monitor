@@ -115,7 +115,7 @@ class QueueMonitor
 
         $model = self::getModel();
 
-        $model::query()->create([
+        $monitor = $model::query()->create([
             'job_id' => self::getJobId($job),
             'name' => $job->resolveName(),
             'queue' => $job->getQueue(),
@@ -123,6 +123,11 @@ class QueueMonitor
             'started_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
             'attempt' => $job->attempts(),
         ]);
+
+        $model::query()
+            ->where('job_id', $monitor->job_id)
+            ->where('id', '!=', $monitor->id)
+            ->delete();
     }
 
     /**
