@@ -173,7 +173,7 @@ class QueueMonitor
 
         if (null !== $exception) {
             $attributes += [
-                'exception' => mb_strcut((string) $exception, 0, min(PHP_INT_MAX, config('queue-monitor.db_max_length_exception', 65535))),
+                'exception' => mb_strcut((string) $exception, 0, config('queue-monitor.db_max_length_exception', 4294967295)),
                 'exception_class' => get_class($exception),
                 'exception_message' => mb_strcut($exception->getMessage(), 0, config('queue-monitor.db_max_length_exception_message', 65535)),
             ];
