@@ -15,6 +15,12 @@ return [
     'model' => \romanzipp\QueueMonitor\Models\Monitor::class,
 
     /*
+     * Specify the max character length to use for storing exception backtraces.
+     */
+    'db_max_length_exception' => 4294967295,
+    'db_max_length_exception_message' => 65535,
+
+    /*
      * The optional UI settings.
      */
     'ui' => [
