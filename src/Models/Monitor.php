@@ -56,6 +56,7 @@ class Monitor extends Model implements MonitorContract
         parent::__construct($attributes);
 
         $this->setTable(config('queue-monitor.table'));
+        $this->setConnection(config('queue-monitor.connection'));
     }
 
     /*
