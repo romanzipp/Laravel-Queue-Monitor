@@ -5,7 +5,7 @@ return [
      * Set the table to be used for monitoring data.
      */
     'table' => 'queue_monitor',
-    'connection' => config('database.default'),
+    'connection' => null,
 
     /*
      * Set the model used for monitoring.
