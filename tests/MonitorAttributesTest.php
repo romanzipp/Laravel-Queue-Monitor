@@ -2,7 +2,6 @@
 
 namespace romanzipp\QueueMonitor\Tests;
 
-use Exception;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithData;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithMergedData;
