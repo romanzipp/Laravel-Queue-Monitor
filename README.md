@@ -26,7 +26,7 @@ composer require romanzipp/laravel-queue-monitor
 Copy configuration & migration to your project:
 
 ```
-php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider"
+php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider"  --tag=config --tag=migrations
 ```
 
 Migrate the Queue Monitoring table. The table name can be configured in the config file or via the published migration.
