@@ -1,4 +1,4 @@
-name: PHP Coding Standards Fixer
+name: PHP-CS-Fixer
 
 on: push
 
