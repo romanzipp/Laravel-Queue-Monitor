@@ -47,6 +47,7 @@ class QueueMonitorProvider extends ServiceProvider
             'queue-monitor'
         );
 
+        /** @phpstan-ignore-next-line */
         Route::mixin(new QueueMonitorRoutes());
 
         /** @var QueueManager $manager */
@@ -76,6 +77,7 @@ class QueueMonitorProvider extends ServiceProvider
      */
     public function register()
     {
+        /** @phpstan-ignore-next-line */
         if ( ! $this->app->configurationIsCached()) {
             $this->mergeConfigFrom(
                 __DIR__ . '/../../config/queue-monitor.php',

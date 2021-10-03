@@ -12,7 +12,7 @@ use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 use Throwable;
 
 /**
- * @property int id
+ * @property int $id
  * @property string $job_id
  * @property string|null $name
  * @property string|null $queue
@@ -40,17 +40,29 @@ class Monitor extends Model implements MonitorContract
 {
     protected $guarded = [];
 
+    /**
+     * @var array<string, string>
+     */
     protected $casts = [
         'failed' => 'bool',
     ];
 
+    /**
+     * @var string[]
+     */
     protected $dates = [
         'started_at',
         'finished_at',
     ];
 
+    /**
+     * @var bool
+     */
     public $timestamps = false;
 
+    /**
+     * @param array<string, mixed> $attributes
+     */
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
@@ -68,36 +80,40 @@ class Monitor extends Model implements MonitorContract
      *--------------------------------------------------------------------------
      */
 
-    public function scopeWhereJob(Builder $query, $jobId)
+    /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string|int $jobId
+     */
+    public function scopeWhereJob(Builder $query, $jobId): void
     {
-        return $query->where('job_id', $jobId);
+        $query->where('job_id', $jobId);
     }
 
-    public function scopeOrdered(Builder $query)
+    public function scopeOrdered(Builder $query): void
     {
-        return $query
+        $query
             ->orderBy('started_at', 'desc')
             ->orderBy('started_at_exact', 'desc');
     }
 
-    public function scopeLastHour(Builder $query)
+    public function scopeLastHour(Builder $query): void
     {
-        return $query->where('started_at', '>', Carbon::now()->subHours(1));
+        $query->where('started_at', '>', Carbon::now()->subHours(1));
     }
 
-    public function scopeToday(Builder $query)
+    public function scopeToday(Builder $query): void
     {
-        return $query->whereRaw('DATE(started_at) = ?', [Carbon::now()->subHours(1)->format('Y-m-d')]);
+        $query->whereRaw('DATE(started_at) = ?', [Carbon::now()->subHours(1)->format('Y-m-d')]);
     }
 
-    public function scopeFailed(Builder $query)
+    public function scopeFailed(Builder $query): void
     {
-        return $query->where('failed', true);
+        $query->where('failed', true);
     }
 
-    public function scopeSucceeded(Builder $query)
+    public function scopeSucceeded(Builder $query): void
     {
-        return $query->where('failed', false);
+        $query->where('failed', false);
     }
 
     /*
@@ -185,7 +201,7 @@ class Monitor extends Model implements MonitorContract
     /**
      * Get any optional data that has been added to the monitor model within the job.
      *
-     * @return array
+     * @return array<string, mixed>
      */
     public function getData(): array
     {
