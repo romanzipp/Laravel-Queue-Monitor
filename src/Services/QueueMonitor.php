@@ -16,8 +16,14 @@ class QueueMonitor
 {
     private const TIMESTAMP_EXACT_FORMAT = 'Y-m-d H:i:s.u';
 
+    /**
+     * @var bool
+     */
     public static $loadMigrations = false;
 
+    /**
+     * @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract
+     */
     public static $model;
 
     /**
@@ -33,7 +39,7 @@ class QueueMonitor
     /**
      * Handle Job Processing.
      *
-     * @param JobProcessing $event
+     * @param \Illuminate\Queue\Events\JobProcessing $event
      *
      * @return void
      */
@@ -45,7 +51,7 @@ class QueueMonitor
     /**
      * Handle Job Processed.
      *
-     * @param JobProcessed $event
+     * @param \Illuminate\Queue\Events\JobProcessed $event
      *
      * @return void
      */
@@ -57,7 +63,7 @@ class QueueMonitor
     /**
      * Handle Job Failing.
      *
-     * @param JobFailed $event
+     * @param \Illuminate\Queue\Events\JobFailed $event
      *
      * @return void
      */
@@ -69,7 +75,7 @@ class QueueMonitor
     /**
      * Handle Job Exception Occurred.
      *
-     * @param JobExceptionOccurred $event
+     * @param \Illuminate\Queue\Events\JobExceptionOccurred $event
      *
      * @return void
      */
@@ -81,7 +87,7 @@ class QueueMonitor
     /**
      * Get Job ID.
      *
-     * @param JobContract $job
+     * @param \Illuminate\Contracts\Queue\Job $job
      *
      * @return string|int
      */
@@ -97,7 +103,7 @@ class QueueMonitor
     /**
      * Start Queue Monitoring for Job.
      *
-     * @param JobContract $job
+     * @param \Illuminate\Contracts\Queue\Job $job
      *
      * @return void
      */
@@ -124,9 +130,9 @@ class QueueMonitor
     /**
      * Finish Queue Monitoring for Job.
      *
-     * @param JobContract $job
+     * @param \Illuminate\Contracts\Queue\Job $job
      * @param bool $failed
-     * @param Throwable|null $exception
+     * @param \Throwable|null $exception
      *
      * @return void
      */
@@ -155,7 +161,6 @@ class QueueMonitor
             $timeElapsed = (float) $startedAt->diffInSeconds($now) + $startedAt->diff($now)->f;
         }
 
-        /** @var IsMonitored $resolvedJob */
         $resolvedJob = $job->resolveName();
 
         if (null === $exception && false === $resolvedJob::keepMonitorOnSuccess()) {
@@ -185,7 +190,7 @@ class QueueMonitor
     /**
      * Determine weather the Job should be monitored, default true.
      *
-     * @param JobContract $job
+     * @param \Illuminate\Contracts\Queue\Job $job
      *
      * @return bool
      */

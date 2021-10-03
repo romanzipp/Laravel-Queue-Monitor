@@ -35,7 +35,7 @@ class ClassUses
      *
      * @param object|string $class
      *
-     * @return array
+     * @return string[]
      */
     public static function classUsesRecursive($class)
     {
@@ -45,6 +45,7 @@ class ClassUses
 
         $results = [];
 
+        /** @phpstan-ignore-next-line */
         foreach (array_reverse(class_parents($class)) + [$class => $class] as $class) {
             $results += self::traitUsesRecursive($class);
         }
@@ -57,7 +58,7 @@ class ClassUses
      *
      * @param string $trait
      *
-     * @return array
+     * @return string[]
      */
     public static function traitUsesRecursive($trait)
     {
