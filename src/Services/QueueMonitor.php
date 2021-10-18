@@ -116,7 +116,7 @@ class QueueMonitor
 
         $model = self::getModel();
 
-        $model::query()->create([
+        $monitor = $model::query()->create([
             'job_id' => $jobId = self::getJobId($job),
             'name' => $job->resolveName(),
             'queue' => $job->getQueue(),
@@ -126,6 +126,7 @@ class QueueMonitor
         ]);
 
         $model::query()
+            ->where('id', '!=', $monitor)
             ->where('job_id', $jobId)
             ->where('failed', false)
             ->whereNull('finished_at')
