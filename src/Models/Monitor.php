@@ -49,6 +49,14 @@ class Monitor extends Model implements MonitorContract
     ];
 
     /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'attempt' => 'int',
+        'status' => 'int',
+    ];
+
+    /**
      * @var bool
      */
     public $timestamps = false;
