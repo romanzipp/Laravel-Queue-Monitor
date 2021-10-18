@@ -41,8 +41,8 @@ class TestCase extends BaseTestCase
     {
         $rows = DB::select('SELECT * FROM jobs');
 
-        $this->assertCount(1, $rows);
-        $this->assertEquals($jobClass, json_decode($rows[0]->payload)->displayName);
+        self::assertCount(1, $rows);
+        self::assertEquals($jobClass, json_decode($rows[0]->payload)->displayName);
 
         return $this;
     }
