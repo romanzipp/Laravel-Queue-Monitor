@@ -27,8 +27,7 @@ class UpdateQueueMonitorTable extends Migration
         });
 
         Schema::table(config('queue-monitor.table'), function (Blueprint $table) {
-            $table->dropColumn('failed');
-            $table->dropColumn('time_elapsed');
+            $table->dropColumn(['failed', 'time_elapsed']);
         });
     }
 
