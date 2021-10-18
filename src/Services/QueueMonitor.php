@@ -16,11 +16,6 @@ class QueueMonitor
     private const TIMESTAMP_EXACT_FORMAT = 'Y-m-d H:i:s.u';
 
     /**
-     * @var bool
-     */
-    public static $loadMigrations = false;
-
-    /**
      * @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract
      */
     public static $model;
