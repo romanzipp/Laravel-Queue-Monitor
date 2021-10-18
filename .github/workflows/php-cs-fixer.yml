@@ -1,6 +1,6 @@
 name: PHP-CS-Fixer
 
-on: push
+on: [ push ]
 
 jobs:
   phpcs:
