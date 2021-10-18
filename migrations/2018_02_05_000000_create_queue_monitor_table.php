@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateQueueMonitorTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create(config('queue-monitor.table'), function (Blueprint $table) {
@@ -41,11 +36,6 @@ class CreateQueueMonitorTable extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::drop(config('queue-monitor.table'));
