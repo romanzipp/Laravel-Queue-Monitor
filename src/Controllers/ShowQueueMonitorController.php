@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use romanzipp\QueueMonitor\Controllers\Payloads\Metric;
 use romanzipp\QueueMonitor\Controllers\Payloads\Metrics;
+use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
 
@@ -91,19 +92,21 @@ class ShowQueueMonitorController
 
         $aggregationColumns = [
             DB::raw('COUNT(*) as count'),
-            DB::raw('SUM(TIMESTAMPDIFF(started_at, finished_at)) as total_time_elapsed'),
-            DB::raw('AVG(TIMESTAMPDIFF(started_at, finished_at)) as average_time_elapsed'),
+            DB::raw('SUM(TIMESTAMPDIFF(SECOND, `started_at`, `finished_at`)) as `total_time_elapsed`'),
+            DB::raw('AVG(TIMESTAMPDIFF(SECOND, `started_at`, `finished_at`)) as `average_time_elapsed`'),
         ];
 
         $aggregatedInfo = QueueMonitor::getModel()
             ->newQuery()
             ->select($aggregationColumns)
+            ->where('status', '!=', MonitorStatus::RUNNING)
             ->where('started_at', '>=', Carbon::now()->subDays($timeFrame))
             ->first();
 
         $aggregatedComparisonInfo = QueueMonitor::getModel()
             ->newQuery()
             ->select($aggregationColumns)
+            ->where('status', '!=', MonitorStatus::RUNNING)
             ->where('started_at', '>=', Carbon::now()->subDays($timeFrame * 2))
             ->where('started_at', '<=', Carbon::now()->subDays($timeFrame))
             ->first();
