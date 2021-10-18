@@ -91,8 +91,8 @@ class ShowQueueMonitorController
 
         $aggregationColumns = [
             DB::raw('COUNT(*) as count'),
-            DB::raw('SUM(time_elapsed) as total_time_elapsed'),
-            DB::raw('AVG(time_elapsed) as average_time_elapsed'),
+            DB::raw('SUM(TIMESTAMPDIFF(started_at, finished_at)) as total_time_elapsed'),
+            DB::raw('AVG(TIMESTAMPDIFF(started_at, finished_at)) as average_time_elapsed'),
         ];
 
         $aggregatedInfo = QueueMonitor::getModel()

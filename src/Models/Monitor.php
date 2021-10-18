@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 
 /**
@@ -19,8 +20,7 @@ use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
  * @property string|null $started_at_exact
  * @property \Illuminate\Support\Carbon|null $finished_at
  * @property string|null $finished_at_exact
- * @property float $time_elapsed
- * @property bool $failed
+ * @property int $status
  * @property int $attempt
  * @property int|null $progress
  * @property string|null $exception
@@ -101,12 +101,12 @@ class Monitor extends Model implements MonitorContract
 
     public function scopeFailed(Builder $query): void
     {
-        $query->where('failed', true);
+        $query->where('failed', MonitorStatus::FAILED);
     }
 
     public function scopeSucceeded(Builder $query): void
     {
-        $query->where('failed', false);
+        $query->where('status', MonitorStatus::SUCCEEDED);
     }
 
     /*
@@ -260,7 +260,7 @@ class Monitor extends Model implements MonitorContract
      */
     public function hasFailed(): bool
     {
-        return true === $this->failed;
+        return MonitorStatus::FAILED === $this->status;
     }
 
     /**
