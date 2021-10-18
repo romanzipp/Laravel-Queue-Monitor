@@ -10,21 +10,21 @@ class MonitorTimeCalculationTest extends TestCase
 {
     public function testRemaingSeconds()
     {
-        $this->assertEquals(
+        self::assertEquals(
             30,
             $this
                 ->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 50)
                 ->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:30'))
         );
 
-        $this->assertEquals(
+        self::assertEquals(
             19,
             $this
                 ->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 5)
                 ->getRemainingSeconds(Carbon::parse('2020-01-01 10:00:01'))
         );
 
-        $this->assertEquals(
+        self::assertEquals(
             495,
             $this
                 ->createMonitor(Carbon::parse('2020-01-01 10:00:00'), 1)
@@ -34,21 +34,21 @@ class MonitorTimeCalculationTest extends TestCase
 
     public function testElaspedSeconds()
     {
-        $this->assertEquals(
+        self::assertEquals(
             30,
             $this
                 ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))
                 ->getElapsedSeconds(Carbon::parse('2020-01-01 10:00:30'))
         );
 
-        $this->assertEquals(
+        self::assertEquals(
             1,
             $this
                 ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))
                 ->getElapsedSeconds(Carbon::parse('2020-01-01 10:00:01'))
         );
 
-        $this->assertEquals(
+        self::assertEquals(
             5,
             $this
                 ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))
@@ -58,7 +58,7 @@ class MonitorTimeCalculationTest extends TestCase
 
     public function testElapsedSecondsInterval()
     {
-        $this->assertEquals(
+        self::assertEquals(
             '00:00:05',
             $this
                 ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))
@@ -66,7 +66,7 @@ class MonitorTimeCalculationTest extends TestCase
                 ->format('%H:%I:%S')
         );
 
-        $this->assertEquals(
+        self::assertEquals(
             '01:00:00',
             $this
                 ->createMonitor(Carbon::parse('2020-01-01 10:00:00'))

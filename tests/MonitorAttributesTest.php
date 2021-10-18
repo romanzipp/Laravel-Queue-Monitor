@@ -17,10 +17,10 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithData());
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithData::class, $monitor->name);
-        $this->assertEquals('{"foo":"bar"}', $monitor->data);
-        $this->assertEquals(['foo' => 'bar'], $monitor->getData());
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithData::class, $monitor->name);
+        self::assertEquals('{"foo":"bar"}', $monitor->data);
+        self::assertEquals(['foo' => 'bar'], $monitor->getData());
     }
 
     public function testMergeData()
@@ -28,10 +28,10 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithMergedData());
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithMergedData::class, $monitor->name);
-        $this->assertEquals('{"foo":"foo","bar":"bar"}', $monitor->data);
-        $this->assertEquals(['foo' => 'foo', 'bar' => 'bar'], $monitor->getData());
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithMergedData::class, $monitor->name);
+        self::assertEquals('{"foo":"foo","bar":"bar"}', $monitor->data);
+        self::assertEquals(['foo' => 'foo', 'bar' => 'bar'], $monitor->getData());
     }
 
     public function testMergeDataConflicting()
@@ -39,10 +39,10 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithMergedDataConflicting());
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithMergedDataConflicting::class, $monitor->name);
-        $this->assertEquals('{"foo":"new"}', $monitor->data);
-        $this->assertEquals(['foo' => 'new'], $monitor->getData());
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithMergedDataConflicting::class, $monitor->name);
+        self::assertEquals('{"foo":"new"}', $monitor->data);
+        self::assertEquals(['foo' => 'new'], $monitor->getData());
     }
 
     public function testProgress()
@@ -50,9 +50,9 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithProgress(50));
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithProgress::class, $monitor->name);
-        $this->assertEquals(50, $monitor->progress);
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithProgress::class, $monitor->name);
+        self::assertEquals(50, $monitor->progress);
     }
 
     public function testProgressTooLarge()
@@ -60,9 +60,9 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithProgress(120));
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithProgress::class, $monitor->name);
-        $this->assertEquals(100, $monitor->progress);
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithProgress::class, $monitor->name);
+        self::assertEquals(100, $monitor->progress);
     }
 
     public function testProgressNegative()
@@ -70,9 +70,9 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithProgress(-20));
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithProgress::class, $monitor->name);
-        $this->assertEquals(0, $monitor->progress);
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithProgress::class, $monitor->name);
+        self::assertEquals(0, $monitor->progress);
     }
 
     public function testProgressStandby()
@@ -80,9 +80,9 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithProgressCooldown(0));
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithProgressCooldown::class, $monitor->name);
-        $this->assertEquals(0, $monitor->progress);
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithProgressCooldown::class, $monitor->name);
+        self::assertEquals(0, $monitor->progress);
     }
 
     public function testProgressStandbyIgnoredValue()
@@ -90,9 +90,9 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithProgressCooldown(50));
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithProgressCooldown::class, $monitor->name);
-        $this->assertEquals(50, $monitor->progress);
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithProgressCooldown::class, $monitor->name);
+        self::assertEquals(50, $monitor->progress);
     }
 
     public function testProgressStandbyTen()
@@ -100,9 +100,9 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithProgressCooldown(10));
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithProgressCooldown::class, $monitor->name);
-        $this->assertEquals(0, $monitor->progress);
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithProgressCooldown::class, $monitor->name);
+        self::assertEquals(0, $monitor->progress);
     }
 
     public function testProgressStandbyInFuture()
@@ -110,9 +110,9 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithProgressCooldownMockingTime(0));
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithProgressCooldownMockingTime::class, $monitor->name);
-        $this->assertEquals(0, $monitor->progress);
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithProgressCooldownMockingTime::class, $monitor->name);
+        self::assertEquals(0, $monitor->progress);
     }
 
     public function testProgressStandbyInFutureIgnoredValue()
@@ -120,9 +120,9 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithProgressCooldownMockingTime(50));
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithProgressCooldownMockingTime::class, $monitor->name);
-        $this->assertEquals(50, $monitor->progress);
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithProgressCooldownMockingTime::class, $monitor->name);
+        self::assertEquals(50, $monitor->progress);
     }
 
     public function testProgressStandbyInFutureTen()
@@ -130,8 +130,8 @@ class MonitorAttributesTest extends TestCase
         $this->dispatch(new MonitoredJobWithProgressCooldownMockingTime(10));
         $this->workQueue();
 
-        $this->assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
-        $this->assertEquals(MonitoredJobWithProgressCooldownMockingTime::class, $monitor->name);
-        $this->assertEquals(10, $monitor->progress);
+        self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
+        self::assertEquals(MonitoredJobWithProgressCooldownMockingTime::class, $monitor->name);
+        self::assertEquals(10, $monitor->progress);
     }
 }
