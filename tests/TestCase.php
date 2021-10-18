@@ -2,32 +2,38 @@
 
 namespace romanzipp\QueueMonitor\Tests;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use romanzipp\QueueMonitor\Providers\QueueMonitorProvider;
-use romanzipp\QueueMonitor\Services\QueueMonitor;
 use romanzipp\QueueMonitor\Tests\Support\BaseJob;
 
 class TestCase extends BaseTestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
 
     public function setUp(): void
     {
-        QueueMonitor::$loadMigrations = true;
-
         parent::setUp();
 
         $this->withoutMockingConsoleOutput();
         $this->withoutExceptionHandling();
+    }
 
+    protected function defineDatabaseMigrations()
+    {
         try {
             $this->artisan('queue:table');
             $this->artisan('migrate');
-        } catch (\InvalidArgumentException $e) {
-            // TODO: this command fails locally but is required for travis ci
+        } catch (\InvalidArgumentException $exception) {
         }
+
+        try {
+            $this->artisan('queue:failed-table');
+        } catch (\InvalidArgumentException $exception) {
+        }
+
+        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
     }
 
     protected function dispatch(BaseJob $job): self
