@@ -1,6 +1,6 @@
 name: PHPStan
 
-on: [push]
+on: [ push ]
 
 jobs:
   phpstan:
