@@ -117,13 +117,24 @@ class QueueMonitor
         $model = self::getModel();
 
         $model::query()->create([
-            'job_id' => self::getJobId($job),
+            'job_id' => $jobId = self::getJobId($job),
             'name' => $job->resolveName(),
             'queue' => $job->getQueue(),
             'started_at' => $now,
             'started_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
             'attempt' => $job->attempts(),
         ]);
+
+        $model::query()
+            ->where('job_id', $jobId)
+            ->where('failed', false)
+            ->whereNull('finished_at')
+            ->each(function (MonitorContract $monitor) {
+                $monitor->finished_at = $now = Carbon::now();
+                $monitor->finished_at_exact = $now->format(self::TIMESTAMP_EXACT_FORMAT);
+                $monitor->failed = true;
+                $monitor->save();
+            });
     }
 
     /**
