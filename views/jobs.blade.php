@@ -121,27 +121,7 @@
                     <tr class="font-sm leading-relaxed">
 
                         <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
-
-                            @if(!$job->isFinished())
-
-                                <div class="inline-flex flex-1 px-2 text-xs font-medium leading-5 rounded-full bg-blue-200 text-blue-800">
-                                    @lang('Running')
-                                </div>
-
-                            @elseif($job->hasSucceeded())
-
-                                <div class="inline-flex flex-1 px-2 text-xs font-medium leading-5 rounded-full bg-green-200 text-green-800">
-                                    @lang('Success')
-                                </div>
-
-                            @else
-
-                                <div class="inline-flex flex-1 px-2 text-xs font-medium leading-5 rounded-full bg-red-200 text-red-800">
-                                    @lang('Failed')
-                                </div>
-
-                            @endif
-
+                            @include('queue-monitor::partials.job-status', ['status' => $job->status])
                         </td>
 
                         <td class="p-4 text-gray-800 text-sm leading-5 font-medium border-b border-gray-200">
