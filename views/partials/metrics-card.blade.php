@@ -3,8 +3,8 @@
     <div class="h-full flex flex-col justify-between p-6 bg-white rounded shadow-md">
 
         <div class="font-semibold text-sm text-gray-600"
-             title="Last {{ config('queue-monitor.ui.metrics_time_frame') ?? 14 }} days">
-            {{ $metric->title }}
+             title="{{ __('Last :days days', ['days' => config('queue-monitor.ui.metrics_time_frame') ?? 14]) }}">
+            {{ __($metric->title) }}
         </div>
 
         <div>
@@ -19,12 +19,12 @@
 
                     @if($metric->hasChanged())
                         @if($metric->hasIncreased())
-                            Up from
+                            @lang('Up from')
                         @else
-                            Down from
+                            @lang('Down from')
                         @endif
                     @else
-                        No change from
+                        @lang('No change from')
                     @endif
 
                     {{ $metric->format($metric->previousValue) }}

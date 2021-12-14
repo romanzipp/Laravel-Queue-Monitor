@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Queue Monitor</title>
+    <title>@lang('Queue Monitor')</title>
 
     <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
 
@@ -15,7 +15,7 @@
 <body class="font-sans p-6 pb-64 bg-gray-100">
 
     <h1 class="mb-6 text-5xl text-blue-900 font-bold">
-        Queue Monitor
+        @lang('Queue Monitor')
     </h1>
 
     @isset($metrics)
@@ -37,7 +37,7 @@
     <div class="px-6 py-4 mb-6 pl-4 bg-white rounded-md shadow-md">
 
         <h2 class="mb-4 text-2xl font-bold text-blue-900">
-            Filter
+            @lang('Filter')
         </h2>
 
         <form action="" method="get">
@@ -46,25 +46,25 @@
 
                 <div class="px-2 w-1/4">
                     <label for="filter_show" class="block mb-1 text-xs uppercase font-semibold text-gray-600">
-                        Show jobs
+                        @lang('Show jobs')
                     </label>
                     <select name="type" id="filter_show" class="w-full p-2 bg-gray-200 border-2 border-gray-300 rounded">
-                        <option @if($filters['type'] === 'all') selected @endif value="all">All</option>
-                        <option @if($filters['type'] === 'running') selected @endif value="running">Running</option>
-                        <option @if($filters['type'] === 'failed') selected @endif value="failed">Failed</option>
-                        <option @if($filters['type'] === 'succeeded') selected @endif value="succeeded">Succeeded</option>
+                        <option @if($filters['type'] === 'all') selected @endif value="all">@lang('All')</option>
+                        <option @if($filters['type'] === 'running') selected @endif value="running">@lang('Running')</option>
+                        <option @if($filters['type'] === 'failed') selected @endif value="failed">@lang('Failed')</option>
+                        <option @if($filters['type'] === 'succeeded') selected @endif value="succeeded">@lang('Succeeded')</option>
                     </select>
                 </div>
 
                 <div class="px-2 w-1/4">
                     <label for="filter_queues" class="block mb-1 text-xs uppercase font-semibold text-gray-600">
-                        Queues
+                        @lang('Queues')
                     </label>
                     <select name="queue" id="filter_queues" class="w-full p-2 bg-gray-200 border-2 border-gray-300 rounded">
                         <option value="all">All</option>
                         @foreach($queues as $queue)
                             <option @if($filters['queue'] === $queue) selected @endif value="{{ $queue }}">
-                                {{ $queue }}
+                                {{ __($queue) }}
                             </option>
                         @endforeach
                     </select>
@@ -75,7 +75,7 @@
             <div class="mt-4">
 
                 <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-xs font-medium uppercase tracking-wider text-white rounded">
-                    Filter
+                    @lang('Filter')
                 </button>
 
             </div>
@@ -91,21 +91,21 @@
             <thead class="bg-gray-200">
 
                 <tr>
-                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Status</th>
-                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Job</th>
-                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Details</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Status')</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Job')</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Details')</th>
 
                     @if(config('queue-monitor.ui.show_custom_data'))
-                        <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Custom Data</th>
+                        <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Custom Data')</th>
                     @endif
 
-                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Progress</th>
-                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Duration</th>
-                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Started</th>
-                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Error</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Progress')</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Duration')</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Started')</th>
+                    <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Error')</th>
 
                     @if(config('queue-monitor.ui.allow_deletion'))
-                        <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">Action</th>
+                        <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Action')</th>
                     @endif
                 </tr>
 
@@ -122,19 +122,19 @@
                             @if(!$job->isFinished())
 
                                 <div class="inline-flex flex-1 px-2 text-xs font-medium leading-5 rounded-full bg-blue-200 text-blue-800">
-                                    Running
+                                    @lang('Running')
                                 </div>
 
                             @elseif($job->hasSucceeded())
 
                                 <div class="inline-flex flex-1 px-2 text-xs font-medium leading-5 rounded-full bg-green-200 text-green-800">
-                                    Success
+                                    @lang('Success')
                                 </div>
 
                             @else
 
                                 <div class="inline-flex flex-1 px-2 text-xs font-medium leading-5 rounded-full bg-red-200 text-red-800">
-                                    Failed
+                                    @lang('Failed')
                                 </div>
 
                             @endif
@@ -154,12 +154,12 @@
                         <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
 
                             <div class="text-xs">
-                                <span class="text-gray-600 font-medium">Queue:</span>
+                                <span class="text-gray-600 font-medium">@lang('Queue'):</span>
                                 <span class="font-semibold">{{ $job->queue }}</span>
                             </div>
 
                             <div class="text-xs">
-                                <span class="text-gray-600 font-medium">Attempt:</span>
+                                <span class="text-gray-600 font-medium">@lang('Attempt'):</span>
                                 <span class="font-semibold">{{ $job->attempt }}</span>
                             </div>
 
@@ -230,7 +230,7 @@
                                     @method('delete')
 
                                     <button class="px-3 py-1 bg-red-200 hover:bg-red-300 text-red-800 text-xs font-medium uppercase tracking-wider text-white rounded">
-                                        Delete
+                                        @lang('Delete')
                                     </button>
 
                                 </form>
@@ -252,7 +252,7 @@
                                 <div class="text-center">
 
                                     <div class="text-gray-500 text-lg">
-                                        No Jobs
+                                        @lang('No Jobs')
                                     </div>
 
                                 </div>
@@ -276,24 +276,24 @@
                         <div class="flex justify-between">
 
                             <div>
-                                Showing
+                                @lang('Showing')
                                 @if($jobs->total() > 0)
-                                    <span class="font-medium">{{ $jobs->firstItem() }}</span> to
-                                    <span class="font-medium">{{ $jobs->lastItem() }}</span> of
+                                    <span class="font-medium">{{ $jobs->firstItem() }}</span> @lang('to')
+                                    <span class="font-medium">{{ $jobs->lastItem() }}</span> @lang('of')
                                 @endif
-                                <span class="font-medium">{{ $jobs->total() }}</span> result
+                                <span class="font-medium">{{ $jobs->total() }}</span> @lang('result')
                             </div>
 
                             <div>
 
                                 <a class="py-2 px-4 mx-1 text-xs font-medium @if(!$jobs->onFirstPage()) bg-gray-200 hover:bg-gray-300 cursor-pointer @else text-gray-600 bg-gray-100 cursor-not-allowed @endif rounded"
                                    @if(!$jobs->onFirstPage()) href="{{ $jobs->previousPageUrl() }}" @endif>
-                                    Previous
+                                    @lang('Previous')
                                 </a>
 
                                 <a class="py-2 px-4 mx-1 text-xs font-medium @if($jobs->hasMorePages()) bg-gray-200 hover:bg-gray-300 cursor-pointer @else text-gray-600 bg-gray-100 cursor-not-allowed @endif rounded"
                                    @if($jobs->hasMorePages()) href="{{ $jobs->url($jobs->currentPage() + 1) }}" @endif>
-                                    Next
+                                    @lang('Next')
                                 </a>
 
                             </div>
@@ -320,7 +320,7 @@
                 @method('delete')
 
                 <button class="px-3 py-1 bg-red-200 hover:bg-red-300 text-red-800 text-xs font-medium uppercase tracking-wider text-white rounded">
-                    Delete all entries
+                    @lang('Delete all entries')
                 </button>
 
             </form>
