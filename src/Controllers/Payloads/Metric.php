@@ -10,7 +10,7 @@ final class Metric
     public $title;
 
     /**
-     * @var int
+     * @var float
      */
     public $value;
 
