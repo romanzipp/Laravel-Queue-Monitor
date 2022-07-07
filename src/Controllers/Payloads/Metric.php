@@ -24,7 +24,7 @@ final class Metric
      */
     public $format;
 
-    public function __construct(string $title, int $value = 0, int $previousValue = null, string $format = '%d')
+    public function __construct(string $title, float $value = 0, int $previousValue = null, string $format = '%d')
     {
         $this->title = $title;
         $this->value = $value;
