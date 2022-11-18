@@ -5,6 +5,9 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @if(config('queue-monitor.ui.refresh-interval'))
+        <meta http-equiv="refresh" content="{{ config('queue-monitor.ui.refresh-interval') }}">
+    @endif
 
     <title>@lang('Queue Monitor')</title>
 
