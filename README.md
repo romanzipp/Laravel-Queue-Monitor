@@ -262,6 +262,16 @@ Monitor::today();
 Monitor::today()->failed();
 ```
 
+## Tests
+
+Requires [**Lando**](https://lando.dev/).
+
+```shell
+lando start
+
+lando phpunit
+```
+
 ## Upgrading
 
 - [Upgrade from 1.0 to 2.0](https://github.com/romanzipp/Laravel-Queue-Monitor/releases/tag/2.0.0)
