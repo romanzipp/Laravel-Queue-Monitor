@@ -8,6 +8,7 @@ use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Carbon;
+use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
 
@@ -126,12 +127,12 @@ class QueueMonitor
         $model::query()
             ->where('id', '!=', $monitor->id)
             ->where('job_id', $jobId)
-            ->where('failed', false)
+            ->where('status', '!=', MonitorStatus::FAILED)
             ->whereNull('finished_at')
             ->each(function (MonitorContract $monitor) {
                 $monitor->finished_at = $now = Carbon::now();
                 $monitor->finished_at_exact = $now->format(self::TIMESTAMP_EXACT_FORMAT);
-                $monitor->failed = true;
+                $monitor->status = MonitorStatus::FAILED;
                 $monitor->save();
             });
     }
