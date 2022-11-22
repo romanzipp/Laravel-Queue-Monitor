@@ -23,19 +23,9 @@ class TestCase extends BaseTestCase
         $this->withoutExceptionHandling();
     }
 
-    protected function refreshTestDatabase()
-    {
-        rescue(fn () => $this->artisan('queue:table'));
-        rescue(fn () => $this->artisan('queue:failed-table'));
-        rescue(fn () => $this->artisan('migrate'));
-
-        parent::refreshTestDatabase();
-    }
-
     protected function dispatch(BaseJob $job): self
     {
         app(Dispatcher::class)->dispatch($job);
-        // dispatch($job);
 
         $this->assertQueueSize(1);
 
