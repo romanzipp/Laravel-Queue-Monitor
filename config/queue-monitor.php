@@ -55,6 +55,6 @@ return [
         /**
         * The interval before refreshing the dashboard (in seconds).
         */
-        'refresh-interval' => 10,
+        'refresh-interval' => null,
     ],
 ];
