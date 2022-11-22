@@ -26,8 +26,8 @@
     <php>
         <server name="APP_ENV" value="testing"/>
         <server name="DB_CONNECTION" value="mysql"/>
-        <server name="DB_HOST" value="database"/>
-        <server name="DB_PORT" value="3306"/>
+        <env name="DB_HOST" value="database"/>
+        <env name="DB_PORT" value="3306"/>
         <server name="DB_USERNAME" value="web"/>
         <server name="DB_PASSWORD" value="web"/>
         <server name="DB_DATABASE" value="web"/>
