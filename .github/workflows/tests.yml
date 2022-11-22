@@ -45,6 +45,3 @@ jobs:
         env:
           DB_PORT: ${{ job.services.database.ports[3306] }}
           DB_HOST: 127.0.0.1
-          DB_USERNAME: web
-          DB_PASSWORD: web
-          DB_DATABASE: web
