@@ -4,11 +4,8 @@ on: [ push ]
 
 jobs:
   phpcs:
-
     runs-on: ubuntu-latest
-
     steps:
-
       - uses: actions/checkout@v2
 
       - name: Setup PHP
