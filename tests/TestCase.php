@@ -4,16 +4,14 @@ namespace romanzipp\QueueMonitor\Tests;
 
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\DB;
-use Orchestra\Testbench\Concerns\CreatesApplication;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 use romanzipp\QueueMonitor\Providers\QueueMonitorProvider;
 use romanzipp\QueueMonitor\Tests\Support\BaseJob;
 
 class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
-    use CreatesApplication;
 
     public function setUp(): void
     {
