@@ -4,12 +4,13 @@ namespace romanzipp\QueueMonitor\Tests;
 
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\DB;
 use Orchestra\Testbench\Concerns\CreatesApplication;
 use romanzipp\QueueMonitor\Providers\QueueMonitorProvider;
 use romanzipp\QueueMonitor\Tests\Support\BaseJob;
 
-class TestCase extends \Illuminate\Foundation\Testing\TestCase
+class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
     use CreatesApplication;
@@ -22,19 +23,9 @@ class TestCase extends \Illuminate\Foundation\Testing\TestCase
         $this->withoutExceptionHandling();
     }
 
-    protected function refreshTestDatabase()
-    {
-        rescue(fn () => $this->artisan('queue:table'));
-        rescue(fn () => $this->artisan('queue:failed-table'));
-        rescue(fn () => $this->artisan('migrate'));
-
-        parent::refreshTestDatabase();
-    }
-
     protected function dispatch(BaseJob $job): self
     {
         app(Dispatcher::class)->dispatch($job);
-        // dispatch($job);
 
         $this->assertQueueSize(1);
 
