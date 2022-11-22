@@ -41,7 +41,7 @@ jobs:
         run: composer update --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist --prefer-stable
 
       - name: Execute tests
-        run: vendor/bin/phpunit --stop-on-fail
+        run: vendor/bin/phpunit
         env:
           DB_PORT: ${{ job.services.database.ports[3306] }}
           DB_HOST: 127.0.0.1
