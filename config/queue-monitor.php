@@ -53,8 +53,8 @@ return [
         'metrics_time_frame' => 14,
         
         /**
-        * The interval before refreshing the dashboard (in seconds).
-        */
+         * The interval before refreshing the dashboard (in seconds).
+         */
         'refresh-interval' => null,
     ],
 ];
