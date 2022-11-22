@@ -4,7 +4,6 @@ namespace romanzipp\QueueMonitor\Tests;
 
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Facades\DB;
-use InvalidArgumentException;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use romanzipp\QueueMonitor\Providers\QueueMonitorProvider;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
@@ -26,7 +25,7 @@ class TestCase extends BaseTestCase
         try {
             $this->artisan('queue:table');
             $this->artisan('migrate');
-        } catch (InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException $e) {
             // TODO: this command fails locally but is required for travis ci
         }
     }

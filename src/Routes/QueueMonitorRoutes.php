@@ -2,8 +2,6 @@
 
 namespace romanzipp\QueueMonitor\Routes;
 
-use Closure;
-
 class QueueMonitorRoutes
 {
     /**
@@ -11,7 +9,7 @@ class QueueMonitorRoutes
      *
      * @return \Closure
      */
-    public function queueMonitor(): Closure
+    public function queueMonitor(): \Closure
     {
         return function (array $options = []) {
             /** @var \Illuminate\Routing\Router $this */

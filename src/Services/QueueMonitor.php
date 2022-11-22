@@ -10,7 +10,6 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Support\Carbon;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
-use Throwable;
 
 class QueueMonitor
 {
@@ -136,7 +135,7 @@ class QueueMonitor
      *
      * @return void
      */
-    protected static function jobFinished(JobContract $job, bool $failed = false, ?Throwable $exception = null): void
+    protected static function jobFinished(JobContract $job, bool $failed = false, ?\Throwable $exception = null): void
     {
         if ( ! self::shouldBeMonitored($job)) {
             return;

@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
-use Throwable;
 
 /**
  * @property int $id
@@ -215,7 +214,7 @@ class Monitor extends Model implements MonitorContract
      *
      * @return \Throwable|null
      */
-    public function getException(bool $rescue = true): ?Throwable
+    public function getException(bool $rescue = true): ?\Throwable
     {
         if (null === $this->exception_class) {
             return null;
@@ -227,7 +226,7 @@ class Monitor extends Model implements MonitorContract
 
         try {
             return new $this->exception_class($this->exception_message);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             return null;
         }
     }
