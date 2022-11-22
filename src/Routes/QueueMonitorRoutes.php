@@ -2,6 +2,8 @@
 
 namespace romanzipp\QueueMonitor\Routes;
 
+use romanzipp\QueueMonitor\Controllers;
+
 class QueueMonitorRoutes
 {
     /**
