@@ -4,7 +4,6 @@ on: [ push ]
 
 jobs:
   test:
-
     strategy:
       fail-fast: false
       matrix:
@@ -17,11 +16,19 @@ jobs:
             composer-dependency: prefer-lowest
 
     name: "PHP ${{ matrix.php }}"
-
     runs-on: ubuntu-latest
-
+    services:
+      database:
+        image: mariadb:10.6
+        env:
+          MYSQL_DATABASE: web
+          MYSQL_USER: web
+          MYSQL_PASSWORD: web
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
     steps:
-
       - uses: actions/checkout@v2
 
       - name: Setup PHP
@@ -34,4 +41,10 @@ jobs:
         run: composer update --no-interaction --no-scripts --no-suggest --no-progress --prefer-dist --prefer-stable
 
       - name: Execute tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --stop-on-fail
+        env:
+          DB_PORT: ${{ job.services.database.ports[3306] }}
+          DB_HOST: 127.0.0.1
+          DB_USERNAME: web
+          DB_PASSWORD: web
+          DB_DATABASE: web
