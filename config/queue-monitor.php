@@ -51,7 +51,7 @@ return [
          * Time frame used to calculate metrics values (in days).
          */
         'metrics_time_frame' => 14,
-        
+
         /**
          * The interval before refreshing the dashboard (in seconds).
          */
