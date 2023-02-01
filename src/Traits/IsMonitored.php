@@ -35,11 +35,11 @@ trait IsMonitored
     {
         $progress = min(100, max(0, $progress));
 
-        if ( ! $monitor = $this->getQueueMonitor()) {
+        if ($this->isQueueProgressOnCooldown($progress)) {
             return;
         }
 
-        if ($this->isQueueProgressOnCooldown($progress)) {
+        if ( ! $monitor = $this->getQueueMonitor()) {
             return;
         }
 
