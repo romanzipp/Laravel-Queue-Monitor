@@ -1,6 +1,6 @@
 name: Tests
 
-on: [push, pull_request]
+on: [ push, pull_request ]
 
 jobs:
   test:
@@ -8,8 +8,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ["7.2", "7.3", "7.4", "8.0", "8.1", "8.2"]
-        composer-dependency: [prefer-stable, prefer-lowest]
+        php: [ "7.2", "7.3", "7.4", "8.0", "8.1", "8.2" ]
+        composer-dependency: [ prefer-stable, prefer-lowest ]
 
     name: "PHP ${{ matrix.php }} - ${{ matrix.composer-dependency }}"
 
