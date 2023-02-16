@@ -44,14 +44,8 @@ class Monitor extends Model implements MonitorContract
      */
     protected $casts = [
         'failed' => 'bool',
-    ];
-
-    /**
-     * @var string[]
-     */
-    protected $dates = [
-        'started_at',
-        'finished_at',
+        'started_at' => 'datetime',
+        'finished_at' => 'datetime',
     ];
 
     /**
