@@ -211,7 +211,7 @@ class QueueMonitor
     public static function shouldBeMonitored(JobContract $job): bool
     {
         return array_key_exists(IsMonitored::class, ClassUses::classUsesRecursive(
-            $job->resolveName()
+            $job->payload()['data']['commandName']
         ));
     }
 }
