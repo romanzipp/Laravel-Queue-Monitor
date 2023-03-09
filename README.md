@@ -63,7 +63,19 @@ class ExampleJob implements ShouldQueue
 
 **Important!** You need to implement the `Illuminate\Contracts\Queue\ShouldQueue` interface to your job class. Otherwise, Laravel will not dispatch any events containing status information for monitoring the job.
 
-## UI
+## Commands
+
+### `artisan queue-monitor:purge`
+
+This command deletes old monitor models.
+
+**Arguments & Options:**
+- `--before={date}` The start date before which all entries will be deleted (**required**)
+- `--queue={queue}` Only purge certain queues (comma separated values)
+- `--force` Avoid confirmation prompt
+- `--only-succeeded` Only purge succeeded entries
+
+## Web Interface
 
 You can enable the optional UI routes by calling `Route::queueMonitor()` inside your route file, similar to the official [ui scaffolding](https://github.com/laravel/ui).
 
