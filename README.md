@@ -17,7 +17,7 @@ This package offers monitoring like [Laravel Horizon](https://laravel.com/docs/h
 
 ## Installation
 
-✨ **See [Upgrade Guide](#upgrading) if you are updating to 3.0** ✨
+✨ **See [Upgrade Guide](https://github.com/romanzipp/Laravel-Queue-Monitor/releases/tag/3.0.0) if you are updating to 3.0** ✨
 
 ```
 composer require romanzipp/laravel-queue-monitor
@@ -77,19 +77,9 @@ This command deletes old monitor models.
 
 ## Web Interface
 
-You can enable the optional UI routes by calling `Route::queueMonitor()` inside your route file, similar to the official [ui scaffolding](https://github.com/laravel/ui).
-
-```php
-Route::prefix('jobs')->group(function () {
-    Route::queueMonitor();
-});
-```
+You can enable the web UI by setting the [`ui.enabled`](config/queue-monitor.php#23) to `true` configuration value.
 
 ### Routes
-
-| Route | Action              |
-| ----- | ------------------- |
-| `/`   | Show the jobs table |
 
 See the [full configuration file](https://github.com/romanzipp/Laravel-Queue-Monitor/blob/master/config/queue-monitor.php) for more information.
 

@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use romanzipp\QueueMonitor\Console\Commands\PurgeOldMonitorsCommand;
 use romanzipp\QueueMonitor\Models\Monitor;
-use romanzipp\QueueMonitor\Routes\QueueMonitorRoutes;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
 
 class QueueMonitorProvider extends ServiceProvider
@@ -41,7 +40,11 @@ class QueueMonitorProvider extends ServiceProvider
             'queue-monitor'
         );
 
-        Route::mixin(new QueueMonitorRoutes());
+        if (config('queue-monitor.ui.enabled')) {
+            Route::group(config('queue-monitor.ui.route'), function () {
+                $this->loadRoutesFrom(__DIR__ . '/../../routes/queue-monitor.php');
+            });
+        }
 
         /** @var QueueManager $manager */
         $manager = app(QueueManager::class);
