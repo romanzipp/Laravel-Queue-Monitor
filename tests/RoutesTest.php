@@ -6,6 +6,7 @@ use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use romanzipp\QueueMonitor\Controllers\ShowQueueMonitorController;
+use romanzipp\QueueMonitor\Tests\TestCases\TestCase;
 
 class RoutesTest extends TestCase
 {

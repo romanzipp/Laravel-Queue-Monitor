@@ -9,6 +9,7 @@ use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithMergedDataConflicting;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithProgress;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithProgressCooldown;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithProgressCooldownMockingTime;
+use romanzipp\QueueMonitor\Tests\TestCases\TestCase;
 
 class MonitorAttributesTest extends TestCase
 {

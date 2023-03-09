@@ -6,6 +6,7 @@ use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Tests\Support\IntentionallyFailedException;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredFailingJob;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredFailingJobWithHugeExceptionMessage;
+use romanzipp\QueueMonitor\Tests\TestCases\TestCase;
 
 class MonitorStateHandlingTest extends TestCase
 {
