@@ -13,7 +13,7 @@ class UpdateQueueMonitorTable extends Migration
     public function up()
     {
         Schema::table(config('queue-monitor.table'), function (Blueprint $table) {
-            $table->unsignedInteger('status')->default(MonitorStatus::RUNNING);
+            $table->unsignedInteger('status')->default(MonitorStatus::RUNNING)->after('queue');
         });
 
         $this->upgradeColumns();
