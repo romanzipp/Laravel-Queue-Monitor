@@ -17,13 +17,15 @@ class PurgeOldMonitorsCommand extends Command
     {
         $beforeDate = Carbon::parse($this->option('before'));
 
-        $query = QueueMonitor::getModel()::newQuery()
+        $query = QueueMonitor::getModel()
+            ->newQuery()
             ->where('started_at', '>', $beforeDate);
 
-        $queues = array_map('trim', explode(',', $this->argument('queue') ?? ''));
+        $queues = explode(',', $this->argument('queue') ?? '');
 
+        /** @phpstan-ignore-next-line */
         if (count($queues) > 0) {
-            $query->whereIn('queue', $queues);
+            $query->whereIn('queue', array_map('trim', $queues));
         }
 
         if ($this->option('only-succeeded')) {
