@@ -16,7 +16,7 @@ class QueueMonitor
 {
     private const TIMESTAMP_EXACT_FORMAT = 'Y-m-d H:i:s.u';
 
-    public static MonitorContract $model;
+    public static string $model;
 
     /**
      * Get the model used to store the monitoring data.
