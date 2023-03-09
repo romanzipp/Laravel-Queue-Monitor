@@ -5,8 +5,8 @@ namespace romanzipp\QueueMonitor\Tests\TestCases;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Support\Facades\DB;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use romanzipp\QueueMonitor\Providers\QueueMonitorProvider;
 use romanzipp\QueueMonitor\Tests\Support\BaseJob;
+use romanzipp\QueueMonitor\Tests\Support\TestQueueMonitorProvider;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -55,10 +55,10 @@ abstract class TestCase extends BaseTestCase
         $this->artisan('queue:work --once');
     }
 
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
-            QueueMonitorProvider::class,
+            TestQueueMonitorProvider::class,
         ];
     }
 }
