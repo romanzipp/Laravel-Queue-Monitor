@@ -17,9 +17,13 @@ This package offers monitoring like [Laravel Horizon](https://laravel.com/docs/h
 
 ## Installation
 
+✨ **See [Upgrade Guide](#upgrading) if you are updating to 3.0** ✨
+
 ```
 composer require romanzipp/laravel-queue-monitor
 ```
+
+See [romanzipp/Laravel-Queue-Monitor-Nova](https://github.com/romanzipp/Laravel-Queue-Monitor-Nova) for **Laravel Nova** resources & metrics.
 
 ## Configuration
 
@@ -32,18 +36,6 @@ php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMon
 Migrate the Queue Monitoring table. The table name can be configured in the config file or via the published migration.
 
 ```
-php artisan migrate
-```
-
-## ✨ Upgrade to 3.0 from 2.0
-
-Version **3.0** adds a new `status` column to the queue monitor table which replaces the previous `failed` column.
-The [migration](migrations/2023_03_01_000000_update_queue_monitor_table.php) also keeps the failed state before removing the old column.
-
-### Publish & execute upgrade migration
-
-```
-php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider" --tag=migrations
 php artisan migrate
 ```
 
@@ -286,7 +278,12 @@ lando phpunit
 
 ## Upgrading
 
+- [**Upgrade from 2.0 to 3.0**](https://github.com/romanzipp/Laravel-Queue-Monitor/releases/tag/3.0.0)
 - [Upgrade from 1.0 to 2.0](https://github.com/romanzipp/Laravel-Queue-Monitor/releases/tag/2.0.0)
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
 
 ----
 
