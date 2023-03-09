@@ -22,7 +22,7 @@ class PurgeOldMonitorsCommand extends Command
 
         $queues = array_map('trim', explode(',', $this->argument('queue') ?? ''));
 
-        if ( ! empty($queues)) {
+        if (count($queues) > 0) {
             $query->whereIn('queue', $queues);
         }
 

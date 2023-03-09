@@ -9,6 +9,7 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use romanzipp\QueueMonitor\Console\Commands\PurgeOldMonitorsCommand;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Routes\QueueMonitorRoutes;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
@@ -38,6 +39,10 @@ class QueueMonitorProvider extends ServiceProvider
             $this->publishes([
                 __DIR__ . '/../../views' => resource_path('views/vendor/queue-monitor'),
             ], 'views');
+
+            $this->commands([
+                PurgeOldMonitorsCommand::class,
+            ]);
         }
 
         $this->loadViewsFrom(
