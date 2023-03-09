@@ -45,7 +45,6 @@ class QueueMonitorProvider extends ServiceProvider
             'queue-monitor'
         );
 
-        /** @phpstan-ignore-next-line */
         Route::mixin(new QueueMonitorRoutes());
 
         /** @var QueueManager $manager */
