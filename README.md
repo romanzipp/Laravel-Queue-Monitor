@@ -26,12 +26,24 @@ composer require romanzipp/laravel-queue-monitor
 Copy configuration & migration to your project:
 
 ```
-php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider"  --tag=config --tag=migrations
+php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider" --tag=config --tag=migrations
 ```
 
 Migrate the Queue Monitoring table. The table name can be configured in the config file or via the published migration.
 
 ```
+php artisan migrate
+```
+
+## ✨ Upgrade to 3.0 from 2.0
+
+Version **3.0** adds a new `status` column to the queue monitor table which replaces the previous `failed` column.
+The [migration](migrations/2023_03_01_000000_update_queue_monitor_table.php) also keeps the failed state before removing the old column.
+
+### Publish & execute upgrade migration
+
+```
+php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider" --tag=migrations
 php artisan migrate
 ```
 
