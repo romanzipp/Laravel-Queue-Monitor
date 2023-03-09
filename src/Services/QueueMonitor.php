@@ -112,9 +112,7 @@ class QueueMonitor
 
         $model = self::getModel();
 
-        /**
-         * @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract $monitor
-         */
+        /** @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract $monitor */
         $monitor = $model::query()->create([
             'job_id' => $jobId = self::getJobId($job),
             'name' => $job->resolveName(),
@@ -124,6 +122,7 @@ class QueueMonitor
             'attempt' => $job->attempts(),
         ]);
 
+        // Mark jobs with same job id (different execution) as stale
         $model::query()
             ->where('id', '!=', $monitor->id)
             ->where('job_id', $jobId)
@@ -132,7 +131,7 @@ class QueueMonitor
             ->each(function (MonitorContract $monitor) {
                 $monitor->finished_at = $now = Carbon::now();
                 $monitor->finished_at_exact = $now->format(self::TIMESTAMP_EXACT_FORMAT);
-                $monitor->status = MonitorStatus::FAILED;
+                $monitor->status = MonitorStatus::STALE;
                 $monitor->save();
             });
     }
