@@ -5,9 +5,9 @@ namespace romanzipp\QueueMonitor\Tests;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use romanzipp\QueueMonitor\Models\Monitor;
-use romanzipp\QueueMonitor\Tests\TestCases\TestCase;
+use romanzipp\QueueMonitor\Tests\TestCases\DatabaseTestCase;
 
-class MonitorTimeCalculationTest extends TestCase
+class MonitorTimeCalculationTest extends DatabaseTestCase
 {
     public function testRemaingSeconds()
     {

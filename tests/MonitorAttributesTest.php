@@ -9,9 +9,9 @@ use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithMergedDataConflicting;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithProgress;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithProgressCooldown;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithProgressCooldownMockingTime;
-use romanzipp\QueueMonitor\Tests\TestCases\TestCase;
+use romanzipp\QueueMonitor\Tests\TestCases\DatabaseTestCase;
 
-class MonitorAttributesTest extends TestCase
+class MonitorAttributesTest extends DatabaseTestCase
 {
     public function testData()
     {

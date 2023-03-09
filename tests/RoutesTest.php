@@ -6,9 +6,9 @@ use Illuminate\Routing\Route;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use romanzipp\QueueMonitor\Controllers\ShowQueueMonitorController;
-use romanzipp\QueueMonitor\Tests\TestCases\TestCase;
+use romanzipp\QueueMonitor\Tests\TestCases\DatabaseTestCase;
 
-class RoutesTest extends TestCase
+class RoutesTest extends DatabaseTestCase
 {
     public function testBasicRouteCreation()
     {
