@@ -18,3 +18,6 @@ tooling:
   phpcs:
     service: appserver
     cmd: /app/vendor/bin/php-cs-fixer
+  phpstan:
+    service: appserver
+    cmd: /app/vendor/bin/phpstan
