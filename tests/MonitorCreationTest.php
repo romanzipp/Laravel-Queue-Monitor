@@ -10,6 +10,7 @@ use romanzipp\QueueMonitor\Tests\Support\MonitoredJobWithArguments;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredPartiallyKeptFailingJob;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredPartiallyKeptJob;
 use romanzipp\QueueMonitor\Tests\Support\UnmonitoredJob;
+use romanzipp\QueueMonitor\Tests\TestCases\TestCase;
 
 class MonitorCreationTest extends TestCase
 {
