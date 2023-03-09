@@ -24,10 +24,6 @@ class QueueMonitorProvider extends ServiceProvider
     public function boot()
     {
         if ($this->app->runningInConsole()) {
-            $this->loadMigrationsFrom([
-                __DIR__ . '/../../migrations',
-            ]);
-
             $this->publishes([
                 __DIR__ . '/../../config/queue-monitor.php' => config_path('queue-monitor.php'),
             ], 'config');
