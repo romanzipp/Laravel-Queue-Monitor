@@ -52,7 +52,8 @@ class ShowQueueMonitorController
             ->when(($queue = $filters['queue']) && 'all' !== $queue, static function (Builder $builder) use ($queue) {
                 $builder->where('queue', $queue);
             })
-            ->ordered()
+            ->orderBy('started_at', 'desc')
+            ->orderBy('started_at_exact', 'desc')
             ->paginate(
                 config('queue-monitor.ui.per_page')
             )
