@@ -16,10 +16,7 @@ class QueueMonitor
 {
     private const TIMESTAMP_EXACT_FORMAT = 'Y-m-d H:i:s.u';
 
-    /**
-     * @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract
-     */
-    public static $model;
+    public static MonitorContract $model;
 
     /**
      * Get the model used to store the monitoring data.
@@ -86,7 +83,7 @@ class QueueMonitor
      *
      * @return string|int
      */
-    public static function getJobId(JobContract $job)
+    public static function getJobId(JobContract $job): string|int
     {
         if ($jobId = $job->getJobId()) {
             return $jobId;

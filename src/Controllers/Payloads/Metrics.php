@@ -7,7 +7,7 @@ final class Metrics
     /**
      * @var \romanzipp\QueueMonitor\Controllers\Payloads\Metric[]
      */
-    public $metrics = [];
+    public array $metrics = [];
 
     /**
      * @return \romanzipp\QueueMonitor\Controllers\Payloads\Metric[]
