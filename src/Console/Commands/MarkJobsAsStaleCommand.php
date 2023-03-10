@@ -9,11 +9,11 @@ use romanzipp\QueueMonitor\Console\Commands\Concerns\HandlesDateInputs;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
 
-class PurgeOldMonitorsCommand extends Command
+class MarkJobsAsStaleCommand extends Command
 {
     use HandlesDateInputs;
 
-    protected $signature = 'queue-monitor:purge {--before=} {--beforeDays=} {--beforeInterval=} {--only-succeeded} {--queue=} {--dry}';
+    protected $signature = 'queue-monitor:stale {--before=} {--beforeDays=} {--beforeInterval=} {--dry}';
 
     public function handle(): int
     {
@@ -26,25 +26,14 @@ class PurgeOldMonitorsCommand extends Command
 
         $query = QueueMonitor::getModel()
             ->newQuery()
+            ->where('status', MonitorStatus::RUNNING)
             ->where('started_at', '<', $beforeDate);
 
-        $queues = array_filter(explode(',', $this->option('queue') ?? ''));
-
-        if (count($queues) > 0) {
-            $query->whereIn('queue', array_map('trim', $queues));
-        }
-
-        if ($this->option('only-succeeded')) {
-            $query->where('status', '=', MonitorStatus::SUCCEEDED);
-        }
-
-        $count = $query->count();
-
         $this->info(
-            sprintf('Purging %d jobs before %s.', $count, $beforeDate->format('Y-m-d H:i:s'))
+            sprintf('Marking %d jobs after %s as stale', $count = $query->count(), $beforeDate->format('Y-m-d H:i:s'))
         );
 
-        $query->chunk(200, function (Collection $models, int $page) use ($count) {
+        $query->chunk(500, function (Collection $models, int $page) use ($count) {
             $this->info(
                 sprintf('Deleted chunk %d / %d', $page, abs($count / 200))
             );
@@ -55,9 +44,11 @@ class PurgeOldMonitorsCommand extends Command
 
             DB::table(QueueMonitor::getModel()->getTable())
                 ->whereIn('id', $models->pluck('id'))
-                ->delete();
+                ->update([
+                    'status' => MonitorStatus::STALE,
+                ]);
         });
 
-        return 1;
+        return 0;
     }
 }

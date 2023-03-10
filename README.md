@@ -65,15 +65,29 @@ class ExampleJob implements ShouldQueue
 
 ## Commands
 
+### `artisan queue-monitor:stale`
+
+This command mark old monitor entries as `stale`. You should run this command regularly in your console kernel.
+
+**Arguments & Options:**
+- `--before={date}` The start date before which all entries will be marked as stale
+- `--beforeDays={days}` The relative amount of days before which entries will be marked as stale
+- `--beforeInterval={interval}` An [interval date string](https://www.php.net/manual/en/dateinterval.createfromdatestring.php) before which entries will be marked as stale
+- `--dry` Dry-run only
+
 ### `artisan queue-monitor:purge`
 
 This command deletes old monitor models.
 
 **Arguments & Options:**
-- `--before={date}` The start date before which all entries will be deleted (**required**)
+- `--before={date}` The start date before which all entries will be deleted
+- `--beforeDays={days}` The relative amount of days before which entries will be deleted
+- `--beforeInterval={interval}` An [interval date string](https://www.php.net/manual/en/dateinterval.createfromdatestring.php) before which entries will be deleted
 - `--queue={queue}` Only purge certain queues (comma separated values)
-- `--force` Avoid confirmation prompt
 - `--only-succeeded` Only purge succeeded entries
+- `--dry` Dry-run only
+
+Either the **before** or **beforeDate** arguments are required.
 
 ## Web Interface
 
