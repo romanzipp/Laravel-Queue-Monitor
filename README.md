@@ -63,6 +63,16 @@ class ExampleJob implements ShouldQueue
 
 **Important!** You need to implement the `Illuminate\Contracts\Queue\ShouldQueue` interface to your job class. Otherwise, Laravel will not dispatch any events containing status information for monitoring the job.
 
+## Web Interface
+
+You can enable the web UI by setting the [`ui.enabled`](config/queue-monitor.php#23) to `true` configuration value.
+
+### Routes
+
+See the [full configuration file](https://github.com/romanzipp/Laravel-Queue-Monitor/blob/master/config/queue-monitor.php) for more information.
+
+![Preview](https://raw.githubusercontent.com/romanzipp/Laravel-Queue-Monitor/master/preview.png)
+
 ## Commands
 
 ### `artisan queue-monitor:stale`
@@ -89,18 +99,7 @@ This command deletes old monitor models.
 
 Either the **before** or **beforeDate** arguments are required.
 
-## Web Interface
-
-You can enable the web UI by setting the [`ui.enabled`](config/queue-monitor.php#23) to `true` configuration value.
-
-### Routes
-
-See the [full configuration file](https://github.com/romanzipp/Laravel-Queue-Monitor/blob/master/config/queue-monitor.php) for more information.
-
-![Preview](https://raw.githubusercontent.com/romanzipp/Laravel-Queue-Monitor/master/preview.png)
-
-
-## Extended usage
+## Advanced usage
 
 ### Progress
 
