@@ -73,9 +73,7 @@ You can enable the web UI by setting the [`ui.enabled`](config/queue-monitor.php
 php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider" --tag=assets
 ```
 
-### Routes
-
-See the [full configuration file](https://github.com/romanzipp/Laravel-Queue-Monitor/blob/master/config/queue-monitor.php) for more information.
+See the [full configuration file](config/queue-monitor.php) for more information.
 
 ![Preview](preview.png#gh-light-mode-only)
 ![Preview](preview.dark.png#gh-dark-mode-only)
