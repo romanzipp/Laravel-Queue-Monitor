@@ -9,6 +9,9 @@ class MonitorStatus
     public const FAILED = 2;
     public const STALE = 3;
 
+    /**
+     * @return int[]
+     */
     public static function toArray(): array
     {
         return [
