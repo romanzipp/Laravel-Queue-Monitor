@@ -11,9 +11,9 @@
     <link href="{{ asset('vendor/queue-monitor/app.css') }}" rel="stylesheet">
 </head>
 
-<body class="font-sans pb-64 bg-white">
+<body class="font-sans pb-64 bg-white dark:bg-gray-800 dark:text-white">
 
-    <nav class="flex items-center py-4 border-b border-gray-100">
+    <nav class="flex items-center py-4 border-b border-gray-100 dark:border-gray-600">
         <h1 class="px-4 w-full font-semibold text-lg">
             @lang('Queue Monitor')
         </h1>
@@ -46,7 +46,7 @@
                     <form action="{{ route('queue-monitor::purge') }}" method="post">
                         @csrf
                         @method('delete')
-                        <button class="py-2 px-4 bg-red-50 hover:bg-red-100 text-red-800 text-xs font-medium rounded-md transition-colors duration-150">
+                        <button class="py-2 px-4 bg-red-50 dark:bg-red-200 hover:dark:bg-red-300 hover:bg-red-100 text-red-800 text-xs font-medium rounded-md transition-colors duration-150">
                             @lang('Delete all entries')
                         </button>
                     </form>

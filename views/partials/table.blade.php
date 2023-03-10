@@ -1,57 +1,57 @@
-<table class="w-full rounded-md whitespace-no-wrap rounded-md border border-separate border-spacing-0">
+<table class="w-full rounded-md whitespace-no-wrap rounded-md border dark:border-gray-600 border-separate border-spacing-0">
 
     <thead class="rounded-t-md">
 
         <tr>
-            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Status')</th>
-            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Job')</th>
-            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Details')</th>
+            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Status')</th>
+            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Job')</th>
+            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Details')</th>
 
             @if(config('queue-monitor.ui.show_custom_data'))
-                <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Custom Data')</th>
+                <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Custom Data')</th>
             @endif
 
-            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Progress')</th>
-            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Duration')</th>
-            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Started')</th>
-            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200">@lang('Error')</th>
+            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Progress')</th>
+            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Duration')</th>
+            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Started')</th>
+            <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Error')</th>
 
             @if(config('queue-monitor.ui.allow_deletion'))
-                <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 uppercase border-b border-gray-200"></th>
+                <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600"></th>
             @endif
         </tr>
 
     </thead>
 
-    <tbody class="bg-gray-50">
+    <tbody class="bg-gray-50 dark:bg-gray-700">
 
         @forelse($jobs as $job)
 
             <tr class="font-sm leading-relaxed">
 
-                <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+                <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
                     @include('queue-monitor::partials.job-status', ['status' => $job->status])
                 </td>
 
-                <td class="p-4 text-gray-800 text-sm leading-5 font-medium border-b border-gray-200">
+                <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 font-medium border-b border-gray-200 dark:border-gray-600">
 
                     {{ $job->getBaseName() }}
 
-                    <span class="ml-1 text-xs text-gray-600">
+                    <span class="ml-1 text-xs text-gray-600 dark:text-gray-400">
                                 #{{ $job->job_id }}
                             </span>
 
                 </td>
 
-                <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+                <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
 
                     <div class="text-xs">
-                        <span class="text-gray-600 font-medium">@lang('Queue'):</span>
+                        <span class="text-gray-600 dark:text-gray-400 font-medium">@lang('Queue'):</span>
                         <span class="font-semibold">{{ $job->queue }}</span>
                     </div>
 
                     <div class="text-xs">
-                        <span class="text-gray-600 font-medium">@lang('Attempt'):</span>
+                        <span class="text-gray-600 dark:text-gray-400 font-medium">@lang('Attempt'):</span>
                         <span class="font-semibold">{{ $job->attempt }}</span>
                     </div>
 
@@ -59,7 +59,7 @@
 
                 @if(config('queue-monitor.ui.show_custom_data'))
 
-                    <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+                    <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
                         <textarea rows="4"
                                   class="w-64 text-xs p-1 border rounded"
                                   readonly>{{ json_encode($job->getData(), JSON_PRETTY_PRINT) }}
@@ -68,7 +68,7 @@
 
                 @endif
 
-                <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+                <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
 
                     @if($job->progress !== null)
 
@@ -78,7 +78,7 @@
                                 <div class="h-full bg-green-500" style="width: {{ $job->progress }}%"></div>
                             </div>
 
-                            <div class="flex justify-center mt-1 text-xs text-gray-800 font-semibold">
+                            <div class="flex justify-center mt-1 text-xs text-gray-800 dark:text-gray-300 font-semibold">
                                 {{ $job->progress }}%
                             </div>
 
@@ -90,15 +90,15 @@
 
                 </td>
 
-                <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+                <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
                     {{ $job->getElapsedInterval()->format('%H:%I:%S') }}
                 </td>
 
-                <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+                <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
                     {{ $job->started_at->diffForHumans() }}
                 </td>
 
-                <td class="p-4 text-gray-800 text-sm leading-5 border-b border-gray-200">
+                <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
 
                     @if($job->hasFailed() && $job->exception_message !== null)
 
@@ -112,11 +112,11 @@
 
                 @if(config('queue-monitor.ui.allow_deletion'))
 
-                    <td class="p-4 eading-5 border-b border-gray-200">
+                    <td class="p-4 eading-5 border-b border-gray-200 dark:border-gray-600">
                         <form action="{{ route('queue-monitor::destroy', [$job]) }}" method="post">
                             @csrf
                             @method('delete')
-                            <button class="px-3 py-2 bg-transparent hover:bg-red-100 text-red-800 text-xs font-medium rounded transition-colors duration-150">
+                            <button class="px-3 py-2 bg-transparent hover:bg-red-100 dark:hover:bg-red-800 text-red-800 dark:text-red-500 dark:hover:text-red-200 text-xs font-medium rounded transition-colors duration-150">
                                 @lang('Delete')
                             </button>
                         </form>
@@ -144,12 +144,12 @@
 
     </tbody>
 
-    <tfoot class="bg-white">
+    <tfoot class="bg-white dark:bg-transparent">
 
         <tr>
             <td colspan="100" class="px-2 py-4">
                 <div class="flex justify-between">
-                    <div class="pl-2 text-sm text-gray-600">
+                    <div class="pl-2 text-sm text-gray-600 dark:text-gray-400">
                         @lang('Showing')
                         @if($jobs->total() > 0)
                             <span class="font-medium">{{ $jobs->firstItem() }}</span> @lang('to')
