@@ -31,6 +31,10 @@ class QueueMonitorProvider extends ServiceProvider
                 __DIR__ . '/../../views' => resource_path('views/vendor/queue-monitor'),
             ], 'views');
 
+            $this->publishes([
+                __DIR__ . '/../../dist' => public_path('queue-monitor'),
+            ], 'assets');
+
             $this->commands([
                 MarkJobsAsStaleCommand::class,
                 PurgeOldMonitorsCommand::class,
