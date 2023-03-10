@@ -32,7 +32,7 @@ class QueueMonitorProvider extends ServiceProvider
             ], 'views');
 
             $this->publishes([
-                __DIR__ . '/../../dist' => public_path('queue-monitor'),
+                __DIR__ . '/../../dist' => public_path('vendor/queue-monitor'),
             ], 'assets');
 
             $this->commands([

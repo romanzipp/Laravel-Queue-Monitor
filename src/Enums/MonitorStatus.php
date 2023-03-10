@@ -21,4 +21,17 @@ class MonitorStatus
             self::STALE,
         ];
     }
+
+    /**
+     * @return array<int, string>
+     */
+    public static function toNamedArray(): array
+    {
+        return [
+            self::RUNNING => 'Running',
+            self::SUCCEEDED => 'Succeeded',
+            self::FAILED => 'Failed',
+            self::STALE => 'Stale',
+        ];
+    }
 }
