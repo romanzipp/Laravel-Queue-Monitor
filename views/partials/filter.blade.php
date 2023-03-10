@@ -1,4 +1,4 @@
-<div class="px-6 py-4 mb-6 pl-4 bg-white rounded-md border border-gray-200">
+<div class="px-6 py-4 mb-6 pl-4 bg-white dark:bg-gray-700 rounded-md border border-gray-200 dark:border-gray-600">
 
     <form action="" method="get">
 
@@ -14,7 +14,7 @@
                        name="name"
                        value="{{ $filters['name'] ?? null }}"
                        placeholder="ExampleJob"
-                       class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded text-sm">
+                       class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded text-sm">
             </div>
 
             <div class="px-2 w-1/4">
@@ -24,7 +24,7 @@
                 </label>
                 <select name="status"
                         id="filter_status"
-                        class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded text-sm appearance-none">
+                        class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded text-sm appearance-none">
 
                     <option @if($filters['status'] === null) selected @endif value="">
                         @lang('All')
@@ -46,7 +46,7 @@
                 </label>
                 <select name="queue"
                         id="filter_queues"
-                        class="w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded text-sm appearance-none">
+                        class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded text-sm appearance-none">
 
                     <option value="all">
                         All
@@ -65,12 +65,12 @@
 
         <div class="flex justify-between mt-4">
             <button type="submit"
-                    class="py-2 px-4 bg-blue-50 hover:bg-blue-100 text-blue-800 text-xs font-medium rounded-md transition-colors duration-150">
+                    class="py-2 px-4 bg-blue-50 dark:bg-blue-200 dark:hover:bg-blue-300 hover:bg-blue-100 text-blue-800 text-xs font-medium rounded-md transition-colors duration-150">
                 @lang('Apply Filter')
             </button>
 
             <a href="{{ route('queue-monitor::index') }}"
-               class="py-2 px-4 bg-gray-50 hover:bg-gray-100 text-gray-800 text-xs font-medium rounded-md transition-colors duration-150">
+               class="py-2 px-4 bg-gray-50 dark:bg-gray-200 dark:hover:bg-gray-300 hover:bg-gray-100 text-gray-800 text-xs font-medium rounded-md transition-colors duration-150">
                 @lang('Reset Filter')
             </a>
         </div>
