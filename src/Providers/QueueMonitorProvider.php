@@ -9,6 +9,7 @@ use Illuminate\Queue\Events\JobProcessing;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
+use romanzipp\QueueMonitor\Console\Commands\MarkJobsAsStaleCommand;
 use romanzipp\QueueMonitor\Console\Commands\PurgeOldMonitorsCommand;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
@@ -31,6 +32,7 @@ class QueueMonitorProvider extends ServiceProvider
             ], 'views');
 
             $this->commands([
+                MarkJobsAsStaleCommand::class,
                 PurgeOldMonitorsCommand::class,
             ]);
         }
