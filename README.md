@@ -77,7 +77,8 @@ php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMon
 
 See the [full configuration file](https://github.com/romanzipp/Laravel-Queue-Monitor/blob/master/config/queue-monitor.php) for more information.
 
-![Preview](https://raw.githubusercontent.com/romanzipp/Laravel-Queue-Monitor/master/preview.png)
+![Preview](https://raw.githubusercontent.com/romanzipp/Laravel-Queue-Monitor/master/preview.png#gh-light-mode-only)
+![Preview](https://raw.githubusercontent.com/romanzipp/Laravel-Queue-Monitor/master/preview.dark.png#gh-dark-mode-only)
 
 ## Commands
 
