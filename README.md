@@ -67,6 +67,12 @@ class ExampleJob implements ShouldQueue
 
 You can enable the web UI by setting the [`ui.enabled`](config/queue-monitor.php#23) to `true` configuration value.
 
+**Publish frontend assets:**
+
+```sh
+php artisan vendor:publish --provider="romanzipp\QueueMonitor\Providers\QueueMonitorProvider" --tag=assets
+```
+
 ### Routes
 
 See the [full configuration file](https://github.com/romanzipp/Laravel-Queue-Monitor/blob/master/config/queue-monitor.php) for more information.

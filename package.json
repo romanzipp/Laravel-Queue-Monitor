@@ -1,0 +1,9 @@
+{
+    "scripts": {
+        "watch": "npx tailwindcss -i assets/app.css -o dist/app.css --watch",
+        "prod": "npx tailwindcss -i assets/app.css -o dist/app.css --minify"
+    },
+    "dependencies": {
+        "tailwindcss": "^3.2.7"
+    }
+}
