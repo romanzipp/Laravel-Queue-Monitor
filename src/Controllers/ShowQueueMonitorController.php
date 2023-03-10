@@ -22,23 +22,29 @@ class ShowQueueMonitorController
     public function __invoke(Request $request)
     {
         $data = $request->validate([
-            'type' => ['nullable', 'string', Rule::in(MonitorStatus::toArray())],
+            'status' => ['nullable', 'numeric', Rule::in(MonitorStatus::toArray())],
             'queue' => ['nullable', 'string'],
+            'name' => ['nullable', 'string'],
         ]);
 
         $filters = [
-            'type' => $data['type'] ?? null,
+            'status' => isset($data['status']) ? (int) $data['status'] : null,
             'queue' => $data['queue'] ?? 'all',
+            'name' => $data['name'] ?? null,
         ];
 
         $jobsQuery = QueueMonitor::getModel()->newQuery();
 
-        if (null !== $filters['type']) {
-            $jobsQuery->where('status', $data['type']);
+        if (null !== $filters['status']) {
+            $jobsQuery->where('status', $data['status']);
         }
 
         if ('all' !== $filters['queue']) {
             $jobsQuery->where('queue', $filters);
+        }
+
+        if (null !== $filters['name']) {
+            $jobsQuery->where('name', 'like', "%{$filters['name']}%");
         }
 
         $jobsQuery
@@ -72,6 +78,7 @@ class ShowQueueMonitorController
             'filters' => $filters,
             'queues' => $queues,
             'metrics' => $metrics,
+            'statuses' => MonitorStatus::toNamedArray(),
         ]);
     }
 
