@@ -3,7 +3,6 @@
 namespace romanzipp\QueueMonitor\Controllers;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -23,40 +22,31 @@ class ShowQueueMonitorController
     public function __invoke(Request $request)
     {
         $data = $request->validate([
-            'type' => ['nullable', 'string', Rule::in(['all', 'running', 'failed', 'succeeded'])],
+            'type' => ['nullable', 'string', Rule::in(MonitorStatus::toArray())],
             'queue' => ['nullable', 'string'],
         ]);
 
         $filters = [
-            'type' => $data['type'] ?? 'all',
+            'type' => $data['type'] ?? null,
             'queue' => $data['queue'] ?? 'all',
         ];
 
-        $jobs = QueueMonitor::getModel()
-            ->newQuery()
-            ->when(($type = $filters['type']) && 'all' !== $type, static function (Builder $builder) use ($type) {
-                switch ($type) {
-                    case 'running':
-                        $builder->whereNull('finished_at');
-                        break;
+        $jobsQuery = QueueMonitor::getModel()->newQuery();
 
-                    case 'failed':
-                        $builder->where('failed', 1)->whereNotNull('finished_at');
-                        break;
+        if (null !== $data['type']) {
+            $jobsQuery->where('status', $data['type']);
+        }
 
-                    case 'succeeded':
-                        $builder->where('failed', 0)->whereNotNull('finished_at');
-                        break;
-                }
-            })
-            ->when(($queue = $filters['queue']) && 'all' !== $queue, static function (Builder $builder) use ($queue) {
-                $builder->where('queue', $queue);
-            })
+        if (($queue = $data['queue']) && 'all' !== $queue) {
+            $jobsQuery->where('queue', $queue);
+        }
+
+        $jobsQuery
             ->orderBy('started_at', 'desc')
-            ->orderBy('started_at_exact', 'desc')
-            ->paginate(
-                config('queue-monitor.ui.per_page')
-            )
+            ->orderBy('started_at_exact', 'desc');
+
+        $jobs = $jobsQuery
+            ->paginate(config('queue-monitor.ui.per_page'))
             ->appends(
                 $request->all()
             );
