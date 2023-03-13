@@ -113,7 +113,7 @@ class ExampleJob implements ShouldQueue
 
 A common scenario for a job is iterating through large collections.
 
-This example job loops through a large amount of users and updates it's progress value with each chunk iteration.
+This example job loops through a large amount of users and updates its progress value with each chunk iteration.
 
 ```php
 use Illuminate\Contracts\Queue\ShouldQueue;
