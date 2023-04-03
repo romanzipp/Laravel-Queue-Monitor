@@ -3,6 +3,7 @@
 namespace romanzipp\QueueMonitor\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Database\SqlServerConnection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -88,10 +89,17 @@ class ShowQueueMonitorController
 
         $metrics = new Metrics();
 
+        $sqlTimestampDiffFunction = 'TIMESTAMPDIFF';
+        $connection = DB::connection();
+
+        if ($connection instanceof SqlServerConnection) {
+            $sqlTimestampDiffFunction = 'DATEDIFF';
+        }
+
         $aggregationColumns = [
             DB::raw('COUNT(*) as count'),
-            DB::raw('SUM(TIMESTAMPDIFF(SECOND, `started_at`, `finished_at`)) as `total_time_elapsed`'),
-            DB::raw('AVG(TIMESTAMPDIFF(SECOND, `started_at`, `finished_at`)) as `average_time_elapsed`'),
+            DB::raw("SUM({$sqlTimestampDiffFunction}(SECOND, `started_at`, `finished_at`)) as `total_time_elapsed`"),
+            DB::raw("AVG({$sqlTimestampDiffFunction}(SECOND, `started_at`, `finished_at`)) as `average_time_elapsed`"),
         ];
 
         $aggregatedInfo = QueueMonitor::getModel()
