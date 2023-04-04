@@ -171,7 +171,7 @@
                             <span class="font-medium">{{ $jobs->firstItem() }}</span> @lang('to')
                             <span class="font-medium">{{ $jobs->lastItem() }}</span> @lang('of')
                         @endif
-                        <span class="font-medium">{{ $jobs->total() }}</span> @lang('results')
+                        <span class="font-medium">{{ $jobs->total() }}</span> @choice('result|results', $jobs->total())
                     </div>
 
                     <div>
