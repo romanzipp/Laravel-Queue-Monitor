@@ -3,7 +3,7 @@
 namespace romanzipp\QueueMonitor\Controllers;
 
 use Carbon\Carbon;
-use Illuminate\Database\SqlServerConnection;
+use Illuminate\Database as DatabaseConnections;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -89,17 +89,25 @@ class ShowQueueMonitorController
 
         $metrics = new Metrics();
 
-        $sqlTimestampDiffFunction = 'TIMESTAMPDIFF';
         $connection = DB::connection();
 
-        if ($connection instanceof SqlServerConnection) {
-            $sqlTimestampDiffFunction = 'DATEDIFF';
+        $expressionTotalTime = DB::raw('SUM(TIMESTAMPDIFF(SECOND, `started_at`, `finished_at`)) as `total_time_elapsed`');
+        $expressionAverageTime = DB::raw('AVG(TIMESTAMPDIFF(SECOND, `started_at`, `finished_at`)) as `average_time_elapsed`');
+
+        if ($connection instanceof DatabaseConnections\SqlServerConnection) {
+            $expressionTotalTime = DB::raw('SUM(DATEDIFF(SECOND, `started_at`, `finished_at`)) as `total_time_elapsed`');
+            $expressionAverageTime = DB::raw('AVG(DATEDIFF(SECOND, `started_at`, `finished_at`)) as `average_time_elapsed`');
+        }
+
+        if ($connection instanceof DatabaseConnections\PostgresConnection) {
+            $expressionTotalTime = DB::raw('SUM(EXTRACT(EPOCH FROM (`finished_at` - `started_at`)))) as `total_time_elapsed`');
+            $expressionAverageTime = DB::raw('AVG(EXTRACT(EPOCH FROM (`finished_at` - `started_at`)))) as `average_time_elapsed`');
         }
 
         $aggregationColumns = [
             DB::raw('COUNT(*) as count'),
-            DB::raw("SUM({$sqlTimestampDiffFunction}(SECOND, `started_at`, `finished_at`)) as `total_time_elapsed`"),
-            DB::raw("AVG({$sqlTimestampDiffFunction}(SECOND, `started_at`, `finished_at`)) as `average_time_elapsed`"),
+            $expressionTotalTime,
+            $expressionAverageTime,
         ];
 
         $aggregatedInfo = QueueMonitor::getModel()
