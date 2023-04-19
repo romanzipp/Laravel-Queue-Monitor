@@ -100,8 +100,8 @@ class ShowQueueMonitorController
         }
 
         if ($connection instanceof DatabaseConnections\PostgresConnection) {
-            $expressionTotalTime = DB::raw('SUM(EXTRACT(EPOCH FROM (`finished_at` - `started_at`)))) as `total_time_elapsed`');
-            $expressionAverageTime = DB::raw('AVG(EXTRACT(EPOCH FROM (`finished_at` - `started_at`)))) as `average_time_elapsed`');
+            $expressionTotalTime = DB::raw('SUM(EXTRACT(EPOCH FROM (finished_at - started_at))) as total_time_elapsed');
+            $expressionAverageTime = DB::raw('AVG(EXTRACT(EPOCH FROM (finished_at - started_at))) as average_time_elapsed');
         }
 
         $aggregationColumns = [
