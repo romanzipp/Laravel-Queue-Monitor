@@ -13,6 +13,7 @@ use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 
 /**
  * @property int $id
+ * @property string $job_uuid
  * @property string $job_id
  * @property string|null $name
  * @property string|null $queue
@@ -27,13 +28,15 @@ use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
  * @property string|null $exception_class
  * @property string|null $exception_message
  * @property string|null $data
- *
+ * @property bool $retried
  * @method static Builder|Monitor whereJob()
  * @method static Builder|Monitor ordered()
  * @method static Builder|Monitor lastHour()
  * @method static Builder|Monitor today()
  * @method static Builder|Monitor failed()
  * @method static Builder|Monitor succeeded()
+ * @mixin \Illuminate\Database\Eloquent\Model
+ * @mixin Builder
  */
 class Monitor extends Model implements MonitorContract
 {
