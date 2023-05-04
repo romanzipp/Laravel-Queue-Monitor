@@ -112,6 +112,7 @@ class QueueMonitor
         /** @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract $monitor */
         $monitor = $model::query()->create([
             'job_id' => $jobId = self::getJobId($job),
+            'job_uuid' => $job->uuid(),
             'name' => $job->resolveName(),
             'queue' => $job->getQueue(),
             'started_at' => $now,

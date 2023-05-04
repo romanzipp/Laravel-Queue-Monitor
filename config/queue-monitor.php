@@ -20,7 +20,7 @@ return [
     // The optional UI settings.
     'ui' => [
         // Enable the UI
-        'enabled' => false,
+        'enabled' => env('QUEUE_MONITOR_UI_ENABLED', false),
 
         // Accepts route group configuration
         'route' => [
@@ -36,6 +36,9 @@ return [
 
         // Allow the deletion of single monitor items.
         'allow_deletion' => true,
+
+        // Allow retry for a single failed monitor item.
+        'allow_retry' => true,
 
         // Allow purging all monitor entries.
         'allow_purge' => true,
