@@ -120,7 +120,7 @@
                     <td class="p-4 eading-5 border-b border-gray-200 dark:border-gray-600">
                         @if(
                             config('queue-monitor.ui.allow_retry') &&
-                            $monitor->job_uuid &&
+                            $job->job_uuid &&
                             $job->status === \romanzipp\QueueMonitor\Enums\MonitorStatus::FAILED && 
                             !$job->retried
                         )

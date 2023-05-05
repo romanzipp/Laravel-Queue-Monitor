@@ -16,10 +16,10 @@ class RetryMonitorController
             ->where('retried', false)
             ->findOrFail($monitorId);
 
-        if(is_a($monitor, Monitor::class)) {
+        if (is_a($monitor, Monitor::class)) {
             $monitor->retried = true;
             $monitor->save();
-    
+
             Artisan::call('queue:retry', ['id' => $monitor->job_uuid]);
         }
 
