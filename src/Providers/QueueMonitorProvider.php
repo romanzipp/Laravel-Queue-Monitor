@@ -71,6 +71,9 @@ class QueueMonitorProvider extends ServiceProvider
         });
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function buildRouteGroupConfig(): array
     {
         $config = config('queue-monitor.ui.route');

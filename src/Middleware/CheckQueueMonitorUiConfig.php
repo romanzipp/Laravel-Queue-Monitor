@@ -8,7 +8,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CheckQueueMonitorUiConfig
 {
-    public function handle(Request $request, \Closure $next)
+    public function handle(Request $request, \Closure $next): mixed
     {
         $route = $request->route();
 
@@ -20,6 +20,7 @@ class CheckQueueMonitorUiConfig
             'queue-monitor::index' => config('queue-monitor.ui.enabled'),
             'queue-monitor::destroy' => config('queue-monitor.ui.enabled') && config('queue-monitor.ui.allow_deletion'),
             'queue-monitor::purge' => config('queue-monitor.ui.enabled') && config('queue-monitor.ui.allow_purge'),
+            default => false
         };
 
         if ( ! $allowed) {
