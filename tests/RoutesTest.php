@@ -2,6 +2,7 @@
 
 namespace romanzipp\QueueMonitor\Tests;
 
+use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Tests\TestCases\DatabaseTestCase;
 
@@ -55,7 +56,7 @@ class RoutesTest extends DatabaseTestCase
         ]);
 
         $this
-            ->delete("/jobs/{$monitor->id}")
+            ->delete("/jobs/monitors/{$monitor->id}")
             ->assertStatus(404);
     }
 
@@ -133,4 +134,61 @@ class RoutesTest extends DatabaseTestCase
             ->assertStatus(302)
             ->assertRedirectToRoute('queue-monitor::index');
     }
+
+    /*
+     *--------------------------------------------------------------------------
+     * Retry monitor
+     *--------------------------------------------------------------------------
+     */
+
+     public function testRetryDisabledUi()
+     {
+         config(['queue-monitor.ui.enabled' => false]);
+
+         /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+         $monitor = Monitor::query()->create([
+             'job_id' => mt_rand(),
+         ]);
+
+         $this
+             ->patch(route('queue-monitor::retry', [$monitor]))
+             ->assertStatus(404);
+     }
+
+     public function testRetryDisabledRetrying()
+     {
+         config([
+             'queue-monitor.ui.enabled' => true,
+             'queue-monitor.ui.allow_retry' => false,
+         ]);
+
+         /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+         $monitor = Monitor::query()->create([
+             'job_id' => mt_rand(),
+         ]);
+
+         $this
+             ->patch(route('queue-monitor::retry', [$monitor]))
+             ->assertStatus(404);
+     }
+
+     public function testRetryEnabled()
+     {
+         config([
+             'queue-monitor.ui.enabled' => true,
+             'queue-monitor.ui.allow_retry' => true,
+         ]);
+
+         /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+         $monitor = Monitor::query()->create([
+             'job_id' => mt_rand(),
+             'status' => MonitorStatus::FAILED,
+             'retried' => false,
+         ]);
+
+         $this
+             ->patch(route('queue-monitor::retry', [$monitor]))
+             ->assertStatus(302)
+             ->assertRedirectToRoute('queue-monitor::index');
+     }
 }
