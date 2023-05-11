@@ -20,7 +20,7 @@ return [
     // The optional UI settings.
     'ui' => [
         // Enable the UI
-        'enabled' => env('QUEUE_MONITOR_UI_ENABLED', false),
+        'enabled' => false,
 
         // Accepts route group configuration
         'route' => [

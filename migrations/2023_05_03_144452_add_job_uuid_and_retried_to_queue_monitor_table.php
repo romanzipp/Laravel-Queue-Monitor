@@ -15,7 +15,7 @@ class AddJobUuidAndRetriedToQueueMonitorTable extends Migration
     {
         Schema::table(config('queue-monitor.table'), function (Blueprint $table) {
             $table->uuid('job_uuid')->nullable()->after('id');
-            $table->boolean('retried')->default(false);
+            $table->boolean('retried')->default(false)->after('attempt');
         });
     }
 
