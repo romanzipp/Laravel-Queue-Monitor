@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use romanzipp\QueueMonitor\Console\Commands\MarkJobsAsStaleCommand;
 use romanzipp\QueueMonitor\Console\Commands\PurgeOldMonitorsCommand;
+use romanzipp\QueueMonitor\Middleware\CheckQueueMonitorUiConfig;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
 
@@ -46,11 +47,9 @@ class QueueMonitorProvider extends ServiceProvider
             'queue-monitor'
         );
 
-        if (config('queue-monitor.ui.enabled')) {
-            Route::group(config('queue-monitor.ui.route'), function () {
-                $this->loadRoutesFrom(__DIR__ . '/../../routes/queue-monitor.php');
-            });
-        }
+        Route::group($this->buildRouteGroupConfig(), function () {
+            $this->loadRoutesFrom(__DIR__ . '/../../routes/queue-monitor.php');
+        });
 
         /** @var QueueManager $manager */
         $manager = app(QueueManager::class);
@@ -70,6 +69,19 @@ class QueueMonitorProvider extends ServiceProvider
         $manager->exceptionOccurred(static function (JobExceptionOccurred $event) {
             QueueMonitor::handleJobExceptionOccurred($event);
         });
+    }
+
+    private function buildRouteGroupConfig(): array
+    {
+        $config = config('queue-monitor.ui.route');
+
+        if ( ! isset($config['middleware'])) {
+            $config['middleware'] = [];
+        }
+
+        $config['middleware'][] = CheckQueueMonitorUiConfig::class;
+
+        return $config;
     }
 
     public function register(): void
