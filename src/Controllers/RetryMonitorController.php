@@ -12,8 +12,11 @@ class RetryMonitorController
 {
     public function __invoke(Request $request, int $monitorId): RedirectResponse
     {
-        $monitor = Monitor::where('status', MonitorStatus::FAILED)
+        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+        $monitor = Monitor::query()
+            ->where('status', MonitorStatus::FAILED)
             ->where('retried', false)
+            ->whereNotNull('job_uuid')
             ->findOrFail($monitorId);
 
         if (is_a($monitor, Monitor::class)) {
