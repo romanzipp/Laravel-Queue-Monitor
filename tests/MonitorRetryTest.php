@@ -30,9 +30,9 @@ class MonitorRetryTest extends DatabaseTestCase
     public function testRetryFailedMonitor(): void
     {
         $this
-        ->dispatch(new MonitoredFailingJob())
-        ->assertDispatched(MonitoredFailingJob::class)
-        ->workQueue();
+            ->dispatch(new MonitoredFailingJob())
+            ->assertDispatched(MonitoredFailingJob::class)
+            ->workQueue();
 
         self::assertEquals(0, Monitor::first()->retried);
         self::assertEquals(1, Monitor::count());
@@ -47,9 +47,9 @@ class MonitorRetryTest extends DatabaseTestCase
     public function testDontRetryMonitorWhenAllreadyRetried(): void
     {
         $this
-        ->dispatch(new MonitoredFailingJob())
-        ->assertDispatched(MonitoredFailingJob::class)
-        ->workQueue();
+            ->dispatch(new MonitoredFailingJob())
+            ->assertDispatched(MonitoredFailingJob::class)
+            ->workQueue();
 
         $this->patch(route('queue-monitor::retry', ['monitor' => Monitor::first()]));
         $this->workQueue();
@@ -61,9 +61,9 @@ class MonitorRetryTest extends DatabaseTestCase
     public function testDontRetrySucceededMonitor(): void
     {
         $this
-        ->dispatch(new MonitoredJob())
-        ->assertDispatched(MonitoredJob::class)
-        ->workQueue();
+            ->dispatch(new MonitoredJob())
+            ->assertDispatched(MonitoredJob::class)
+            ->workQueue();
 
         $this->expectException(ModelNotFoundException::class);
         $this->patch(route('queue-monitor::retry', ['monitor' => Monitor::first()]));
