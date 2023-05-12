@@ -42,14 +42,17 @@ class QueueMonitorProvider extends ServiceProvider
             ]);
         }
 
+
         $this->loadViewsFrom(
             __DIR__ . '/../../views',
             'queue-monitor'
         );
 
-        Route::group($this->buildRouteGroupConfig(), function () {
-            $this->loadRoutesFrom(__DIR__ . '/../../routes/queue-monitor.php');
-        });
+        if ($this->isUiEnabled()) {
+            Route::group($this->buildRouteGroupConfig(), function () {
+                $this->loadRoutesFrom(__DIR__ . '/../../routes/queue-monitor.php');
+            });
+        }
 
         /** @var QueueManager $manager */
         $manager = app(QueueManager::class);
@@ -71,6 +74,11 @@ class QueueMonitorProvider extends ServiceProvider
         });
     }
 
+    private function isUiEnabled(): bool
+    {
+        return (bool)config('queue-monitor.ui.enabled');
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -78,7 +86,7 @@ class QueueMonitorProvider extends ServiceProvider
     {
         $config = config('queue-monitor.ui.route');
 
-        if ( ! isset($config['middleware'])) {
+        if (!isset($config['middleware'])) {
             $config['middleware'] = [];
         }
 
@@ -90,7 +98,7 @@ class QueueMonitorProvider extends ServiceProvider
     public function register(): void
     {
         /** @phpstan-ignore-next-line */
-        if ( ! $this->app->configurationIsCached()) {
+        if (!$this->app->configurationIsCached()) {
             $this->mergeConfigFrom(
                 __DIR__ . '/../../config/queue-monitor.php',
                 'queue-monitor'
