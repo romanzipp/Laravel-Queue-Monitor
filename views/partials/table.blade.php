@@ -118,12 +118,7 @@
                 @if(config('queue-monitor.ui.allow_deletion') || config('queue-monitor.ui.allow_retry'))
 
                     <td class="p-4 eading-5 border-b border-gray-200 dark:border-gray-600">
-                        @if(
-                            config('queue-monitor.ui.allow_retry') &&
-                            $job->job_uuid &&
-                            $job->status === \romanzipp\QueueMonitor\Enums\MonitorStatus::FAILED && 
-                            !$job->retried
-                        )
+                        @if(config('queue-monitor.ui.allow_retry') && $job->canBeRetried())
                             <form action="{{ route('queue-monitor::retry', [$job]) }}" method="post">
                                 @csrf
                                 @method('patch')

@@ -49,6 +49,7 @@ class Monitor extends Model implements MonitorContract
      */
     protected $casts = [
         'failed' => 'bool',
+        'retried' => 'bool',
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
     ];
@@ -280,5 +281,12 @@ class Monitor extends Model implements MonitorContract
         }
 
         return ! $this->hasFailed();
+    }
+
+    public function canBeRetried(): bool
+    {
+        return ! $this->retried
+            && MonitorStatus::FAILED === $this->status
+            && null !== $this->job_uuid;
     }
 }
