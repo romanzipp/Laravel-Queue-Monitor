@@ -5,7 +5,6 @@ namespace romanzipp\QueueMonitor\Controllers;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Monitor;
 
@@ -21,10 +20,7 @@ class RetryMonitorController
             ->find($monitorId) ?? throw new ModelNotFoundException();
 
         if (is_a($monitor, Monitor::class)) {
-            $monitor->retried = true;
-            $monitor->save();
-
-            Artisan::call('queue:retry', ['id' => $monitor->job_uuid]);
+            $monitor->retry();
         }
 
         return redirect()->route('queue-monitor::index');

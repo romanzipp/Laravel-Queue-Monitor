@@ -14,10 +14,11 @@ This package offers monitoring like [Laravel Horizon](https://laravel.com/docs/h
 - Monitor job progress
 - Get an estimated time remaining for a job
 - Store additional data for a job monitoring
+- Retry jobs via the UI
 
 ## Installation
 
-✨ **See [Upgrade Guide](https://github.com/romanzipp/Laravel-Queue-Monitor/releases/tag/3.0.0) if you are updating to 3.0** ✨
+✨ **See [Upgrade Guide](https://github.com/romanzipp/Laravel-Queue-Monitor/releases/tag/3.0.0) if you are updating to 4.0** ✨
 
 ```
 composer require romanzipp/laravel-queue-monitor

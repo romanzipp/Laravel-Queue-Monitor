@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 
@@ -281,6 +282,14 @@ class Monitor extends Model implements MonitorContract
         }
 
         return ! $this->hasFailed();
+    }
+
+    public function retry(): void
+    {
+        $this->retried = true;
+        $this->save();
+
+        Artisan::call('queue:retry', ['id' => $this->job_uuid]);
     }
 
     public function canBeRetried(): bool
