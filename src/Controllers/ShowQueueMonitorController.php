@@ -98,7 +98,7 @@ class ShowQueueMonitorController
         }
 
         if($connection instanceof SQLiteConnection){
-            $sqlTimestampDiffQuery = "(CAST(strftime('%s','started_at') as integer) - CAST(strftime('%s', 'finished_at') as integer))";
+            $sqlTimestampDiffQuery = "(CAST(strftime('%s',finished_at) as integer) - CAST(strftime('%s', started_at) as integer))";
         }
 
         $aggregationColumns = [
