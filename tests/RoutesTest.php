@@ -148,6 +148,7 @@ class RoutesTest extends DatabaseTestCase
          /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
          $monitor = Monitor::query()->create([
              'job_id' => mt_rand(),
+             'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
          ]);
 
          $this
@@ -165,6 +166,7 @@ class RoutesTest extends DatabaseTestCase
          /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
          $monitor = Monitor::query()->create([
              'job_id' => mt_rand(),
+             'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
          ]);
 
          $this
@@ -182,6 +184,7 @@ class RoutesTest extends DatabaseTestCase
          /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
          $monitor = Monitor::query()->create([
              'job_id' => mt_rand(),
+             'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
              'status' => MonitorStatus::FAILED,
              'retried' => false,
          ]);
