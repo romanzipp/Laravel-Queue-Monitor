@@ -3,6 +3,7 @@
 namespace romanzipp\QueueMonitor\Controllers;
 
 use Carbon\Carbon;
+use Illuminate\Database\SQLiteConnection;
 use Illuminate\Database\SqlServerConnection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -89,17 +90,21 @@ class ShowQueueMonitorController
 
         $metrics = new Metrics();
 
-        $sqlTimestampDiffFunction = 'TIMESTAMPDIFF';
+        $sqlTimestampDiffQuery = 'TIMESTAMPDIFF(SECOND, `started_at`, `finished_at`)';
         $connection = DB::connection();
 
-        if ($connection instanceof SqlServerConnection) {
-            $sqlTimestampDiffFunction = 'DATEDIFF';
+        if($connection instanceof SqlServerConnection){
+            $sqlTimestampDiffQuery = 'DATEDIFF(SECOND, `started_at`, `finished_at`)';
+        }
+
+        if($connection instanceof SQLiteConnection){
+            $sqlTimestampDiffQuery = "(CAST(strftime('%s',finished_at) as integer) - CAST(strftime('%s', started_at) as integer))";
         }
 
         $aggregationColumns = [
             DB::raw('COUNT(*) as count'),
-            DB::raw("SUM({$sqlTimestampDiffFunction}(SECOND, `started_at`, `finished_at`)) as `total_time_elapsed`"),
-            DB::raw("AVG({$sqlTimestampDiffFunction}(SECOND, `started_at`, `finished_at`)) as `average_time_elapsed`"),
+            DB::raw("SUM({$sqlTimestampDiffQuery}) as `total_time_elapsed`"),
+            DB::raw("AVG({$sqlTimestampDiffQuery}) as `average_time_elapsed`"),
         ];
 
         $aggregatedInfo = QueueMonitor::getModel()
