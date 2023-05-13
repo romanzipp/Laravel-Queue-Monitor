@@ -2,11 +2,12 @@
 
 namespace romanzipp\QueueMonitor\Tests;
 
+use Illuminate\Routing\Router;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Monitor;
 use romanzipp\QueueMonitor\Tests\TestCases\DatabaseTestCase;
 
-class RoutesTest extends DatabaseTestCase
+class EnabledUIRoutesTest extends DatabaseTestCase
 {
     public function setUp(): void
     {
@@ -15,25 +16,21 @@ class RoutesTest extends DatabaseTestCase
         $this->withExceptionHandling();
     }
 
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('queue-monitor.ui.enabled', true);
+    }
+
+
     /*
      *--------------------------------------------------------------------------
      * Index
      *--------------------------------------------------------------------------
      */
 
-    public function testIndexDisabled()
+    public function testIndexEnabled(): void
     {
-        config(['queue-monitor.ui.enabled' => false]);
-
-        $this
-            ->get('/jobs')
-            ->assertStatus(404);
-    }
-
-    public function testIndexEnabled()
-    {
-        config(['queue-monitor.ui.enabled' => true]);
-
+        $this->assertTrue($this->getRouter()->has('queue-monitor::index'));
         $this
             ->get('/jobs')
             ->assertStatus(200)
@@ -46,27 +43,14 @@ class RoutesTest extends DatabaseTestCase
      *--------------------------------------------------------------------------
      */
 
-    public function testDeleteDisabledUi()
-    {
-        config(['queue-monitor.ui.enabled' => false]);
-
-        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
-        $monitor = Monitor::query()->create([
-            'job_id' => mt_rand(),
-        ]);
-
-        $this
-            ->delete("/jobs/monitors/{$monitor->id}")
-            ->assertStatus(404);
-    }
-
-    public function testDeleteDisabledDeletion()
+    public function testDeleteDisabledDeletion(): void
     {
         config([
-            'queue-monitor.ui.enabled' => true,
             'queue-monitor.ui.allow_deletion' => false,
         ]);
 
+        $this->assertTrue($this->getRouter()->has('queue-monitor::destroy'));
+
         /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
         $monitor = Monitor::query()->create([
             'job_id' => mt_rand(),
@@ -77,12 +61,13 @@ class RoutesTest extends DatabaseTestCase
             ->assertStatus(404);
     }
 
-    public function testDeleteEnabled()
+    public function testDeleteEnabled(): void
     {
         config([
-            'queue-monitor.ui.enabled' => true,
             'queue-monitor.ui.allow_deletion' => true,
         ]);
+
+        $this->assertTrue($this->getRouter()->has('queue-monitor::destroy'));
 
         /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
         $monitor = Monitor::query()->create([
@@ -101,33 +86,26 @@ class RoutesTest extends DatabaseTestCase
      *--------------------------------------------------------------------------
      */
 
-    public function testPurgeDisabledUi()
-    {
-        config(['queue-monitor.ui.enabled' => false]);
-
-        $this
-            ->delete('/jobs/purge')
-            ->assertStatus(404);
-    }
-
-    public function testPurgeDisabledPurging()
+    public function testPurgeDisabledPurging(): void
     {
         config([
-            'queue-monitor.ui.enabled' => true,
             'queue-monitor.ui.allow_purge' => false,
         ]);
 
+        $this->assertTrue($this->getRouter()->has('queue-monitor::purge'));
+
         $this
             ->delete('/jobs/purge')
             ->assertStatus(404);
     }
 
-    public function testPurgeEnabled()
+    public function testPurgeEnabled(): void
     {
         config([
-            'queue-monitor.ui.enabled' => true,
             'queue-monitor.ui.allow_purge' => true,
         ]);
+
+        $this->assertTrue($this->getRouter()->has('queue-monitor::purge'));
 
         $this
             ->delete('/jobs/purge')
@@ -141,28 +119,14 @@ class RoutesTest extends DatabaseTestCase
      *--------------------------------------------------------------------------
      */
 
-     public function testRetryDisabledUi()
-     {
-         config(['queue-monitor.ui.enabled' => false]);
-
-         /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
-         $monitor = Monitor::query()->create([
-             'job_id' => mt_rand(),
-             'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
-         ]);
-
-         $this
-             ->patch(route('queue-monitor::retry', [$monitor]))
-             ->assertStatus(404);
-     }
-
-     public function testRetryDisabledRetrying()
+     public function testRetryDisabledRetrying(): void
      {
          config([
-             'queue-monitor.ui.enabled' => true,
              'queue-monitor.ui.allow_retry' => false,
          ]);
 
+         $this->assertTrue($this->getRouter()->has('queue-monitor::retry'));
+
          /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
          $monitor = Monitor::query()->create([
              'job_id' => mt_rand(),
@@ -174,12 +138,13 @@ class RoutesTest extends DatabaseTestCase
              ->assertStatus(404);
      }
 
-     public function testRetryEnabled()
+     public function testRetryEnabled(): void
      {
          config([
-             'queue-monitor.ui.enabled' => true,
              'queue-monitor.ui.allow_retry' => true,
          ]);
+
+         $this->assertTrue($this->getRouter()->has('queue-monitor::retry'));
 
          /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
          $monitor = Monitor::query()->create([
@@ -194,4 +159,10 @@ class RoutesTest extends DatabaseTestCase
              ->assertStatus(302)
              ->assertRedirectToRoute('queue-monitor::index');
      }
+
+    private function getRouter(): Router
+    {
+        return app()->make(Router::class);
+    }
+
 }

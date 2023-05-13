@@ -15,9 +15,13 @@ class MonitorRetryTest extends DatabaseTestCase
         parent::setup();
 
         config([
-            'queue-monitor.ui.enabled' => true,
             'queue-monitor.ui.allow_retry' => true,
         ]);
+    }
+
+    protected function getEnvironmentSetUp($app)
+    {
+        $app['config']->set('queue-monitor.ui.enabled', true);
     }
 
     protected function tearDown(): void
