@@ -21,11 +21,10 @@ jobs:
       database:
         image: postgres:10.6
         env:
-          POSTGRES_DATABASE: web
+          POSTGRES_DATABASE: postgres
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: ""
-        ports:
-          - 3306
+        ports: [ 5432 ]
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
@@ -46,9 +45,9 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit
         env:
-          DB_CONNECTION: postgres
+          DB_CONNECTION: pgsql
           DB_HOST: 127.0.0.1
           DB_PORT: ${{ job.services.database.ports[5432] }}
-          DB_DATABASE: web
+          DB_DATABASE: postgres
           DB_USERNAME: postgres
           DB_PASSWORD: ""
