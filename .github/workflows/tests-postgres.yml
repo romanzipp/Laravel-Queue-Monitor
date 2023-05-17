@@ -46,5 +46,6 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit
         env:
+          DB_CONNECTION: postgres
           DB_PORT: ${{ job.services.database.ports[5432] }}
           DB_HOST: 127.0.0.1

@@ -25,7 +25,7 @@
     </testsuites>
     <php>
         <server name="APP_ENV" value="testing"/>
-        <server name="DB_CONNECTION" value="mysql"/>
+        <env name="DB_CONNECTION" value="mysql"/>
         <env name="DB_HOST" value="database"/>
         <env name="DB_PORT" value="3306"/>
         <server name="DB_USERNAME" value="web"/>
