@@ -37,11 +37,11 @@ class ShowQueueMonitorController
         $jobsQuery = QueueMonitor::getModel()->newQuery();
 
         if (null !== $filters['status']) {
-            $jobsQuery->where('status', $data['status']);
+            $jobsQuery->where('status', $filters['status']);
         }
 
         if ('all' !== $filters['queue']) {
-            $jobsQuery->where('queue', $filters);
+            $jobsQuery->where('queue', $filters['queue']);
         }
 
         if (null !== $filters['name']) {
