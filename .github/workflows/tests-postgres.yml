@@ -22,8 +22,8 @@ jobs:
         image: postgres:10.6
         env:
           POSTGRES_DATABASE: web
-          POSTGRES_USER: web
-          POSTGRES_PASSWORD: web
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ""
         ports:
           - 3306
         options: >-
@@ -47,5 +47,8 @@ jobs:
         run: vendor/bin/phpunit
         env:
           DB_CONNECTION: postgres
-          DB_PORT: ${{ job.services.database.ports[5432] }}
           DB_HOST: 127.0.0.1
+          DB_PORT: ${{ job.services.database.ports[5432] }}
+          DB_DATABASE: web
+          DB_USERNAME: postgres
+          DB_PASSWORD: ""

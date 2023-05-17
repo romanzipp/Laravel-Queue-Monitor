@@ -44,5 +44,8 @@ jobs:
         run: vendor/bin/phpunit
         env:
           DB_CONNECTION: mysql
-          DB_PORT: ${{ job.services.database.ports[3306] }}
           DB_HOST: 127.0.0.1
+          DB_PORT: ${{ job.services.database.ports[3306] }}
+          DB_DATABASE: web
+          DB_USERNAME: web
+          DB_PASSWORD: web

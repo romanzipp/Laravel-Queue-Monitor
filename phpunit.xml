@@ -25,12 +25,12 @@
     </testsuites>
     <php>
         <server name="APP_ENV" value="testing"/>
-        <env name="DB_CONNECTION" value="mysql"/>
+        <env name="DB_CONNECTION" value=""/>
         <env name="DB_HOST" value="database"/>
         <env name="DB_PORT" value="3306"/>
-        <server name="DB_USERNAME" value="web"/>
-        <server name="DB_PASSWORD" value="web"/>
-        <server name="DB_DATABASE" value="web"/>
+        <env name="DB_USERNAME" value=""/>
+        <env name="DB_PASSWORD" value=""/>
+        <env name="DB_DATABASE" value="web"/>
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="CACHE_DRIVER" value="array"/>
         <server name="QUEUE_CONNECTION" value="database"/>

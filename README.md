@@ -289,12 +289,13 @@ Monitor::today()->failed();
 
 ## Tests
 
-Requires [**Lando**](https://lando.dev/).
+The easiest way to execute tests locally is via [**Lando**](https://lando.dev/). The [Lando config file](.lando.yml) automatically spins up app & database containers.
 
 ```shell
 lando start
 
-lando phpunit
+lando phpunit-mysql
+lando phpunit-postgres
 ```
 
 ## Upgrading
