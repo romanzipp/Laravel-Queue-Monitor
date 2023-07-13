@@ -118,6 +118,11 @@ class QueueMonitor
             return;
         }
 
+        // add initial data
+        if (method_exists($event->job, 'initialMonitorData')) {
+            $data = json_encode($event->job->initialMonitorData());
+        }
+
         QueueMonitor::getModel()::query()->create([
             'job_id' => $event->id,
             'job_uuid' => $event->id,
@@ -125,6 +130,7 @@ class QueueMonitor
             'queue' => $event->job->queue ?: 'default',
             'status' => MonitorStatus::QUEUED,
             'queued_at' => now(),
+            'data' => $data ?? null,
         ]);
     }
 

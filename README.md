@@ -223,6 +223,31 @@ In order to show custom data on UI you need to add this line under `config/queue
 ]
 ```
 
+
+### Initial data
+
+This package also allows setting initial data to set when the job is queued.
+
+```php
+use Illuminate\Contracts\Queue\ShouldQueue;
+use romanzipp\QueueMonitor\Traits\IsMonitored;
+
+class InitialDataJob implements ShouldQueue
+{
+    use IsMonitored;
+    
+    public function __construct(private $channel)
+    {
+    }
+
+    public function initialMonitorData()
+    {
+        return ['channel_id' => $this->channel];
+    }
+}
+``` 
+
+
 ### Only keep failed jobs
 
 You can override the `keepMonitorOnSuccess()` method to only store failed monitor entries of an executed job. This can be used if you only want to keep  failed monitors for jobs that are frequently executed but worth to monitor. Alternatively you can use Laravel's built in `failed_jobs` table.
