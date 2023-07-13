@@ -100,12 +100,12 @@
                 </td>
 
                 <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
-                    {{ $job->started_at->diffForHumans() }}
+                    {{ $job->started_at?->diffForHumans() }}
                 </td>
 
                 <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
 
-                    @if($job->hasFailed() && $job->exception_message !== null)
+                    @if($job->status != \romanzipp\QueueMonitor\Enums\MonitorStatus::SUCCEEDED && $job->exception_message !== null)
 
                         <textarea rows="4" class="w-64 text-xs p-1 border rounded" readonly>{{ $job->exception_message }}</textarea>
 

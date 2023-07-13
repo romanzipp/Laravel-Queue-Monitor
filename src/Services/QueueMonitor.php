@@ -7,6 +7,7 @@ use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Queue\Events\JobQueued;
 use Illuminate\Support\Carbon;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
@@ -26,6 +27,18 @@ class QueueMonitor
     public static function getModel(): MonitorContract
     {
         return new self::$model();
+    }
+
+    /**
+     * Handle Job Queued.
+     *
+     * @param \Illuminate\Queue\Events\JobQueued $event
+     *
+     * @return void
+     */
+    public static function handleJobQueued(JobQueued $event): void
+    {
+        self::jobQueued($event);
     }
 
     /**
@@ -95,6 +108,29 @@ class QueueMonitor
     /**
      * Start Queue Monitoring for Job.
      *
+     * @param JobQueued $event
+     *
+     * @return void
+     */
+    protected static function jobQueued(JobQueued $event): void
+    {
+        if ( ! self::shouldBeMonitored($event->job)) {
+            return;
+        }
+
+        QueueMonitor::getModel()::query()->create([
+            'job_id' => $event->id,
+            'job_uuid' => $event->id,
+            'name' => get_class($event->job),
+            'queue' => $event->job->queue ?: 'default',
+            'status' => MonitorStatus::QUEUED,
+            'queued_at' => now(),
+        ]);
+    }
+
+    /**
+     * Job Start Processing.
+     *
      * @param \Illuminate\Contracts\Queue\Job $job
      *
      * @return void
@@ -110,11 +146,13 @@ class QueueMonitor
         $model = self::getModel();
 
         /** @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract $monitor */
-        $monitor = $model::query()->create([
+        $monitor = $model::query()->updateOrCreate([
             'job_id' => $jobId = self::getJobId($job),
             'job_uuid' => $job->uuid(),
+            'queue' => $job->getQueue() ?: 'default',
+            'status' => MonitorStatus::QUEUED,
+        ],[
             'name' => $job->resolveName(),
-            'queue' => $job->getQueue(),
             'started_at' => $now,
             'started_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
             'attempt' => $job->attempts(),
@@ -174,6 +212,17 @@ class QueueMonitor
             return;
         }
 
+        // if the job has an exception, but it's not failed (it did not exceed max tries and max exceptions),
+        // so it will be back to the queue
+        if ($status == MonitorStatus::FAILED && ! $job->hasFailed()) {
+            $status = MonitorStatus::QUEUED;
+        }
+
+        // if the job is processed, but it's released, so it will be back to the queue also
+        if ($status == MonitorStatus::SUCCEEDED && $job->isReleased()) {
+            $status = MonitorStatus::QUEUED;
+        }
+
         $attributes = [
             'finished_at' => $now,
             'finished_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
@@ -194,14 +243,14 @@ class QueueMonitor
     /**
      * Determine weather the Job should be monitored, default true.
      *
-     * @param \Illuminate\Contracts\Queue\Job $job
+     * @param object|\Illuminate\Contracts\Queue\Job $job
      *
      * @return bool
      */
-    public static function shouldBeMonitored(JobContract $job): bool
+    public static function shouldBeMonitored(object $job): bool
     {
-        return array_key_exists(IsMonitored::class, ClassUses::classUsesRecursive(
-            $job->resolveName()
-        ));
+        $class = $job instanceof JobContract ? $job->resolveName() : $job;
+
+        return array_key_exists(IsMonitored::class, ClassUses::classUsesRecursive($class));
     }
 }

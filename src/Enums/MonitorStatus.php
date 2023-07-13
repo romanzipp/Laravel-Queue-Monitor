@@ -8,6 +8,7 @@ class MonitorStatus
     public const SUCCEEDED = 1;
     public const FAILED = 2;
     public const STALE = 3;
+    public const QUEUED = 4;
 
     /**
      * @return int[]
@@ -19,6 +20,7 @@ class MonitorStatus
             self::SUCCEEDED,
             self::FAILED,
             self::STALE,
+            self::QUEUED,
         ];
     }
 
@@ -32,6 +34,7 @@ class MonitorStatus
             self::SUCCEEDED => 'Succeeded',
             self::FAILED => 'Failed',
             self::STALE => 'Stale',
+            self::QUEUED => 'Queued',
         ];
     }
 }

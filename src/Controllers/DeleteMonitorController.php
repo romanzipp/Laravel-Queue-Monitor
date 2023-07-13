@@ -4,13 +4,14 @@ namespace romanzipp\QueueMonitor\Controllers;
 
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use romanzipp\QueueMonitor\Models\Monitor;
+use romanzipp\QueueMonitor\Services\QueueMonitor;
 
 class DeleteMonitorController
 {
-    public function __invoke(Request $request, Monitor $monitor): RedirectResponse
+    public function __invoke(Request $request, $monitorId): RedirectResponse
     {
-        $monitor->delete();
+        // find model here to use QueueMonitor model and connection
+        QueueMonitor::getModel()->find($monitorId)->delete();
 
         return redirect()->route('queue-monitor::index');
     }

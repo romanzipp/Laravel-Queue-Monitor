@@ -6,7 +6,9 @@ use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
 use Illuminate\Queue\Events\JobProcessed;
 use Illuminate\Queue\Events\JobProcessing;
+use Illuminate\Queue\Events\JobQueued;
 use Illuminate\Queue\QueueManager;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use romanzipp\QueueMonitor\Console\Commands\MarkJobsAsStaleCommand;
@@ -50,6 +52,13 @@ class QueueMonitorProvider extends ServiceProvider
         Route::group($this->buildRouteGroupConfig(), function () {
             $this->loadRoutesFrom(__DIR__ . '/../../routes/queue-monitor.php');
         });
+
+        // listen to JobQueued event
+        Event::listen(JobQueued::class, function (JobQueued $event) {
+            QueueMonitor::handleJobQueued($event);
+        });
+
+        // listen to other job events
 
         /** @var QueueManager $manager */
         $manager = app(QueueManager::class);
