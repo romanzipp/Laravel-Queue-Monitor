@@ -1,5 +1,11 @@
 @switch($status)
 
+    @case(\romanzipp\QueueMonitor\Enums\MonitorStatus::QUEUED)
+        <div class="inline-flex flex-1 px-2 text-xs font-medium leading-5 rounded-full bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-50">
+            Queued
+        </div>
+        @break
+
     @case(\romanzipp\QueueMonitor\Enums\MonitorStatus::RUNNING)
         <div class="inline-flex flex-1 px-2 text-xs font-medium leading-5 rounded-full bg-blue-200 dark:bg-blue-600 text-blue-800 dark:text-blue-50">
             Running

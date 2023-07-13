@@ -18,6 +18,7 @@ use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
  * @property string $job_id
  * @property string|null $name
  * @property string|null $queue
+ * @property \Illuminate\Support\Carbon|null $queued_at
  * @property \Illuminate\Support\Carbon|null $started_at
  * @property string|null $started_at_exact
  * @property \Illuminate\Support\Carbon|null $finished_at
@@ -51,6 +52,7 @@ class Monitor extends Model implements MonitorContract
     protected $casts = [
         'failed' => 'bool',
         'retried' => 'bool',
+        'queued_at' => 'datetime',
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
     ];
