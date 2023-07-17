@@ -145,7 +145,7 @@ class QueueMonitor
      *
      * @return void
      */
-    protected static function jobFinished(JobContract $job, int $status, ?\Throwable $exception = null): void
+    protected static function jobFinished(JobContract $job, int $status, \Throwable $exception = null): void
     {
         if ( ! self::shouldBeMonitored($job)) {
             return;

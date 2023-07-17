@@ -141,57 +141,57 @@ class RoutesTest extends DatabaseTestCase
      *--------------------------------------------------------------------------
      */
 
-     public function testRetryDisabledUi()
-     {
-         config(['queue-monitor.ui.enabled' => false]);
+    public function testRetryDisabledUi()
+    {
+        config(['queue-monitor.ui.enabled' => false]);
 
-         /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
-         $monitor = Monitor::query()->create([
-             'job_id' => mt_rand(),
-             'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
-         ]);
+        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+        $monitor = Monitor::query()->create([
+            'job_id' => mt_rand(),
+            'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
+        ]);
 
-         $this
-             ->patch(route('queue-monitor::retry', [$monitor]))
-             ->assertStatus(404);
-     }
+        $this
+            ->patch(route('queue-monitor::retry', [$monitor]))
+            ->assertStatus(404);
+    }
 
-     public function testRetryDisabledRetrying()
-     {
-         config([
-             'queue-monitor.ui.enabled' => true,
-             'queue-monitor.ui.allow_retry' => false,
-         ]);
+    public function testRetryDisabledRetrying()
+    {
+        config([
+            'queue-monitor.ui.enabled' => true,
+            'queue-monitor.ui.allow_retry' => false,
+        ]);
 
-         /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
-         $monitor = Monitor::query()->create([
-             'job_id' => mt_rand(),
-             'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
-         ]);
+        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+        $monitor = Monitor::query()->create([
+            'job_id' => mt_rand(),
+            'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
+        ]);
 
-         $this
-             ->patch(route('queue-monitor::retry', [$monitor]))
-             ->assertStatus(404);
-     }
+        $this
+            ->patch(route('queue-monitor::retry', [$monitor]))
+            ->assertStatus(404);
+    }
 
-     public function testRetryEnabled()
-     {
-         config([
-             'queue-monitor.ui.enabled' => true,
-             'queue-monitor.ui.allow_retry' => true,
-         ]);
+    public function testRetryEnabled()
+    {
+        config([
+            'queue-monitor.ui.enabled' => true,
+            'queue-monitor.ui.allow_retry' => true,
+        ]);
 
-         /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
-         $monitor = Monitor::query()->create([
-             'job_id' => mt_rand(),
-             'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
-             'status' => MonitorStatus::FAILED,
-             'retried' => false,
-         ]);
+        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+        $monitor = Monitor::query()->create([
+            'job_id' => mt_rand(),
+            'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
+            'status' => MonitorStatus::FAILED,
+            'retried' => false,
+        ]);
 
-         $this
-             ->patch(route('queue-monitor::retry', [$monitor]))
-             ->assertStatus(302)
-             ->assertRedirectToRoute('queue-monitor::index');
-     }
+        $this
+            ->patch(route('queue-monitor::retry', [$monitor]))
+            ->assertStatus(302)
+            ->assertRedirectToRoute('queue-monitor::index');
+    }
 }
