@@ -54,9 +54,11 @@ class QueueMonitorProvider extends ServiceProvider
         });
 
         // listen to JobQueued event
-        Event::listen(JobQueued::class, function (JobQueued $event) {
-            QueueMonitor::handleJobQueued($event);
-        });
+        if (config('queue-monitor.monitor_queued_jobs', true)) {
+            Event::listen(JobQueued::class, function (JobQueued $event) {
+                QueueMonitor::handleJobQueued($event);
+            });
+        }
 
         // listen to other job events
 
