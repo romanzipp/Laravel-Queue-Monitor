@@ -11,6 +11,7 @@ use Illuminate\Support\Carbon;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 use romanzipp\QueueMonitor\Traits\IsMonitored;
+use Illuminate\Support\Facades\Config;
 
 class QueueMonitor
 {
@@ -202,6 +203,6 @@ class QueueMonitor
     {
         return array_key_exists(IsMonitored::class, ClassUses::classUsesRecursive(
             $job->resolveName()
-        ));
+        )) && Config::get('queue-monitor.queue_monitor_enabled', true);
     }
 }

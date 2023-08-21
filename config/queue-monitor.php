@@ -1,6 +1,9 @@
 <?php
 
 return [
+
+    //enable or disable queue_monitor for different eniviroments
+    'queue_monitor_enabled' => env('QUEUE_MONITOR_ENABLED', true),
     // Set the table to be used for monitoring data.
     'table' => 'queue_monitor',
     'connection' => null,
