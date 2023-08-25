@@ -127,6 +127,7 @@ class QueueMonitor
             'job_id' => $event->id,
             'job_uuid' => $event->id,
             'name' => get_class($event->job),
+            /** @phpstan-ignore-next-line */
             'queue' => $event->job->queue ?: 'default',
             'status' => MonitorStatus::QUEUED,
             'queued_at' => now(),
