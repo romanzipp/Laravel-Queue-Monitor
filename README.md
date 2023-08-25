@@ -335,3 +335,5 @@ The MIT License (MIT). Please see [License File](LICENSE.md) for more informatio
 ----
 
 This package was inspired by gilbitron's [laravel-queue-monitor](https://github.com/gilbitron/laravel-queue-monitor) which is not maintained anymore.
+
+[![Star History Chart](https://api.star-history.com/svg?repos=romanzipp/laravel-queue-monitor&type=Date)](https://star-history.com/#romanzipp/laravel-queue-monitor&Date)
