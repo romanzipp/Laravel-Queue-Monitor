@@ -157,7 +157,7 @@ class QueueMonitor
             'job_uuid' => $job->uuid(),
             'queue' => $job->getQueue() ?: 'default',
             'status' => MonitorStatus::QUEUED,
-        ],[
+        ], [
             'name' => $job->resolveName(),
             'started_at' => $now,
             'started_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
@@ -220,12 +220,12 @@ class QueueMonitor
 
         // if the job has an exception, but it's not failed (it did not exceed max tries and max exceptions),
         // so it will be back to the queue
-        if ($status == MonitorStatus::FAILED && ! $job->hasFailed()) {
+        if (MonitorStatus::FAILED == $status && ! $job->hasFailed()) {
             $status = MonitorStatus::QUEUED;
         }
 
         // if the job is processed, but it's released, so it will be back to the queue also
-        if ($status == MonitorStatus::SUCCEEDED && $job->isReleased()) {
+        if (MonitorStatus::SUCCEEDED == $status && $job->isReleased()) {
             $status = MonitorStatus::QUEUED;
         }
 
