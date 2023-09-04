@@ -19,7 +19,7 @@ class RetryMonitorController
             ->where('status', MonitorStatus::FAILED)
             ->where('retried', false)
             ->whereNotNull('job_uuid')
-            ->find($monitorId) ?? throw new ModelNotFoundException();
+            ->findOrFail($monitorId);
 
         if (is_a($monitor, Monitor::class)) {
             $monitor->retry();
