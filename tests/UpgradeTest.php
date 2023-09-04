@@ -3,6 +3,7 @@
 namespace romanzipp\QueueMonitor\Tests;
 
 use Carbon\Carbon;
+use Illuminate\Database\SQLiteConnection;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Monitor;
@@ -14,6 +15,10 @@ class UpgradeTest extends TestCase
 
     public function testUpgrade()
     {
+        if ($this->app['db']->connection() instanceof SQLiteConnection) {
+            self::markTestSkipped('Not suppported in SQLite');
+        }
+
         $migration = new \UpdateQueueMonitorTable();
         $migration->down();
 
