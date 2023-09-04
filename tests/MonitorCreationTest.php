@@ -21,6 +21,7 @@ class MonitorCreationTest extends DatabaseTestCase
             ->assertDispatched(MonitoredJob::class)
             ->workQueue();
 
+        self::assertSame(1, Monitor::query()->count());
         self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         self::assertEquals(MonitoredJob::class, $monitor->name);
     }
@@ -32,6 +33,7 @@ class MonitorCreationTest extends DatabaseTestCase
             ->assertDispatched(MonitoredExtendingJob::class)
             ->workQueue();
 
+        self::assertSame(1, Monitor::query()->count());
         self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         self::assertEquals(MonitoredExtendingJob::class, $monitor->name);
     }
@@ -43,7 +45,7 @@ class MonitorCreationTest extends DatabaseTestCase
             ->assertDispatched(UnmonitoredJob::class)
             ->workQueue();
 
-        self::assertCount(0, Monitor::all());
+        self::assertSame(0, Monitor::query()->count());
     }
 
     public function testDontKeepSuccessfulMonitor()
@@ -53,7 +55,7 @@ class MonitorCreationTest extends DatabaseTestCase
             ->assertDispatched(MonitoredPartiallyKeptJob::class)
             ->workQueue();
 
-        self::assertCount(0, Monitor::all());
+        self::assertSame(0, Monitor::query()->count());
     }
 
     public function testDontKeepSuccessfulMonitorFailing()
@@ -63,6 +65,7 @@ class MonitorCreationTest extends DatabaseTestCase
             ->assertDispatched(MonitoredPartiallyKeptFailingJob::class)
             ->workQueue();
 
+        self::assertSame(1, Monitor::query()->count());
         self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         self::assertEquals(MonitoredPartiallyKeptFailingJob::class, $monitor->name);
     }
@@ -74,6 +77,7 @@ class MonitorCreationTest extends DatabaseTestCase
             ->assertDispatched(MonitoredBroadcastingJob::class)
             ->workQueue();
 
+        self::assertSame(1, Monitor::query()->count());
         self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         self::assertEquals(MonitoredBroadcastingJob::class, $monitor->name);
     }
@@ -85,6 +89,7 @@ class MonitorCreationTest extends DatabaseTestCase
         $this->assertDispatched(MonitoredJob::class);
         $this->workQueue();
 
+        self::assertSame(1, Monitor::query()->count());
         self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         self::assertEquals(MonitoredJob::class, $monitor->name);
     }
@@ -96,6 +101,7 @@ class MonitorCreationTest extends DatabaseTestCase
         $this->assertDispatched(MonitoredJobWithArguments::class);
         $this->workQueue();
 
+        self::assertSame(1, Monitor::query()->count());
         self::assertInstanceOf(Monitor::class, $monitor = Monitor::query()->first());
         self::assertEquals(MonitoredJobWithArguments::class, $monitor->name);
     }
