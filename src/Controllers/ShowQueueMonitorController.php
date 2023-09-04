@@ -95,8 +95,8 @@ class ShowQueueMonitorController
         $expressionAverageTime = DB::raw('AVG(TIMESTAMPDIFF(SECOND, `started_at`, `finished_at`)) as `average_time_elapsed`');
 
         if ($connection instanceof DatabaseConnections\SQLiteConnection) {
-            $expressionTotalTime = DB::raw('SUM(DATEDIFF(SECOND, `started_at`, `finished_at`)) as total_time_elapsed');
-            $expressionAverageTime = DB::raw('AVG(DATEDIFF(SECOND, `started_at`, `finished_at`)) as average_time_elapsed');
+            $expressionTotalTime = DB::raw('SUM(strftime("%s", `finished_at`) - strftime("%s", `started_at`)) as total_time_elapsed');
+            $expressionAverageTime = DB::raw('AVG(strftime("%s", `finished_at`) - strftime("%s", `started_at`)) as average_time_elapsed');
         }
 
         if ($connection instanceof DatabaseConnections\SqlServerConnection) {

@@ -19,3 +19,5 @@ node_modules/
 .phpunit.result.cache
 .php_cs.cache
 .php-cs-fixer.cache
+
+db.sqlite

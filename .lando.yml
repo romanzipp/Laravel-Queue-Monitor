@@ -36,6 +36,12 @@ tooling:
       DB_DATABASE: web
       DB_USERNAME: postgres
       DB_PASSWORD: ""
+  phpunit-sqlite:
+    service: appserver
+    cmd: /app/vendor/bin/phpunit
+    env:
+      DB_CONNECTION: sqlite
+      DB_DATABASE: "db.sqlite"
   phpcs:
     service: appserver
     cmd: /app/vendor/bin/php-cs-fixer
