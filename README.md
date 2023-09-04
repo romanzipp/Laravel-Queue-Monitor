@@ -18,13 +18,19 @@ This package offers monitoring like [Laravel Horizon](https://laravel.com/docs/h
 
 ## Installation
 
-✨ **See [Upgrade Guide](https://github.com/romanzipp/Laravel-Queue-Monitor/releases/tag/4.0.0) if you are updating to 4.0** ✨
-
 ```
 composer require romanzipp/laravel-queue-monitor
 ```
 
-See [romanzipp/Laravel-Queue-Monitor-Nova](https://github.com/romanzipp/Laravel-Queue-Monitor-Nova) for **Laravel Nova** resources & metrics.
+There is an additional package [romanzipp/Laravel-Queue-Monitor-Nova](https://github.com/romanzipp/Laravel-Queue-Monitor-Nova) for **Laravel Nova** resources & metrics.
+
+### Upgrading
+
+✨ **See [Upgrade Guide](https://github.com/romanzipp/Laravel-Queue-Monitor/releases/tag/5.0.0) if you are updating to 5.0** ✨
+
+- [Upgrading to 4.0 from 3.0](https://github.com/romanzipp/Laravel-Queue-Monitor/releases/tag/4.0.0)
+- [Upgrading to 3.0 from 2.0](https://github.com/romanzipp/Laravel-Queue-Monitor/releases/tag/3.0.0)
+- [Upgrading to 2.0 from 1.0](https://github.com/romanzipp/Laravel-Queue-Monitor/releases/tag/2.0.0)
 
 ## Configuration
 
