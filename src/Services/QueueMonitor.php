@@ -155,10 +155,10 @@ class QueueMonitor
         /** @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract $monitor */
         $monitor = $model::query()->updateOrCreate([
             'job_id' => $jobId = self::getJobId($job),
-            'job_uuid' => $job->uuid(),
             'queue' => $job->getQueue() ?: 'default',
             'status' => MonitorStatus::QUEUED,
         ], [
+            'job_uuid' => $job->uuid(),
             'name' => $job->resolveName(),
             'started_at' => $now,
             'started_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
