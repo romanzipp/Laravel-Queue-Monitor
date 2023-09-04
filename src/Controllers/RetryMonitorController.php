@@ -12,7 +12,11 @@ class RetryMonitorController
 {
     public function __invoke(Request $request, int $monitorId): RedirectResponse
     {
-        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+        /**
+         * @var \romanzipp\QueueMonitor\Models\Monitor $monitor
+         *
+         * @phpstan-ignore-next-line
+         */
         $monitor = QueueMonitor::getModel()
             ->query()
             ->where('status', MonitorStatus::FAILED)
