@@ -291,7 +291,11 @@ class Monitor extends Model implements MonitorContract
         $this->retried = true;
         $this->save();
 
-        Artisan::call('queue:retry', ['id' => $this->job_uuid]);
+        $response = Artisan::call('queue:retry', ['id' => $this->job_uuid]);
+
+        if (0 !== $response) {
+            throw new \Exception(Artisan::output());
+        }
     }
 
     public function canBeRetried(): bool
