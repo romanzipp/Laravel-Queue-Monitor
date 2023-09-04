@@ -125,7 +125,6 @@ class QueueMonitor
 
         QueueMonitor::getModel()::query()->create([
             'job_id' => $event->id,
-            'job_uuid' => $event->id,
             'name' => get_class($event->job),
             /** @phpstan-ignore-next-line */
             'queue' => $event->job->queue ?: 'default',
