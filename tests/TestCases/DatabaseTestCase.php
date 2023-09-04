@@ -28,7 +28,7 @@ abstract class DatabaseTestCase extends TestCase
         $this->baseRefreshTestDatabase();
     }
 
-    protected function tryCreateJobsTables():void
+    protected function tryCreateJobsTables(): void
     {
         if ( ! $this->app['db']->connection()->getSchemaBuilder()->hasTable('jobs')) {
             $this->createJobsTable();

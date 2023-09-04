@@ -2,7 +2,6 @@
 
 namespace romanzipp\QueueMonitor\Controllers;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
