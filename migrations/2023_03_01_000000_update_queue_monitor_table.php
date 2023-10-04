@@ -25,7 +25,6 @@ class UpdateQueueMonitorTable extends Migration
     public function upgradeColumns()
     {
         DB::table(config('queue-monitor.table'))->orderBy('id')->chunk(500, function (Collection $monitors) {
-
             /** @var array<int, array<stdClass>> $matrix */
             $matrix = [
                 MonitorStatus::RUNNING => [],
