@@ -43,6 +43,10 @@ class ClassUses
             $class = get_class($class);
         }
 
+        if ( ! class_exists($class)) {
+            return [];
+        }
+
         $results = [];
 
         foreach (array_reverse(class_parents($class)) + [$class => $class] as $class) {
