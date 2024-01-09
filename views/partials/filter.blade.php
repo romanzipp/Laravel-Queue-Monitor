@@ -17,6 +17,21 @@
                        class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded text-sm">
             </div>
 
+            @if(config('queue-monitor.ui.show_custom_data'))
+                <div class="px-2 w-1/4">
+                    <label for="filter_custom_data"
+                           class="block mb-1 text-xs font-light text-gray-500">
+                        @lang('Custom Data')
+                    </label>
+                    <input type="text"
+                           id="filter_custom_data"
+                           name="custom_data"
+                           value="{{ $filters['custom_data'] ?? null }}"
+                           placeholder="Example Custom Data"
+                           class="w-full px-3 py-2 bg-gray-50 dark:bg-gray-600 border border-gray-300 dark:border-gray-500 rounded text-sm">
+                </div>
+            @endif
+
             <div class="px-2 w-1/4">
                 <label for="filter_status"
                        class="block mb-1 text-xs font-light text-gray-500">

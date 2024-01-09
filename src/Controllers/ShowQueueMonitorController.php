@@ -26,12 +26,14 @@ class ShowQueueMonitorController
             'status' => ['nullable', 'numeric', Rule::in(MonitorStatus::toArray())],
             'queue' => ['nullable', 'string'],
             'name' => ['nullable', 'string'],
+            'custom_data' => ['nullable', 'string'],
         ]);
 
         $filters = [
             'status' => isset($data['status']) ? (int) $data['status'] : null,
             'queue' => $data['queue'] ?? 'all',
             'name' => $data['name'] ?? null,
+            'custom_data' => $data['custom_data'] ?? null,
         ];
 
         $jobsQuery = QueueMonitor::getModel()->newQuery();
@@ -46,6 +48,10 @@ class ShowQueueMonitorController
 
         if (null !== $filters['name']) {
             $jobsQuery->where('name', 'like', "%{$filters['name']}%");
+        }
+
+        if (null !== $filters['custom_data']) {
+            $jobsQuery->where('data', 'like', "%{$filters['custom_data']}%");
         }
 
         $jobsQuery
