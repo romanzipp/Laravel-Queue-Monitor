@@ -13,7 +13,7 @@ class RetryMonitorController
     public function __invoke(Request $request, int $monitorId): RedirectResponse
     {
         /**
-         * @var \romanzipp\QueueMonitor\Models\Monitor $monitor
+         * @var Monitor $monitor
          *
          * @phpstan-ignore-next-line
          */

@@ -22,7 +22,7 @@ class QueueMonitor
     /**
      * Get the model used to store the monitoring data.
      *
-     * @return \romanzipp\QueueMonitor\Models\Contracts\MonitorContract
+     * @return MonitorContract
      */
     public static function getModel(): MonitorContract
     {
@@ -32,7 +32,7 @@ class QueueMonitor
     /**
      * Handle Job Queued.
      *
-     * @param \Illuminate\Queue\Events\JobQueued $event
+     * @param JobQueued $event
      *
      * @return void
      */
@@ -44,7 +44,7 @@ class QueueMonitor
     /**
      * Handle Job Processing.
      *
-     * @param \Illuminate\Queue\Events\JobProcessing $event
+     * @param JobProcessing $event
      *
      * @return void
      */
@@ -56,7 +56,7 @@ class QueueMonitor
     /**
      * Handle Job Processed.
      *
-     * @param \Illuminate\Queue\Events\JobProcessed $event
+     * @param JobProcessed $event
      *
      * @return void
      */
@@ -68,7 +68,7 @@ class QueueMonitor
     /**
      * Handle Job Failing.
      *
-     * @param \Illuminate\Queue\Events\JobFailed $event
+     * @param JobFailed $event
      *
      * @return void
      */
@@ -80,7 +80,7 @@ class QueueMonitor
     /**
      * Handle Job Exception Occurred.
      *
-     * @param \Illuminate\Queue\Events\JobExceptionOccurred $event
+     * @param JobExceptionOccurred $event
      *
      * @return void
      */
@@ -92,7 +92,7 @@ class QueueMonitor
     /**
      * Get Job ID.
      *
-     * @param \Illuminate\Contracts\Queue\Job $job
+     * @param JobContract $job
      *
      * @return string|int
      */
@@ -137,7 +137,7 @@ class QueueMonitor
     /**
      * Job Start Processing.
      *
-     * @param \Illuminate\Contracts\Queue\Job $job
+     * @param JobContract $job
      *
      * @return void
      */
@@ -151,7 +151,7 @@ class QueueMonitor
 
         $model = self::getModel();
 
-        /** @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract $monitor */
+        /** @var MonitorContract $monitor */
         $monitor = $model::query()->updateOrCreate([
             'job_id' => $jobId = self::getJobId($job),
             'queue' => $job->getQueue() ?: 'default',
@@ -183,7 +183,7 @@ class QueueMonitor
     /**
      * Finish Queue Monitoring for Job.
      *
-     * @param \Illuminate\Contracts\Queue\Job $job
+     * @param JobContract $job
      * @param int $status
      * @param \Throwable|null $exception
      *

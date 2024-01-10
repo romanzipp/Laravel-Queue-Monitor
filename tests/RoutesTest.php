@@ -50,7 +50,7 @@ class RoutesTest extends DatabaseTestCase
     {
         config(['queue-monitor.ui.enabled' => false]);
 
-        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+        /** @var Monitor $monitor */
         $monitor = Monitor::query()->create([
             'job_id' => mt_rand(),
         ]);
@@ -67,7 +67,7 @@ class RoutesTest extends DatabaseTestCase
             'queue-monitor.ui.allow_deletion' => false,
         ]);
 
-        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+        /** @var Monitor $monitor */
         $monitor = Monitor::query()->create([
             'job_id' => mt_rand(),
         ]);
@@ -84,7 +84,7 @@ class RoutesTest extends DatabaseTestCase
             'queue-monitor.ui.allow_deletion' => true,
         ]);
 
-        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+        /** @var Monitor $monitor */
         $monitor = Monitor::query()->create([
             'job_id' => mt_rand(),
         ]);
@@ -145,7 +145,7 @@ class RoutesTest extends DatabaseTestCase
     {
         config(['queue-monitor.ui.enabled' => false]);
 
-        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+        /** @var Monitor $monitor */
         $monitor = Monitor::query()->create([
             'job_id' => mt_rand(),
             'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
@@ -163,7 +163,7 @@ class RoutesTest extends DatabaseTestCase
             'queue-monitor.ui.allow_retry' => false,
         ]);
 
-        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+        /** @var Monitor $monitor */
         $monitor = Monitor::query()->create([
             'job_id' => mt_rand(),
             'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
@@ -181,7 +181,7 @@ class RoutesTest extends DatabaseTestCase
             'queue-monitor.ui.allow_retry' => true,
         ]);
 
-        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+        /** @var Monitor $monitor */
         $monitor = Monitor::query()->create([
             'job_id' => mt_rand(),
             'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',

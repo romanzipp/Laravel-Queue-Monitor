@@ -83,7 +83,7 @@ class Monitor extends Model implements MonitorContract
      */
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param Builder $query
      * @param string|int $jobId
      */
     public function scopeWhereJob(Builder $query, $jobId): void
