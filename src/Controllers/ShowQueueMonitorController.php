@@ -106,8 +106,8 @@ class ShowQueueMonitorController
         }
 
         if ($connection instanceof DatabaseConnections\SqlServerConnection) {
-            $expressionTotalTime = DB::raw('SUM(DATEDIFF(SECOND, `started_at`, `finished_at`)) as `total_time_elapsed`');
-            $expressionAverageTime = DB::raw('AVG(DATEDIFF(SECOND, `started_at`, `finished_at`)) as `average_time_elapsed`');
+            $expressionTotalTime = DB::raw('SUM(DATEDIFF(SECOND, "started_at", "finished_at")) as "total_time_elapsed"');
+            $expressionAverageTime = DB::raw('AVG(DATEDIFF(SECOND, "started_at", "finished_at")) as "average_time_elapsed"');
         }
 
         if ($connection instanceof DatabaseConnections\PostgresConnection) {
