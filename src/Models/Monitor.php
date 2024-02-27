@@ -18,10 +18,10 @@ use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
  * @property string $job_id
  * @property string|null $name
  * @property string|null $queue
- * @property \Illuminate\Support\Carbon|null $queued_at
- * @property \Illuminate\Support\Carbon|null $started_at
+ * @property Carbon|null $queued_at
+ * @property Carbon|null $started_at
  * @property string|null $started_at_exact
- * @property \Illuminate\Support\Carbon|null $finished_at
+ * @property Carbon|null $finished_at
  * @property string|null $finished_at_exact
  * @property int $status
  * @property int $attempt
@@ -145,16 +145,16 @@ class Monitor extends Model implements MonitorContract
     /**
      * Get the estimated remaining seconds. This requires a job progress to be set.
      *
-     * @param \Illuminate\Support\Carbon|null $now
+     * @param Carbon|null $now
      *
      * @return float
      */
-    public function getRemainingSeconds(Carbon $now = null): float
+    public function getRemainingSeconds(?Carbon $now = null): float
     {
         return $this->getRemainingInterval($now)->totalSeconds;
     }
 
-    public function getRemainingInterval(Carbon $now = null): CarbonInterval
+    public function getRemainingInterval(?Carbon $now = null): CarbonInterval
     {
         if (null === $now) {
             $now = Carbon::now();
@@ -176,16 +176,16 @@ class Monitor extends Model implements MonitorContract
     /**
      * Get the currently elapsed seconds.
      *
-     * @param \Illuminate\Support\Carbon|null $end
+     * @param Carbon|null $end
      *
      * @return float
      */
-    public function getElapsedSeconds(Carbon $end = null): float
+    public function getElapsedSeconds(?Carbon $end = null): float
     {
         return $this->getElapsedInterval($end)->seconds;
     }
 
-    public function getElapsedInterval(Carbon $end = null): CarbonInterval
+    public function getElapsedInterval(?Carbon $end = null): CarbonInterval
     {
         if (null === $end) {
             $end = $this->getFinishedAtExact() ?? $this->finished_at ?? Carbon::now();

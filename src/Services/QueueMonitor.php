@@ -189,7 +189,7 @@ class QueueMonitor
      *
      * @return void
      */
-    protected static function jobFinished(JobContract $job, int $status, \Throwable $exception = null): void
+    protected static function jobFinished(JobContract $job, int $status, ?\Throwable $exception = null): void
     {
         if ( ! self::shouldBeMonitored($job)) {
             return;
@@ -197,7 +197,7 @@ class QueueMonitor
 
         $model = self::getModel();
 
-        /** @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract|null $monitor */
+        /** @var MonitorContract|null $monitor */
         $monitor = $model::query()
             ->where('job_id', self::getJobId($job))
             ->where('attempt', $job->attempts())
@@ -249,7 +249,7 @@ class QueueMonitor
     /**
      * Determine weather the Job should be monitored, default true.
      *
-     * @param object|\Illuminate\Contracts\Queue\Job $job
+     * @param object|JobContract $job
      *
      * @return bool
      */

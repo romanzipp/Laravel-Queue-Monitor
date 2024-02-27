@@ -76,7 +76,7 @@ class MonitorTimeCalculationTest extends DatabaseTestCase
         );
     }
 
-    private function createMonitor(Carbon $startedAt, int $progress = null): Monitor
+    private function createMonitor(Carbon $startedAt, ?int $progress = null): Monitor
     {
         /** @var Monitor $monitor */
         $monitor = Monitor::query()->create([
