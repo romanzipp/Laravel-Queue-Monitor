@@ -31,6 +31,10 @@ class QueueMonitorProvider extends ServiceProvider
             ], 'migrations');
 
             $this->publishes([
+                __DIR__ . '/../../migrations-upgrade' => base_path('migrations-upgrade'),
+            ], 'migrations-upgrade');
+
+            $this->publishes([
                 __DIR__ . '/../../views' => resource_path('views/vendor/queue-monitor'),
             ], 'views');
 
