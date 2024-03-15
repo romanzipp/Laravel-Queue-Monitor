@@ -325,6 +325,7 @@ The easiest way to execute tests locally is via [**Lando**](https://lando.dev/).
 ```shell
 lando start
 
+lando phpunit-sqlite
 lando phpunit-mysql
 lando phpunit-postgres
 ```
