@@ -8,11 +8,24 @@ use Illuminate\Support\Facades\Schema;
 
 abstract class DatabaseTestCase extends TestCase
 {
-    use RefreshDatabase;
+    use RefreshDatabase {
+        refreshTestDatabase as baseRefreshTestDatabase;
+        refreshInMemoryDatabase as baseRefreshInMemoryDatabase;
+    }
 
-    protected function afterRefreshingDatabase(): void
+    protected function refreshInMemoryDatabase(): void
+    {
+        $this->createJobsTable();
+        $this->createFailedJobsTable();
+
+        $this->baseRefreshInMemoryDatabase();
+    }
+
+    protected function refreshTestDatabase(): void
     {
         $this->tryCreateJobsTables();
+
+        $this->baseRefreshTestDatabase();
     }
 
     protected function tryCreateJobsTables(): void
