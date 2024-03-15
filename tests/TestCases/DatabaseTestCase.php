@@ -10,7 +10,6 @@ abstract class DatabaseTestCase extends TestCase
 {
     use RefreshDatabase {
         refreshTestDatabase as baseRefreshTestDatabase;
-        refreshInMemoryDatabase as baseRefreshInMemoryDatabase;
     }
 
     protected function refreshInMemoryDatabase(): void
@@ -18,7 +17,6 @@ abstract class DatabaseTestCase extends TestCase
         $this->createJobsTable();
         $this->createFailedJobsTable();
 
-        $this->baseRefreshInMemoryDatabase();
     }
 
     protected function refreshTestDatabase(): void
