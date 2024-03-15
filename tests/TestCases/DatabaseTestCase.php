@@ -16,7 +16,6 @@ abstract class DatabaseTestCase extends TestCase
     {
         $this->createJobsTable();
         $this->createFailedJobsTable();
-
     }
 
     protected function refreshTestDatabase(): void
