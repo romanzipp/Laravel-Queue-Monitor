@@ -1,13 +1,13 @@
 {
-    "name": "romanzipp/laravel-queue-monitor",
+    "name": "uocnv/laravel-queue-monitor",
     "description": "Queue Monitoring for Laravel Database Job Queue",
     "type": "library",
     "license": "MIT",
     "authors": [
         {
-            "name": "romanzipp",
-            "email": "ich@ich.wtf",
-            "homepage": "https://ich.wtf"
+            "name": "Nguyễn Văn Ước",
+            "email": "uocnv.soict.hust@gmail.com",
+            "role": "Developer"
         }
     ],
     "require": {
