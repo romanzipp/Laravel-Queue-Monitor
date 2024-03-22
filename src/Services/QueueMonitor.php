@@ -94,12 +94,12 @@ class QueueMonitor
      *
      * @param JobContract $job
      *
-     * @return string|int
+     * @return string
      */
-    public static function getJobId(JobContract $job): string|int
+    public static function getJobId(JobContract $job): string
     {
         if ($jobId = $job->getJobId()) {
-            return $jobId;
+            return (string)$jobId;
         }
 
         return sha1($job->getRawBody());
