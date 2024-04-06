@@ -11,7 +11,7 @@ return [
      *   romanzipp\QueueMonitor\Models\Contracts\MonitorContract
      * interface or extend the base model.
      */
-    'model' => romanzipp\QueueMonitor\Models\Monitor::class,
+    'model' => \romanzipp\QueueMonitor\Models\Monitor::class,
 
     // Determined if the queued jobs should be monitored
     'monitor_queued_jobs' => true,

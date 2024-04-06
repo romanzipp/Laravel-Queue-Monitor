@@ -99,7 +99,7 @@ class QueueMonitor
     public static function getJobId(JobContract $job): string
     {
         if ($jobId = $job->getJobId()) {
-            return (string)$jobId;
+            return (string) $jobId;
         }
 
         return sha1($job->getRawBody());

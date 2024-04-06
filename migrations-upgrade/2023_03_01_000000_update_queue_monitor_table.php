@@ -45,7 +45,7 @@ class UpdateQueueMonitorTable extends Migration
 
             foreach ($matrix as $status => $monitors) {
                 DB::table(config('queue-monitor.table'))
-                    ->whereIn('id', array_map(fn (stdClass $monitor) => $monitor->id, $monitors))
+                    ->whereIn('id', array_map(fn (\stdClass $monitor) => $monitor->id, $monitors))
                     ->update(['status' => $status]);
             }
         });
