@@ -54,9 +54,8 @@ class ShowQueueMonitorController
             $jobsQuery->where('data', 'like', "%{$filters['custom_data']}%");
         }
 
+        $connection = DB::connection();
         if (config('queue-monitor.ui.order_queued_first')) {
-            $connection = DB::connection();
-
             if ($connection instanceof DatabaseConnections\MySqlConnection) {
                 $jobsQuery->orderByRaw('-`started_at`');
             }
@@ -68,6 +67,8 @@ class ShowQueueMonitorController
             if ($connection instanceof DatabaseConnections\SQLiteConnection) {
                 $jobsQuery->orderByRaw('started_at DESC NULLS FIRST');
             }
+        } elseif ($connection instanceof DatabaseConnections\PostgresConnection) {
+            $jobsQuery->orderByRaw('started_at DESC NULLS LAST');
         }
 
         $jobsQuery
