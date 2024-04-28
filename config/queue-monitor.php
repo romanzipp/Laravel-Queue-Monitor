@@ -53,5 +53,8 @@ return [
 
         // The interval before refreshing the dashboard (in seconds).
         'refresh_interval' => null,
+
+        // Order the queued but not started jobs first
+        'order_queued_first' => false
     ],
 ];
