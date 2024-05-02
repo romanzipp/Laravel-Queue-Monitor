@@ -55,6 +55,6 @@ return [
         'refresh_interval' => null,
 
         // Order the queued but not started jobs first
-        'order_queued_first' => false
+        'order_queued_first' => false,
     ],
 ];
