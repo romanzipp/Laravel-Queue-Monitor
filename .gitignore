@@ -6,6 +6,9 @@ composer.phar
 composer.lock
 /vendor/
 
+# custom - ale 20/05/24
+composer.json
+
 ### Node ###
 node_modules/
 
