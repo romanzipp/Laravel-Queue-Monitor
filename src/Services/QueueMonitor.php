@@ -2,6 +2,8 @@
 
 namespace romanzipp\QueueMonitor\Services;
 
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Contracts\Queue\Job as JobContract;
 use Illuminate\Queue\Events\JobExceptionOccurred;
 use Illuminate\Queue\Events\JobFailed;
@@ -39,6 +41,16 @@ class QueueMonitor
     public static function handleJobQueued(JobQueued $event): void
     {
         self::jobQueued($event);
+    }
+
+    /**
+     * @param \Laravel\Horizon\Events\JobPushed $event
+     *
+     * @return void
+     */
+    public static function handleJobPushed($event): void
+    {
+        self::jobPushed($event);
     }
 
     /**
@@ -125,6 +137,7 @@ class QueueMonitor
 
         QueueMonitor::getModel()::query()->create([
             'job_id' => $event->id,
+            'job_uuid' => isset($event->payload) ? $event->payload()['uuid'] : $event->id,
             'name' => get_class($event->job),
             /** @phpstan-ignore-next-line */
             'queue' => $event->job->queue ?: 'default',
@@ -132,6 +145,41 @@ class QueueMonitor
             'queued_at' => now(),
             'data' => $data ?? null,
         ]);
+    }
+
+    /**
+     * Start Queue Monitoring for Job.
+     *
+     * @param \Laravel\Horizon\Events\JobPushed $event
+     *
+     * @return void
+     */
+    protected static function jobPushed($event): void
+    {
+        if ( ! self::shouldBeMonitored($event->payload->displayName())) {
+            return;
+        }
+
+        // add initial data
+        if (method_exists($event->payload->displayName(), 'initialMonitorData')) {
+            $data = json_encode(static::getJobInstance($event->payload->decoded['data'])->initialMonitorData());
+        }
+
+        QueueMonitor::getModel()::query()->create([
+            'job_id' => $event->payload->decoded['id'] ?? $event->payload->decoded['uuid'],
+            'job_uuid' => $event->payload->decoded['uuid'] ?? $event->payload->decoded['uuid'],
+            'name' => $event->payload->displayName(),
+            /** @phpstan-ignore-next-line */
+            'queue' => $event->queue ?: 'default',
+            'status' => MonitorStatus::QUEUED,
+            'queued_at' => now(),
+            'data' => $data ?? null,
+        ]);
+
+        // mark the retried job
+        if ($event->payload->isRetry()) {
+            QueueMonitor::getModel()::query()->where('job_uuid', $event->payload->retryOf())->update(['retried' => true]);
+        }
     }
 
     /**
@@ -253,10 +301,27 @@ class QueueMonitor
      *
      * @return bool
      */
-    public static function shouldBeMonitored(object $job): bool
+    public static function shouldBeMonitored(object|string $job): bool
     {
         $class = $job instanceof JobContract ? $job->resolveName() : $job;
 
         return array_key_exists(IsMonitored::class, ClassUses::classUsesRecursive($class));
+    }
+
+    /**
+     * @param  array  $data
+     * @return IsMonitored
+     */
+    private static function getJobInstance(array $data)
+    {
+        if (str_starts_with($data['command'], 'O:')) {
+            return unserialize($data['command']);
+        }
+
+        if (Container::getInstance()->bound(Encrypter::class)) {
+            return unserialize(Container::getInstance()[Encrypter::class]->decrypt($data['command']));
+        }
+
+        throw new \RuntimeException('Unable to extract job payload.');
     }
 }
