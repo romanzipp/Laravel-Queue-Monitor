@@ -59,9 +59,21 @@ class QueueMonitorProvider extends ServiceProvider
 
         // listen to JobQueued event
         if (config('queue-monitor.monitor_queued_jobs', true)) {
-            Event::listen(JobQueued::class, function (JobQueued $event) {
-                QueueMonitor::handleJobQueued($event);
-            });
+            /**
+             * If the project uses Horizon, we will listen to the JobPushed event,
+             * because Horizon fires JobPushed event when the job is queued or retry the job again from its UI
+             *
+             * @see https://laravel.com/docs/horizon
+             */
+            if (class_exists('Laravel\Horizon\Events\JobPushed')) {
+                Event::listen('Laravel\Horizon\Events\JobPushed', function ($event) {
+                    QueueMonitor::handleJobPushed($event);
+                });
+            } else {
+                Event::listen(JobQueued::class, function (JobQueued $event) {
+                    QueueMonitor::handleJobQueued($event);
+                });
+            }
         }
 
         // listen to other job events
