@@ -138,7 +138,7 @@ class QueueMonitor
         QueueMonitor::getModel()::query()->create([
             'job_id' => $event->id,
             /** @phpstan-ignore-next-line */
-            'job_uuid' => isset($event->payload) ? $event->payload()['uuid'] : $event->id,
+            'job_uuid' => isset($event->payload) ? $event->payload()['uuid'] : (is_numeric($event->id) ? null : $event->id),
             'name' => get_class($event->job),
             /** @phpstan-ignore-next-line */
             'queue' => $event->job->queue ?: 'default',
