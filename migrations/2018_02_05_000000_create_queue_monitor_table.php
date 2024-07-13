@@ -7,6 +7,16 @@ use romanzipp\QueueMonitor\Enums\MonitorStatus;
 
 class CreateQueueMonitorTable extends Migration
 {
+    /**
+     * Get the customized connection name.
+     *
+     * @return string|null
+     */
+    public function getConnection()
+    {
+        return config('queue-monitor.connection');
+    }
+
     public function up()
     {
         Schema::create(config('queue-monitor.table'), function (Blueprint $table) {
