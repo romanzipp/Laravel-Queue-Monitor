@@ -87,6 +87,7 @@ class ShowQueueMonitorController
             ->groupBy('queue')
             ->get()
             ->map(function (MonitorContract $monitor) {
+                /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
                 return $monitor->queue;
             })
             ->toArray();

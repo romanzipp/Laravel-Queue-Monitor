@@ -40,7 +40,7 @@ use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
  * @method static Builder|Monitor succeeded()
  *
  * @mixin \Illuminate\Database\Eloquent\Model
- * @mixin Builder
+ * @mixin Builder<\romanzipp\QueueMonitor\Models\Monitor>
  */
 class Monitor extends Model implements MonitorContract
 {
@@ -83,7 +83,7 @@ class Monitor extends Model implements MonitorContract
      */
 
     /**
-     * @param Builder $query
+     * @param Builder<\romanzipp\QueueMonitor\Models\Monitor> $query
      * @param string|int $jobId
      */
     public function scopeWhereJob(Builder $query, $jobId): void

@@ -3,7 +3,7 @@
 namespace romanzipp\QueueMonitor\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use romanzipp\QueueMonitor\Console\Commands\Concerns\HandlesDateInputs;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;

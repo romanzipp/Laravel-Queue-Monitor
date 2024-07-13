@@ -137,7 +137,7 @@ class QueueMonitor
 
         QueueMonitor::getModel()::query()->create([
             'job_id' => $event->id,
-            'job_uuid' => isset($event->payload) ? $event->payload()['uuid'] : $event->id,
+            'job_uuid' => $event->payload ? $event->payload()['uuid'] : $event->id,
             'name' => get_class($event->job),
             /** @phpstan-ignore-next-line */
             'queue' => $event->job->queue ?: 'default',
@@ -160,9 +160,14 @@ class QueueMonitor
             return;
         }
 
+        $initialData = null;
+
         // add initial data
         if (method_exists($event->payload->displayName(), 'initialMonitorData')) {
-            $data = json_encode(static::getJobInstance($event->payload->decoded['data'])->initialMonitorData());
+            /** @var \romanzipp\QueueMonitor\Contracts\MonitoredJobContract $jobInstance */
+            $jobInstance = self::getJobInstance($event->payload->decoded['data']);
+
+            $initialData = $jobInstance->initialMonitorData();
         }
 
         QueueMonitor::getModel()::query()->create([
@@ -173,7 +178,7 @@ class QueueMonitor
             'queue' => $event->queue ?: 'default',
             'status' => MonitorStatus::QUEUED,
             'queued_at' => now(),
-            'data' => $data ?? null,
+            'data' => $initialData ? json_encode($initialData) : null,
         ]);
 
         // mark the retried job
@@ -199,7 +204,7 @@ class QueueMonitor
 
         $model = self::getModel();
 
-        /** @var MonitorContract $monitor */
+        /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
         $monitor = $model::query()->updateOrCreate([
             'job_id' => $jobId = self::getJobId($job),
             'queue' => $job->getQueue() ?: 'default',
@@ -297,7 +302,7 @@ class QueueMonitor
     /**
      * Determine weather the Job should be monitored, default true.
      *
-     * @param object|JobContract $job
+     * @param object|string|\romanzipp\QueueMonitor\Contracts\MonitoredJobContract $job
      *
      * @return bool
      */
@@ -309,9 +314,9 @@ class QueueMonitor
     }
 
     /**
-     * @param array $data
+     * @param array<string, mixed> $data
      *
-     * @return IsMonitored
+     * @return \romanzipp\QueueMonitor\Contracts\MonitoredJobContract
      */
     private static function getJobInstance(array $data)
     {

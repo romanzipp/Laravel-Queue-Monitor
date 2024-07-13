@@ -1,5 +1,8 @@
 parameters:
-  phpVersion: 80000
+  phpVersion: 80300
   level: 6
   paths:
     - src
+  ignoreErrors:
+    - '#Laravel\\Horizon#'
+    - '#Method ([A-Za-z\:\(\)\\]+) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types: TModel#'
