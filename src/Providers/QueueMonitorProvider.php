@@ -61,7 +61,7 @@ class QueueMonitorProvider extends ServiceProvider
         if (config('queue-monitor.monitor_queued_jobs', true)) {
             /**
              * If the project uses Horizon, we will listen to the JobPushed event,
-             * because Horizon fires JobPushed event when the job is queued or retry the job again from its UI
+             * because Horizon fires JobPushed event when the job is queued or retry the job again from its UI.
              *
              * @see https://laravel.com/docs/horizon
              */

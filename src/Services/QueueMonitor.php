@@ -309,7 +309,8 @@ class QueueMonitor
     }
 
     /**
-     * @param  array  $data
+     * @param array $data
+     *
      * @return IsMonitored
      */
     private static function getJobInstance(array $data)
