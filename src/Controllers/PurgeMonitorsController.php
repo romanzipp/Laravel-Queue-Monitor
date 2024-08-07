@@ -13,9 +13,7 @@ class PurgeMonitorsController
     {
         $model = QueueMonitor::getModel();
 
-        $model->newQuery()->each(function (MonitorContract $monitor) {
-            $monitor->delete();
-        }, 200);
+        $model->newQuery()->delete();
 
         return redirect()->route('queue-monitor::index');
     }
