@@ -38,8 +38,8 @@
                     {{ $job->getBaseName() }}
 
                     <span class="ml-1 text-xs text-gray-600 dark:text-gray-400">
-                                #{{ $job->job_id }}
-                            </span>
+                        #{{ $job->job_id }}
+                    </span>
 
                 </td>
 
@@ -127,7 +127,7 @@
                                 </button>
                             </form>
                         @endif
-                        @if(config('queue-monitor.ui.allow_deletion'))
+                        @if(config('queue-monitor.ui.allow_deletion') && $job->isFinished())
                             <form action="{{ route('queue-monitor::destroy', [$job]) }}" method="post">
                                 @csrf
                                 @method('delete')
