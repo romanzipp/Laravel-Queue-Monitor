@@ -66,7 +66,7 @@
 
                     <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
                         <textarea rows="4"
-                                  class="w-64 text-xs p-1 border rounded"
+                                  class="w-64 text-xs p-1 border rounded bg-gray-50 dark:bg-gray-700"
                                   readonly>{{ json_encode($job->getData(), JSON_PRETTY_PRINT) }}
                         </textarea>
                     </td>
