@@ -110,7 +110,7 @@ class Monitor extends Model implements MonitorContract
 
     public function scopeFailed(Builder $query): void
     {
-        $query->where('failed', MonitorStatus::FAILED);
+        $query->where('status', MonitorStatus::FAILED);
     }
 
     public function scopeSucceeded(Builder $query): void
