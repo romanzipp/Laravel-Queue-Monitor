@@ -21,7 +21,7 @@ class CheckQueueMonitorUiConfig
             'queue-monitor::retry' => config('queue-monitor.ui.enabled') && config('queue-monitor.ui.allow_retry'),
             'queue-monitor::destroy' => config('queue-monitor.ui.enabled') && config('queue-monitor.ui.allow_deletion'),
             'queue-monitor::purge' => config('queue-monitor.ui.enabled') && config('queue-monitor.ui.allow_purge'),
-            default => false
+            default => false,
         };
 
         if ( ! $allowed) {
