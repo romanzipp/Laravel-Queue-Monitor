@@ -59,7 +59,7 @@ class PurgeOldMonitorsCommand extends Command
                     ->delete();
             });
         } else {
-            if (!$this->option('dry')) {
+            if ( ! $this->option('dry')) {
                 $query->delete();
             }
 
