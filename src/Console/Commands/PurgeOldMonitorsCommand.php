@@ -13,7 +13,7 @@ class PurgeOldMonitorsCommand extends Command
 {
     use HandlesDateInputs;
 
-    protected $signature = 'queue-monitor:purge {--before=} {--beforeDays=} {--beforeInterval=} {--only-succeeded} {--queue=} {--dry}';
+    protected $signature = 'queue-monitor:purge {--before=} {--beforeDays=} {--beforeInterval=} {--only-succeeded} {--queue=} {--dry} {--chunk}';
 
     public function handle(): int
     {
@@ -26,7 +26,7 @@ class PurgeOldMonitorsCommand extends Command
 
         $query = QueueMonitor::getModel()
             ->newQuery()
-            ->where('started_at', '<', $beforeDate);
+            ->where('queued_at', '<', $beforeDate);
 
         $queues = array_filter(explode(',', $this->option('queue') ?? ''));
 
@@ -44,19 +44,29 @@ class PurgeOldMonitorsCommand extends Command
             sprintf('Purging %d jobs before %s.', $count, $beforeDate->format('Y-m-d H:i:s'))
         );
 
-        $query->chunk(200, function (Collection $models, int $page) use ($count) {
-            $this->info(
-                sprintf('Deleted chunk %d / %d', $page, abs($count / 200))
-            );
+        if ($this->option('chunk')) {
+            $query->chunkById(200, function (Collection $models, int $page) use ($count) {
+                $this->info(
+                    sprintf('Deleted chunk %d / %d', $page, ceil($count / 200))
+                );
 
-            if ($this->option('dry')) {
-                return;
+                if ($this->option('dry')) {
+                    return;
+                }
+
+                DB::table(QueueMonitor::getModel()->getTable())
+                    ->whereIn('id', $models->pluck('id'))
+                    ->delete();
+            });
+        } else {
+            if (!$this->option('dry')) {
+                $query->delete();
             }
 
-            DB::table(QueueMonitor::getModel()->getTable())
-                ->whereIn('id', $models->pluck('id'))
-                ->delete();
-        });
+            $this->info(
+                sprintf('Deleted %d jobs before %s.', $count, $beforeDate->format('Y-m-d H:i:s'))
+            );
+        }
 
         return 1;
     }
