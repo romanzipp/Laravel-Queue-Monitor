@@ -14,8 +14,6 @@ class RetryMonitorController
     {
         /**
          * @var Monitor $monitor
-         *
-         * @phpstan-ignore-next-line
          */
         $monitor = QueueMonitor::getModel()
             ->query()
