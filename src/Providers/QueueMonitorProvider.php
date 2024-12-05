@@ -53,9 +53,11 @@ class QueueMonitorProvider extends ServiceProvider
             'queue-monitor'
         );
 
-        Route::group($this->buildRouteGroupConfig(), function () {
-            $this->loadRoutesFrom(__DIR__ . '/../../routes/queue-monitor.php');
-        });
+        if (config('queue-monitor.ui.enabled')) {
+            Route::group($this->buildRouteGroupConfig(), function () {
+                $this->loadRoutesFrom(__DIR__ . '/../../routes/queue-monitor.php');
+            });
+        }
 
         // listen to JobQueued event
         if (config('queue-monitor.monitor_queued_jobs', true)) {
