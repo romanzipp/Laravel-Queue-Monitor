@@ -3,6 +3,7 @@
 namespace romanzipp\QueueMonitor\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use romanzipp\QueueMonitor\Console\Commands\Concerns\HandlesDateInputs;
@@ -26,7 +27,10 @@ class PurgeOldMonitorsCommand extends Command
 
         $query = QueueMonitor::getModel()
             ->newQuery()
-            ->where('queued_at', '<', $beforeDate);
+            ->where(fn (Builder $query) => $query
+                ->where('queued_at', '<', $beforeDate)
+                ->orWhere('started_at', '<', $beforeDate)
+            );
 
         $queues = array_filter(explode(',', $this->option('queue') ?? ''));
 
