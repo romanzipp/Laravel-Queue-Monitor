@@ -15,14 +15,14 @@ trait IsMonitored
      *
      * @var int|null
      */
-    private $progressLastUpdated;
+    private ?int $progressLastUpdated;
 
     /**
      * Internal variable used for tracking chunking progress.
      *
      * @var int
      */
-    private $progressCurrentChunk = 0;
+    private ?int $progressCurrentChunk = 0;
 
     /**
      * Update progress.
