@@ -4,7 +4,6 @@ namespace romanzipp\QueueMonitor\Tests;
 
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Monitor;
-use romanzipp\QueueMonitor\Providers\QueueMonitorProvider;
 use romanzipp\QueueMonitor\Tests\TestCases\DatabaseTestCase;
 
 class RoutesTest extends DatabaseTestCase
@@ -16,11 +15,10 @@ class RoutesTest extends DatabaseTestCase
         $this->withExceptionHandling();
     }
 
-    protected function defineRoutes($router)
+    protected function defineEnvironment($app): void
     {
-        $router->group(QueueMonitorProvider::buildRouteGroupConfig(config()), function () use (&$router) {
-            require __DIR__ . '/../routes/queue-monitor.php';
-        });
+        $app['config']->set('queue-monitor.ui.enabled', true);
+        $app['config']->set('queue-monitor.ui.allow_retry', true);
     }
 
     /*
