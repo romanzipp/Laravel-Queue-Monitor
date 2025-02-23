@@ -2,11 +2,8 @@
 
 namespace romanzipp\QueueMonitor\Providers;
 
-use Illuminate\Queue\Events\JobExceptionOccurred;
-use Illuminate\Queue\Events\JobFailed;
-use Illuminate\Queue\Events\JobProcessed;
-use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Queue\Events\JobQueued;
+use Illuminate\Config\Repository;
+use Illuminate\Queue\Events as QueueEvents;
 use Illuminate\Queue\QueueManager;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +18,15 @@ class QueueMonitorProvider extends ServiceProvider
 {
     public function boot(): void
     {
+        /** @var \Illuminate\Config\Repository $config */
+        $config = $this->app['config'];
+
+        /** @var \Illuminate\Events\Dispatcher $events */
+        $events = $this->app['events'];
+
+        /** @var \Illuminate\Queue\QueueManager $queueManager */
+        $queueManager = $this->app->make(QueueManager::class);
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../../config/queue-monitor.php' => config_path('queue-monitor.php'),
@@ -48,54 +54,45 @@ class QueueMonitorProvider extends ServiceProvider
             ]);
         }
 
-        $this->loadViewsFrom(
-            __DIR__ . '/../../views',
-            'queue-monitor'
-        );
+        $this->loadViewsFrom(__DIR__ . '/../../views', 'queue-monitor');
 
-        if (config('queue-monitor.ui.enabled')) {
-            Route::group($this->buildRouteGroupConfig(), function () {
+        if ($config->boolean('queue-monitor.ui.enabled', false)) {
+            Route::group(self::buildRouteGroupConfig($config), function () {
                 $this->loadRoutesFrom(__DIR__ . '/../../routes/queue-monitor.php');
             });
         }
 
-        // listen to JobQueued event
-        if (config('queue-monitor.monitor_queued_jobs', true)) {
-            /**
-             * If the project uses Horizon, we will listen to the JobPushed event,
-             * because Horizon fires JobPushed event when the job is queued or retry the job again from its UI.
-             *
-             * @see https://laravel.com/docs/horizon
-             */
-            if (class_exists('Laravel\Horizon\Events\JobPushed')) {
-                Event::listen('Laravel\Horizon\Events\JobPushed', function ($event) {
-                    QueueMonitor::handleJobPushed($event);
-                });
-            } else {
-                Event::listen(JobQueued::class, function (JobQueued $event) {
-                    QueueMonitor::handleJobQueued($event);
-                });
-            }
+        // Listen to queue job events
+
+        /**
+         * If the project uses Horizon, we will listen to the JobPushed event,
+         * because Horizon fires JobPushed event when the job is queued or retry the job again from its UI.
+         *
+         * @see https://laravel.com/docs/horizon
+         */
+        if (class_exists('Laravel\Horizon\Events\JobPushed')) {
+            $events->listen('Laravel\Horizon\Events\JobPushed', function ($event) {
+                QueueMonitor::handleJobPushed($event);
+            });
+        } else {
+            $events->listen(QueueEvents\JobQueued::class, function (QueueEvents\JobQueued $event) {
+                QueueMonitor::handleJobQueued($event);
+            });
         }
 
-        // listen to other job events
-
-        /** @var QueueManager $manager */
-        $manager = app(QueueManager::class);
-
-        $manager->before(static function (JobProcessing $event) {
+        $queueManager->before(static function (QueueEvents\JobProcessing $event) {
             QueueMonitor::handleJobProcessing($event);
         });
 
-        $manager->after(static function (JobProcessed $event) {
+        $queueManager->after(static function (QueueEvents\JobProcessed $event) {
             QueueMonitor::handleJobProcessed($event);
         });
 
-        $manager->failing(static function (JobFailed $event) {
+        $queueManager->failing(static function (QueueEvents\JobFailed $event) {
             QueueMonitor::handleJobFailed($event);
         });
 
-        $manager->exceptionOccurred(static function (JobExceptionOccurred $event) {
+        $queueManager->exceptionOccurred(static function (QueueEvents\JobExceptionOccurred $event) {
             QueueMonitor::handleJobExceptionOccurred($event);
         });
     }
@@ -103,29 +100,29 @@ class QueueMonitorProvider extends ServiceProvider
     /**
      * @return array<string, mixed>
      */
-    private function buildRouteGroupConfig(): array
+    public static function buildRouteGroupConfig(Repository $config): array
     {
-        $config = config('queue-monitor.ui.route');
+        $routeConfig = $config->array('queue-monitor.ui.route');
 
-        if ( ! isset($config['middleware'])) {
-            $config['middleware'] = [];
+        if ( ! isset($routeConfig['middleware'])) {
+            $routeConfig['middleware'] = [];
         }
 
-        $config['middleware'][] = CheckQueueMonitorUiConfig::class;
+        $routeConfig['middleware'][] = CheckQueueMonitorUiConfig::class;
 
-        return $config;
+        return $routeConfig;
     }
 
     public function register(): void
     {
-        /** @phpstan-ignore-next-line */
-        if ( ! $this->app->configurationIsCached()) {
-            $this->mergeConfigFrom(
-                __DIR__ . '/../../config/queue-monitor.php',
-                'queue-monitor'
-            );
-        }
+        /** @var \Illuminate\Config\Repository $config */
+        $config = $this->app['config'];
 
-        QueueMonitor::$model = config('queue-monitor.model') ?: Monitor::class;
+        $this->mergeConfigFrom(
+            __DIR__ . '/../../config/queue-monitor.php',
+            'queue-monitor'
+        );
+
+        QueueMonitor::$model = $config->get('queue-monitor.model') ?: Monitor::class;
     }
 }
