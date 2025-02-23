@@ -13,9 +13,6 @@ return [
      */
     'model' => \romanzipp\QueueMonitor\Models\Monitor::class,
 
-    // Determined if the queued jobs should be monitored
-    'monitor_queued_jobs' => true,
-
     // Specify the max character length to use for storing exception backtraces.
     'db_max_length_exception' => 4294967295,
     'db_max_length_exception_message' => 65535,

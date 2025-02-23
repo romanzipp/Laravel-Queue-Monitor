@@ -4,6 +4,7 @@ namespace romanzipp\QueueMonitor\Tests;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use romanzipp\QueueMonitor\Models\Monitor;
+use romanzipp\QueueMonitor\Providers\QueueMonitorProvider;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredFailingJob;
 use romanzipp\QueueMonitor\Tests\Support\MonitoredJob;
 use romanzipp\QueueMonitor\Tests\TestCases\DatabaseTestCase;
@@ -20,6 +21,13 @@ class MonitorRetryTest extends DatabaseTestCase
         ]);
     }
 
+    protected function defineRoutes($router)
+    {
+        $router->group(QueueMonitorProvider::buildRouteGroupConfig(config()), function () use (&$router) {
+            require __DIR__ . '/../routes/queue-monitor.php';
+        });
+    }
+
     protected function tearDown(): void
     {
         MonitoredFailingJob::$count = 0;
@@ -31,11 +39,6 @@ class MonitorRetryTest extends DatabaseTestCase
 
     public function testRetryFailedMonitor(): void
     {
-        config([
-            'queue-monitor.ui.enabled' => true,
-            'queue-monitor.ui.allow_retry' => true,
-        ]);
-
         $this
             ->dispatch(new MonitoredFailingJob())
             ->assertDispatched(MonitoredFailingJob::class)
