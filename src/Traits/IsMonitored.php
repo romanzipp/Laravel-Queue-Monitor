@@ -22,7 +22,7 @@ trait IsMonitored
      *
      * @var int
      */
-    private ?int $progressCurrentChunk = 0;
+    private int $progressCurrentChunk = 0;
 
     /**
      * Update progress.
