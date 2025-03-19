@@ -96,7 +96,6 @@ class QueueMonitorProvider extends ServiceProvider
             QueueMonitor::handleJobExceptionOccurred($event);
         });
 
-
         $this->app['events']->listen([
             QueueEvents\JobExceptionOccurred::class,
             QueueEvents\JobFailed::class,
@@ -113,7 +112,7 @@ class QueueMonitorProvider extends ServiceProvider
             QueueEvents\QueueBusy::class,
             QueueEvents\WorkerStopping::class,
         ], function ($event) {
-            #dump(get_class($event));
+            // dump(get_class($event));
         });
     }
 
