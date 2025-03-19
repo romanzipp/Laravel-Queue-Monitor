@@ -95,6 +95,26 @@ class QueueMonitorProvider extends ServiceProvider
         $queueManager->exceptionOccurred(static function (QueueEvents\JobExceptionOccurred $event) {
             QueueMonitor::handleJobExceptionOccurred($event);
         });
+
+
+        $this->app['events']->listen([
+            QueueEvents\JobExceptionOccurred::class,
+            QueueEvents\JobFailed::class,
+            QueueEvents\JobPopped::class,
+            QueueEvents\JobPopping::class,
+            QueueEvents\JobProcessed::class,
+            QueueEvents\JobProcessing::class,
+            QueueEvents\JobQueued::class,
+            QueueEvents\JobQueueing::class,
+            QueueEvents\JobReleasedAfterException::class,
+            QueueEvents\JobRetryRequested::class,
+            QueueEvents\JobTimedOut::class,
+            QueueEvents\Looping::class,
+            QueueEvents\QueueBusy::class,
+            QueueEvents\WorkerStopping::class,
+        ], function ($event) {
+            #dump(get_class($event));
+        });
     }
 
     /**

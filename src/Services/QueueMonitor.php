@@ -5,11 +5,7 @@ namespace romanzipp\QueueMonitor\Services;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Contracts\Queue\Job as JobContract;
-use Illuminate\Queue\Events\JobExceptionOccurred;
-use Illuminate\Queue\Events\JobFailed;
-use Illuminate\Queue\Events\JobProcessed;
-use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Queue\Events\JobQueued;
+use Illuminate\Queue\Events as QueueEvents;
 use Illuminate\Support\Carbon;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
@@ -17,7 +13,7 @@ use romanzipp\QueueMonitor\Traits\IsMonitored;
 
 class QueueMonitor
 {
-    private const TIMESTAMP_EXACT_FORMAT = 'Y-m-d H:i:s.u';
+    private const string TIMESTAMP_EXACT_FORMAT = 'Y-m-d H:i:s.u';
 
     public static string $model;
 
@@ -31,14 +27,7 @@ class QueueMonitor
         return new self::$model();
     }
 
-    /**
-     * Handle Job Queued.
-     *
-     * @param JobQueued $event
-     *
-     * @return void
-     */
-    public static function handleJobQueued(JobQueued $event): void
+    public static function handleJobQueued(QueueEvents\JobQueued $event): void
     {
         self::jobQueued($event);
     }
@@ -53,50 +42,22 @@ class QueueMonitor
         self::jobPushed($event);
     }
 
-    /**
-     * Handle Job Processing.
-     *
-     * @param JobProcessing $event
-     *
-     * @return void
-     */
-    public static function handleJobProcessing(JobProcessing $event): void
+    public static function handleJobProcessing(QueueEvents\JobProcessing $event): void
     {
         self::jobStarted($event->job);
     }
 
-    /**
-     * Handle Job Processed.
-     *
-     * @param JobProcessed $event
-     *
-     * @return void
-     */
-    public static function handleJobProcessed(JobProcessed $event): void
+    public static function handleJobProcessed(QueueEvents\JobProcessed $event): void
     {
         self::jobFinished($event->job, MonitorStatus::SUCCEEDED);
     }
 
-    /**
-     * Handle Job Failing.
-     *
-     * @param JobFailed $event
-     *
-     * @return void
-     */
-    public static function handleJobFailed(JobFailed $event): void
+    public static function handleJobFailed(QueueEvents\JobFailed $event): void
     {
         self::jobFinished($event->job, MonitorStatus::FAILED, $event->exception);
     }
 
-    /**
-     * Handle Job Exception Occurred.
-     *
-     * @param JobExceptionOccurred $event
-     *
-     * @return void
-     */
-    public static function handleJobExceptionOccurred(JobExceptionOccurred $event): void
+    public static function handleJobExceptionOccurred(QueueEvents\JobExceptionOccurred $event): void
     {
         self::jobFinished($event->job, MonitorStatus::FAILED, $event->exception);
     }
@@ -120,11 +81,11 @@ class QueueMonitor
     /**
      * Start Queue Monitoring for Job.
      *
-     * @param JobQueued $event
+     * @param QueueEvents\JobQueued $event
      *
      * @return void
      */
-    protected static function jobQueued(JobQueued $event): void
+    protected static function jobQueued(QueueEvents\JobQueued $event): void
     {
         if ( ! self::shouldBeMonitored($event->job)) {
             return;
