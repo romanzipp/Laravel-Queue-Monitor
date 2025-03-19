@@ -13,11 +13,12 @@ class MonitorRetryTest extends DatabaseTestCase
     public function setUp(): void
     {
         parent::setUp();
+    }
 
-        config([
-            'queue-monitor.ui.enabled' => true,
-            'queue-monitor.ui.allow_retry' => true,
-        ]);
+    protected function defineEnvironment($app): void
+    {
+        $app['config']->set('queue-monitor.ui.enabled', true);
+        $app['config']->set('queue-monitor.ui.allow_retry', true);
     }
 
     protected function tearDown(): void
@@ -31,11 +32,6 @@ class MonitorRetryTest extends DatabaseTestCase
 
     public function testRetryFailedMonitor(): void
     {
-        config([
-            'queue-monitor.ui.enabled' => true,
-            'queue-monitor.ui.allow_retry' => true,
-        ]);
-
         $this
             ->dispatch(new MonitoredFailingJob())
             ->assertDispatched(MonitoredFailingJob::class)
