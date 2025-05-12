@@ -55,6 +55,7 @@ class Monitor extends Model implements MonitorContract
         'queued_at' => 'datetime',
         'started_at' => 'datetime',
         'finished_at' => 'datetime',
+        'status' => 'int',
     ];
 
     /**
