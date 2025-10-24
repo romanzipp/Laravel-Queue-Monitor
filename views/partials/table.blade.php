@@ -1,4 +1,4 @@
-<table class="w-full rounded-md whitespace-no-wrap rounded-md border dark:border-gray-600 border-separate border-spacing-0">
+<table class="w-full rounded-md whitespace-no-wrap border dark:border-gray-600 border-separate border-spacing-0">
 
     <thead class="rounded-t-md">
 
