@@ -1,7 +1,7 @@
 name: laravel-queue-monitor
 recipe: lemp
 config:
-  php: "8.2"
+  php: "8.4"
   composer_version: 2
   webroot: public
 services:
