@@ -56,9 +56,11 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use romanzipp\QueueMonitor\Traits\IsMonitored; // <---
 
-class ExampleJob implements ShouldQueue
+use romanzipp\QueueMonitor\Traits\IsMonitored; // <---
+use romanzipp\QueueMonitor\Contracts\MonitoredJobContract; // <---
+
+class ExampleJob implements ShouldQueue, MonitoredJobContract
 {
     use Dispatchable;
     use InteractsWithQueue;

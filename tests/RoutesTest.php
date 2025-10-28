@@ -15,6 +15,12 @@ class RoutesTest extends DatabaseTestCase
         $this->withExceptionHandling();
     }
 
+    protected function defineEnvironment($app): void
+    {
+        $app['config']->set('queue-monitor.ui.enabled', true);
+        $app['config']->set('queue-monitor.ui.allow_retry', true);
+    }
+
     /*
      *--------------------------------------------------------------------------
      * Index
