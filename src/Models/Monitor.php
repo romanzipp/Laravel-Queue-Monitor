@@ -32,12 +32,12 @@ use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
  * @property string|null $data
  * @property bool $retried
  *
- * @method static Builder|Monitor whereJob()
- * @method static Builder|Monitor ordered()
- * @method static Builder|Monitor lastHour()
- * @method static Builder|Monitor today()
- * @method static Builder|Monitor failed()
- * @method static Builder|Monitor succeeded()
+ * @method static Builder<Monitor>|Monitor whereJob()
+ * @method static Builder<Monitor>|Monitor ordered()
+ * @method static Builder<Monitor>|Monitor lastHour()
+ * @method static Builder<Monitor>|Monitor today()
+ * @method static Builder<Monitor>|Monitor failed()
+ * @method static Builder<Monitor>|Monitor succeeded()
  *
  * @mixin \Illuminate\Database\Eloquent\Model
  * @mixin Builder<\romanzipp\QueueMonitor\Models\Monitor>
@@ -303,6 +303,6 @@ class Monitor extends Model implements MonitorContract
     {
         return ! $this->retried
             && MonitorStatus::FAILED === $this->status
-            && null !== $this->job_uuid;
+            && $this->job_uuid;
     }
 }

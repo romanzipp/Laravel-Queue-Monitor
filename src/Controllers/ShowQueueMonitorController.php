@@ -10,7 +10,6 @@ use Illuminate\Validation\Rule;
 use romanzipp\QueueMonitor\Controllers\Payloads\Metric;
 use romanzipp\QueueMonitor\Controllers\Payloads\Metrics;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
-use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
 
 class ShowQueueMonitorController
@@ -86,8 +85,7 @@ class ShowQueueMonitorController
             ->select('queue')
             ->groupBy('queue')
             ->get()
-            ->map(function (MonitorContract $monitor) {
-                /** @var \romanzipp\QueueMonitor\Models\Monitor $monitor */
+            ->map(function (\stdClass $monitor) {
                 return $monitor->queue;
             })
             ->toArray();
@@ -154,6 +152,10 @@ class ShowQueueMonitorController
             ->where('started_at', '<=', Carbon::now()->subDays($timeFrame))
             ->first();
 
+        /**
+         * @var object{total_time_elapsed: int, average_time_elapsed: int, count: int}|null $aggregatedInfo
+         * @var object{total_time_elapsed: int, average_time_elapsed: int, count: int}|null $aggregatedComparisonInfo
+         */
         if (null === $aggregatedInfo || null === $aggregatedComparisonInfo) {
             return $metrics;
         }

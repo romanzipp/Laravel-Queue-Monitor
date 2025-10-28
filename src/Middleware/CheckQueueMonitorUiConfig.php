@@ -12,7 +12,7 @@ class CheckQueueMonitorUiConfig
     {
         $route = $request->route();
 
-        if ( ! ($route instanceof Route)) {
+        if ( ! ($route instanceof Route)) { // @phpstan-ignore-line
             throw new NotFoundHttpException('Not Found');
         }
 

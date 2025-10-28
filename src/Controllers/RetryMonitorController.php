@@ -13,9 +13,9 @@ class RetryMonitorController
     public function __invoke(Request $request, int $monitorId): RedirectResponse
     {
         /**
-         * @var Monitor $monitor
+         * @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract $monitor
          */
-        $monitor = QueueMonitor::getModel()
+        $monitor = QueueMonitor::getModel() // @phpstan-ignore-line
             ->query()
             ->where('status', MonitorStatus::FAILED)
             ->where('retried', false)

@@ -6,3 +6,4 @@ parameters:
   ignoreErrors:
     - '#Laravel\\Horizon#'
     - '#Method ([A-Za-z\:\(\)\\]+) has parameter \$query with generic class Illuminate\\Database\\Eloquent\\Builder but does not specify its types: TModel#'
+    - '#Trait romanzipp\\QueueMonitor\\Traits\\IsMonitored is used zero times and is not analysed.#'
