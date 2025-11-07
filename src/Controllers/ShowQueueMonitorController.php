@@ -10,6 +10,7 @@ use Illuminate\Validation\Rule;
 use romanzipp\QueueMonitor\Controllers\Payloads\Metric;
 use romanzipp\QueueMonitor\Controllers\Payloads\Metrics;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
+use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
 use romanzipp\QueueMonitor\Services\QueueMonitor;
 
 class ShowQueueMonitorController
@@ -85,7 +86,7 @@ class ShowQueueMonitorController
             ->select('queue')
             ->groupBy('queue')
             ->get()
-            ->map(function (\stdClass $monitor) {
+            ->map(function (MonitorContract $monitor) {
                 return $monitor->queue;
             })
             ->toArray();
