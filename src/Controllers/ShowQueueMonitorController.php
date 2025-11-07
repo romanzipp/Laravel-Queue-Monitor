@@ -81,12 +81,14 @@ class ShowQueueMonitorController
                 $request->all()
             );
 
-        $queues = QueueMonitor::getModel()
+        $models = QueueMonitor::getModel()
             ->newQuery()
             ->select('queue')
             ->groupBy('queue')
-            ->get()
-            ->map(function (MonitorContract $monitor) {
+            ->get();
+
+        $queues = $models
+            ->map(function (MonitorContract $monitor) { // @phpstan-ignore-line
                 return $monitor->queue;
             })
             ->toArray();
