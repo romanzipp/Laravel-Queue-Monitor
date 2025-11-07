@@ -72,7 +72,7 @@ class ExampleJob implements ShouldQueue
 
 ## Web Interface
 
-You can enable the web UI by setting the [`ui.enabled`](config/queue-monitor.php#23) to `true` configuration value.
+The web UI can be accessed via the `/jobs` route. You can enable it by setting the [`ui.enabled`](config/queue-monitor.php#23) to `true` configuration value.
 
 **Publish frontend assets:**
 
