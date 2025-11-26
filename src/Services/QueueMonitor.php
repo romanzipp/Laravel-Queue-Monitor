@@ -132,7 +132,10 @@ class QueueMonitor
 
         // add initial data
         if (method_exists($event->job, 'initialMonitorData')) {
-            $data = json_encode($event->job->initialMonitorData());
+            $initialData = $event->job->initialMonitorData();
+            if ($initialData !== null) {
+                $data = json_encode($initialData);
+            }
         }
 
         QueueMonitor::getModel()::query()->create([
