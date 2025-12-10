@@ -17,9 +17,11 @@
         <h1 class="px-4 w-full font-semibold text-lg">
             @lang('Queue Monitor')
         </h1>
-        <div class="w-[24rem] px-4 text-sm text-gray-700 font-light">
-            Statistics
-        </div>
+        @if (config('queue-monitor.ui.show_metrics'))
+            <div class="w-[24rem] px-4 text-sm text-gray-700 font-light">
+                Statistics
+            </div>
+        @endif
     </nav>
 
     <main class="flex">
@@ -54,13 +56,15 @@
             @endif
         </article>
 
-        <aside class="flex flex-col gap-4 w-[24rem] p-4">
-            @foreach($metrics->all() as $metric)
-                @include('queue-monitor::partials.metrics-card', [
-                    'metric' => $metric,
-                ])
-            @endforeach
-        </aside>
+        @if (config('queue-monitor.ui.show_metrics'))
+            <aside class="flex flex-col gap-4 w-[24rem] p-4">
+                @foreach($metrics->all() as $metric)
+                    @include('queue-monitor::partials.metrics-card', [
+                        'metric' => $metric,
+                    ])
+                @endforeach
+            </aside>
+        @endif
 
     </main>
 
