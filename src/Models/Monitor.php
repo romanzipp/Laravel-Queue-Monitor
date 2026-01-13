@@ -11,6 +11,10 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Artisan;
 use romanzipp\QueueMonitor\Enums\MonitorStatus;
 use romanzipp\QueueMonitor\Models\Contracts\MonitorContract;
+use romanzipp\QueueMonitor\Events\MonitorDeleting;
+use romanzipp\QueueMonitor\Events\MonitorDeleted;
+use romanzipp\QueueMonitor\Events\MonitorCreating;
+use romanzipp\QueueMonitor\Events\MonitorCreated;
 
 /**
  * @property int $id
@@ -62,6 +66,19 @@ class Monitor extends Model implements MonitorContract
      * @var bool
      */
     public $timestamps = false;
+
+    /**
+     * The event map for the model.
+     *
+     * @var array<string, string>
+     */
+    protected $dispatchesEvents = [
+
+        'creating' => MonitorCreating::class,
+        'created' => MonitorCreated::class,
+        'deleting' => MonitorDeleting::class,
+        'deleted' => MonitorDeleted::class
+    ];
 
     /**
      * @param array<string, mixed> $attributes
