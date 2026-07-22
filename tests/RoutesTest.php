@@ -95,6 +95,30 @@ class RoutesTest extends DatabaseTestCase
             ->assertRedirectToRoute('queue-monitor::index');
     }
 
+    /**
+     * Deleting/retrying/purging redirects back to wherever the request came
+     * from (see back()), so any active status/queue/name filters in the
+     * index page's query string survive the action instead of being wiped.
+     */
+    public function testDeletePreservesQueryStringFilters()
+    {
+        config([
+            'queue-monitor.ui.enabled' => true,
+            'queue-monitor.ui.allow_deletion' => true,
+        ]);
+
+        /** @var Monitor $monitor */
+        $monitor = Monitor::query()->create([
+            'job_id' => mt_rand(),
+        ]);
+
+        $this
+            ->withHeader('referer', '/jobs?status=1&queue=default')
+            ->delete("/jobs/monitors/{$monitor->id}")
+            ->assertStatus(302)
+            ->assertRedirect('/jobs?status=1&queue=default');
+    }
+
     /*
      *--------------------------------------------------------------------------
      * Purge
@@ -133,6 +157,20 @@ class RoutesTest extends DatabaseTestCase
             ->delete('/jobs/purge')
             ->assertStatus(302)
             ->assertRedirectToRoute('queue-monitor::index');
+    }
+
+    public function testPurgePreservesQueryStringFilters()
+    {
+        config([
+            'queue-monitor.ui.enabled' => true,
+            'queue-monitor.ui.allow_purge' => true,
+        ]);
+
+        $this
+            ->withHeader('referer', '/jobs?status=1&queue=default')
+            ->delete('/jobs/purge')
+            ->assertStatus(302)
+            ->assertRedirect('/jobs?status=1&queue=default');
     }
 
     /*
@@ -193,5 +231,27 @@ class RoutesTest extends DatabaseTestCase
             ->patch(route('queue-monitor::retry', [$monitor]))
             ->assertStatus(302)
             ->assertRedirectToRoute('queue-monitor::index');
+    }
+
+    public function testRetryPreservesQueryStringFilters()
+    {
+        config([
+            'queue-monitor.ui.enabled' => true,
+            'queue-monitor.ui.allow_retry' => true,
+        ]);
+
+        /** @var Monitor $monitor */
+        $monitor = Monitor::query()->create([
+            'job_id' => mt_rand(),
+            'job_uuid' => '048f02b7-0dc2-4f9c-9baa-7852273876cc',
+            'status' => MonitorStatus::FAILED,
+            'retried' => false,
+        ]);
+
+        $this
+            ->withHeader('referer', '/jobs?status=2&queue=default')
+            ->patch(route('queue-monitor::retry', [$monitor]))
+            ->assertStatus(302)
+            ->assertRedirect('/jobs?status=2&queue=default');
     }
 }

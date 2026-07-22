@@ -14,6 +14,6 @@ class PurgeMonitorsController
 
         $model->newQuery()->delete();
 
-        return redirect()->route('queue-monitor::index');
+        return back(fallback: route('queue-monitor::index'));
     }
 }

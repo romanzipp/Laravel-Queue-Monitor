@@ -13,6 +13,6 @@ class DeleteMonitorController
         // find model here to use QueueMonitor model and connection
         QueueMonitor::getModel()->find($monitorId)->delete();
 
-        return redirect()->route('queue-monitor::index');
+        return back(fallback: route('queue-monitor::index'));
     }
 }

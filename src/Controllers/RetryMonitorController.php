@@ -26,6 +26,6 @@ class RetryMonitorController
             $monitor->retry();
         }
 
-        return redirect()->route('queue-monitor::index');
+        return back(fallback: route('queue-monitor::index'));
     }
 }
