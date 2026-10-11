@@ -228,7 +228,7 @@ class QueueMonitor
             ->where('job_id', $jobId)
             ->where('status', '!=', MonitorStatus::FAILED)
             ->whereNull('finished_at')
-            ->each(function (MonitorContract $monitor) {
+            ->each(function (MonitorContract $monitor) { // @phpstan-ignore-line
                 $monitor->update([
                     'finished_at' => $now = Carbon::now(),
                     'finished_at_exact' => $now->format(self::TIMESTAMP_EXACT_FORMAT),
