@@ -15,12 +15,12 @@ class RetryMonitorController
         /**
          * @var \romanzipp\QueueMonitor\Models\Contracts\MonitorContract $monitor
          */
-        $monitor = QueueMonitor::getModel() // @phpstan-ignore-line
+        $monitor = QueueMonitor::getModel()
             ->query()
             ->where('status', MonitorStatus::FAILED)
             ->where('retried', false)
             ->whereNotNull('job_uuid')
-            ->findOrFail($monitorId);
+            ->findOrFail($monitorId); // @phpstan-ignore-line
 
         if (is_a($monitor, Monitor::class)) {
             $monitor->retry();
