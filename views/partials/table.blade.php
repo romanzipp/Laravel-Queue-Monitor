@@ -35,7 +35,7 @@
 
                 <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 font-medium border-b border-gray-200 dark:border-gray-600">
 
-                    {{ $job->getBaseName() }}
+                    <span title="{{ $job->name }}">{{ $job->getBaseName() }}</span>
 
                     <span class="ml-1 text-xs text-gray-600 dark:text-gray-400">
                         #{{ $job->job_id }}

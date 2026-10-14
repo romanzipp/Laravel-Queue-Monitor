@@ -30,10 +30,10 @@ class ShowQueueMonitorController
         ]);
 
         $filters = [
-            'status' => isset($data['status']) ? (int) $data['status'] : null,
+            'status' => isset($data['status']) && '' !== $data['status'] ? (int) $data['status'] : null,
             'queue' => $data['queue'] ?? 'all',
-            'name' => $data['name'] ?? null,
-            'custom_data' => $data['custom_data'] ?? null,
+            'name' => isset($data['name']) && '' !== $data['name'] ? $data['name'] : null,
+            'custom_data' => isset($data['custom_data']) && '' !== $data['custom_data'] ? $data['custom_data'] : null,
         ];
 
         $jobsQuery = QueueMonitor::getModel()->newQuery();
