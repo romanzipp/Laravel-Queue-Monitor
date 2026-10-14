@@ -6,6 +6,19 @@ return [
     'connection' => null,
 
     /*
+     * Timezone used to interpret the started_at_exact / finished_at_exact string
+     * columns when displaying timestamps. Falls back to app.timezone.
+     */
+    'monitor_timezone' => env('QUEUE_MONITOR_TIMEZONE'),
+
+    /*
+     * Timezone used to interpret the started_at / finished_at database columns
+     * when they differ from Laravel's app timezone. Falls back to the database
+     * connection timezone, then app.timezone.
+     */
+    'database_timezone' => env('QUEUE_MONITOR_DB_TIMEZONE'),
+
+    /*
      * Set the model used for monitoring.
      * If using a custom model, be sure to implement the
      *   romanzipp\QueueMonitor\Models\Contracts\MonitorContract

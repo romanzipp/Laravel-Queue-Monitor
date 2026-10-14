@@ -134,6 +134,57 @@ class Monitor extends Model implements MonitorContract
         return Carbon::parse($this->started_at_exact);
     }
 
+    /**
+     * Get the job start time for display, correcting for database timezone skew.
+     */
+    public function getDisplayStartedAt(): ?Carbon
+    {
+        if (null !== $this->started_at_exact) {
+            return Carbon::parse($this->started_at_exact, $this->resolveMonitorTimezone());
+        }
+
+        $raw = $this->getRawOriginal('started_at');
+
+        if (null === $raw) {
+            return null;
+        }
+
+        return Carbon::parse($raw, $this->resolveDatabaseTimezone());
+    }
+
+    /**
+     * Format the display start time with its timezone identifier.
+     */
+    public function formatDisplayStartedAt(): ?string
+    {
+        if (null === ($startedAt = $this->getDisplayStartedAt())) {
+            return null;
+        }
+
+        return sprintf(
+            '%s %s',
+            $startedAt->format('Y-m-d H:i:s'),
+            $startedAt->getTimezone()->getName()
+        );
+    }
+
+    protected function resolveMonitorTimezone(): string
+    {
+        return config('queue-monitor.monitor_timezone') ?? config('app.timezone');
+    }
+
+    protected function resolveDatabaseTimezone(): string
+    {
+        if ($timezone = config('queue-monitor.database_timezone')) {
+            return $timezone;
+        }
+
+        $connection = $this->getConnectionName();
+
+        return config("database.connections.{$connection}.timezone")
+            ?? config('app.timezone');
+    }
+
     public function getFinishedAtExact(): ?Carbon
     {
         if (null === $this->finished_at_exact) {
