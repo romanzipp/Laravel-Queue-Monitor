@@ -76,6 +76,107 @@ class MonitorTimeCalculationTest extends DatabaseTestCase
         );
     }
 
+    public function testDisplayQueuedAtUsesMonitorTimezone()
+    {
+        config([
+            'app.timezone' => 'America/New_York',
+            'queue-monitor.monitor_timezone' => 'America/New_York',
+            'queue-monitor.database_timezone' => 'UTC',
+        ]);
+
+        Carbon::setTestNow(Carbon::parse('2025-06-22 12:00:00', 'America/New_York'));
+
+        /** @var Monitor $monitor */
+        $monitor = Monitor::query()->create([
+            'job_id' => sha1(Str::random()),
+            'queued_at' => now(),
+        ]);
+
+        $monitor->refresh();
+
+        self::assertLessThan(
+            60,
+            $monitor->getDisplayQueuedAt()->diffInSeconds(Carbon::now())
+        );
+
+        Carbon::setTestNow();
+    }
+
+    public function testElapsedIntervalUsesMonitorTimezoneForRunningJobs()
+    {
+        config([
+            'app.timezone' => 'UTC',
+            'queue-monitor.monitor_timezone' => 'America/New_York',
+        ]);
+
+        Carbon::setTestNow(Carbon::parse('2020-01-01 15:00:05', 'UTC'));
+
+        $monitor = new Monitor();
+        $monitor->setRawAttributes([
+            'started_at_exact' => '2020-01-01 10:00:00.000000',
+        ]);
+
+        self::assertEquals(
+            '00:00:05',
+            $monitor->getElapsedInterval()->format('%H:%I:%S')
+        );
+
+        Carbon::setTestNow();
+    }
+
+    public function testElapsedIntervalUsesMonitorTimezoneForFinishedJobs()
+    {
+        config([
+            'app.timezone' => 'UTC',
+            'queue-monitor.monitor_timezone' => 'America/New_York',
+            'queue-monitor.database_timezone' => 'UTC',
+        ]);
+
+        $monitor = new Monitor();
+        $monitor->setRawAttributes([
+            'started_at_exact' => '2020-01-01 10:00:00.000000',
+            'finished_at' => '2020-01-01 15:00:05',
+            'finished_at_exact' => null,
+        ]);
+
+        self::assertEquals(
+            '00:00:05',
+            $monitor->getElapsedInterval()->format('%H:%I:%S')
+        );
+    }
+
+    public function testDisplayQueuedAtCorrectsLegacyTimezoneSkew()
+    {
+        config([
+            'app.timezone' => 'UTC',
+            'queue-monitor.monitor_timezone' => 'UTC',
+        ]);
+
+        Carbon::setTestNow(Carbon::parse('2026-06-22 17:56:00', 'UTC'));
+
+        /** @var Monitor $monitor */
+        $monitor = Monitor::query()->create([
+            'job_id' => sha1(Str::random()),
+            'queued_at' => '2026-06-22 12:45:16',
+            'started_at' => Carbon::parse('2026-06-22 17:45:16', 'UTC'),
+            'started_at_exact' => '2026-06-22 17:45:16.000000',
+        ]);
+
+        $monitor->refresh();
+
+        self::assertLessThan(
+            900,
+            $monitor->getDisplayQueuedAt()->diffInSeconds(Carbon::now())
+        );
+
+        self::assertGreaterThan(
+            300,
+            $monitor->getDisplayQueuedAt()->diffInSeconds(Carbon::now())
+        );
+
+        Carbon::setTestNow();
+    }
+
     private function createMonitor(Carbon $startedAt, ?int $progress = null): Monitor
     {
         /** @var Monitor $monitor */

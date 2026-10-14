@@ -13,6 +13,11 @@
 
             <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Progress')</th>
             <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Duration')</th>
+
+            @if(config('queue-monitor.ui.show_queued_at'))
+                <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Queued')</th>
+            @endif
+
             <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Started')</th>
             <th class="px-4 py-3 font-medium text-left text-xs text-gray-600 dark:text-gray-400 uppercase border-b border-gray-200 dark:border-gray-600">@lang('Error')</th>
 
@@ -99,8 +104,20 @@
                     {{ $job->getElapsedInterval()->format('%H:%I:%S') }}
                 </td>
 
+                @if(config('queue-monitor.ui.show_queued_at'))
+                    @php($displayQueuedAt = $job->getDisplayQueuedAt())
+                    <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
+                        @if($displayQueuedAt)
+                            <span title="{{ $job->formatDisplayQueuedAt() }}">{{ $displayQueuedAt->diffForHumans() }}</span>
+                        @endif
+                    </td>
+                @endif
+
+                @php($displayStartedAt = $job->getDisplayStartedAt())
                 <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">
-                    {{ $job->started_at?->diffForHumans() }}
+                    @if($displayStartedAt)
+                        <span title="{{ $job->formatDisplayStartedAt() }}">{{ $displayStartedAt->diffForHumans() }}</span>
+                    @endif
                 </td>
 
                 <td class="p-4 text-gray-800 dark:text-gray-300 text-sm leading-5 border-b border-gray-200 dark:border-gray-600">

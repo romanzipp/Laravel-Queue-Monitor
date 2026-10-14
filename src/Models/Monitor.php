@@ -134,6 +134,127 @@ class Monitor extends Model implements MonitorContract
         return Carbon::parse($this->started_at_exact);
     }
 
+    /**
+     * Get the job start time for display, correcting for database timezone skew.
+     */
+    public function getDisplayStartedAt(): ?Carbon
+    {
+        if (null !== $this->started_at_exact) {
+            return Carbon::parse($this->started_at_exact, $this->resolveMonitorTimezone());
+        }
+
+        $raw = $this->getRawOriginal('started_at');
+
+        if (null === $raw) {
+            return null;
+        }
+
+        return Carbon::parse($raw, $this->resolveDatabaseTimezone());
+    }
+
+    /**
+     * Format the display start time with its timezone identifier.
+     */
+    public function formatDisplayStartedAt(): ?string
+    {
+        if (null === ($startedAt = $this->getDisplayStartedAt())) {
+            return null;
+        }
+
+        return sprintf(
+            '%s %s',
+            $startedAt->format('Y-m-d H:i:s'),
+            $startedAt->getTimezone()->getName()
+        );
+    }
+
+    /**
+     * Get the job enqueue time for display, correcting for database timezone skew.
+     */
+    public function getDisplayQueuedAt(): ?Carbon
+    {
+        $raw = $this->getRawOriginal('queued_at');
+
+        if (null === $raw) {
+            return null;
+        }
+
+        $queuedAt = Carbon::parse($raw, $this->resolveMonitorTimezone());
+
+        if (null === $this->started_at_exact) {
+            return $queuedAt;
+        }
+
+        $startedAt = Carbon::parse($this->started_at_exact, $this->resolveMonitorTimezone());
+
+        if ($queuedAt->gte($startedAt->copy()->subHour())) {
+            return $queuedAt;
+        }
+
+        $best = $queuedAt;
+
+        for ($hours = -12; $hours <= 12; $hours++) {
+            $candidate = $queuedAt->copy()->addHours($hours);
+
+            if ($candidate->lte($startedAt) && $candidate->gt($best)) {
+                $best = $candidate;
+            }
+        }
+
+        return $best;
+    }
+
+    /**
+     * Format the display enqueue time with its timezone identifier.
+     */
+    public function formatDisplayQueuedAt(): ?string
+    {
+        if (null === ($queuedAt = $this->getDisplayQueuedAt())) {
+            return null;
+        }
+
+        return sprintf(
+            '%s %s',
+            $queuedAt->format('Y-m-d H:i:s'),
+            $queuedAt->getTimezone()->getName()
+        );
+    }
+
+    protected function resolveMonitorTimezone(): string
+    {
+        return config('queue-monitor.monitor_timezone') ?? config('app.timezone');
+    }
+
+    protected function resolveDatabaseTimezone(): string
+    {
+        if ($timezone = config('queue-monitor.database_timezone')) {
+            return $timezone;
+        }
+
+        $connection = $this->getConnectionName();
+
+        return config("database.connections.{$connection}.timezone")
+            ?? config('app.timezone');
+    }
+
+    /**
+     * Get the job finish time for display, correcting for database timezone skew.
+     */
+    public function getDisplayFinishedAt(): ?Carbon
+    {
+        if (null !== $this->finished_at_exact) {
+            return Carbon::parse($this->finished_at_exact, $this->resolveMonitorTimezone());
+        }
+
+        $raw = $this->getRawOriginal('finished_at');
+
+        if (null === $raw) {
+            return null;
+        }
+
+        return Carbon::parse($raw, $this->resolveDatabaseTimezone());
+    }
+
     public function getFinishedAtExact(): ?Carbon
     {
         if (null === $this->finished_at_exact) {
@@ -188,14 +309,14 @@ class Monitor extends Model implements MonitorContract
 
     public function getElapsedInterval(?Carbon $end = null): CarbonInterval
     {
-        if (null === $end) {
-            $end = $this->getFinishedAtExact() ?? $this->finished_at ?? Carbon::now();
-        }
-
-        $startedAt = $this->getStartedAtExact() ?? $this->started_at;
+        $startedAt = $this->getDisplayStartedAt();
 
         if (null === $startedAt) {
             return CarbonInterval::seconds(0);
+        }
+
+        if (null === $end) {
+            $end = $this->getDisplayFinishedAt() ?? Carbon::now();
         }
 
         return $startedAt->diffAsCarbonInterval($end);

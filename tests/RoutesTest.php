@@ -40,6 +40,46 @@ class RoutesTest extends DatabaseTestCase
             ->assertViewIs('queue-monitor::jobs');
     }
 
+    public function testIndexShowsQueuedAtColumn()
+    {
+        config([
+            'queue-monitor.ui.enabled' => true,
+            'queue-monitor.ui.show_queued_at' => true,
+        ]);
+
+        Monitor::query()->create([
+            'job_id' => 'test',
+            'status' => MonitorStatus::SUCCEEDED,
+            'queued_at' => now()->subHours(2),
+            'started_at' => now()->subHour(),
+        ]);
+
+        $this
+            ->get('/jobs')
+            ->assertStatus(200)
+            ->assertSee('2 hours ago', false);
+    }
+
+    public function testIndexHidesQueuedAtColumnWhenDisabled()
+    {
+        config([
+            'queue-monitor.ui.enabled' => true,
+            'queue-monitor.ui.show_queued_at' => false,
+        ]);
+
+        Monitor::query()->create([
+            'job_id' => 'test',
+            'status' => MonitorStatus::SUCCEEDED,
+            'queued_at' => now()->subHours(2),
+            'started_at' => now()->subHour(),
+        ]);
+
+        $this
+            ->get('/jobs')
+            ->assertStatus(200)
+            ->assertDontSee('2 hours ago', false);
+    }
+
     /*
      *--------------------------------------------------------------------------
      * Delete Monitor

@@ -37,6 +37,9 @@ return [
         // Show custom data stored on model
         'show_custom_data' => false,
 
+        // Show the time when the job was first enqueued.
+        'show_queued_at' => false,
+
         // Allow the deletion of single monitor items.
         'allow_deletion' => true,
 
